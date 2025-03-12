@@ -55,6 +55,7 @@ public partial record Period(DateTime? Start, DateTime? End) : IComparable<Perio
         return End > other.End ? 1 : -1;
     }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         if (IsInfiniteInBothDirections)

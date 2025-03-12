@@ -11,9 +11,13 @@ public partial class PeriodTimeline : IPeriodTimeline
         EndTimeline = endTimeline;
     }
 
+    /// <inheritdoc />
     public ITimeline StartTimeline { get; }
+
+    /// <inheritdoc />
     public ITimeline EndTimeline { get; }
 
+    /// <inheritdoc />
     public IEnumerator<Period> GetEnumerator()
     {
         return this.Enumerate().GetEnumerator();
