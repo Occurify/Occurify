@@ -135,49 +135,49 @@ public static partial class TimelineExtensions
     /// <summary>
     /// Returns a <see cref="ITimeline"/> that contains the first instant of <paramref name="source"/> within every period in <paramref name="mask"/>.
     /// </summary>
-    public static ITimeline First(this ITimeline source, Period mask) =>
+    public static ITimeline FirstWithin(this ITimeline source, Period mask) =>
         source.TakeWithin(mask, 1);
 
     /// <summary>
     /// Returns a <see cref="ITimeline"/> that contains the first instant of <paramref name="source"/> within every period in <paramref name="mask"/>.
     /// </summary>
-    public static ITimeline First(this ITimeline source, IEnumerable<Period> mask) =>
+    public static ITimeline FirstWithin(this ITimeline source, IEnumerable<Period> mask) =>
         source.TakeWithin(mask, 1);
 
     /// <summary>
     /// Returns a <see cref="ITimeline"/> that contains the first instant of <paramref name="source"/> within every period in <paramref name="mask"/>.
     /// </summary>
-    public static ITimeline First(this ITimeline source, ITimeline mask) =>
+    public static ITimeline FirstWithin(this ITimeline source, ITimeline mask) =>
         source.TakeWithin(mask, 1);
 
     /// <summary>
     /// Returns a <see cref="ITimeline"/> that contains the first instant of <paramref name="source"/> within every period in <paramref name="mask"/>.
     /// </summary>
-    public static ITimeline First(this ITimeline source, IPeriodTimeline mask) =>
+    public static ITimeline FirstWithin(this ITimeline source, IPeriodTimeline mask) =>
         source.TakeWithin(mask, 1);
 
     /// <summary>
     /// Returns a <see cref="ITimeline"/> that contains the last instant of <paramref name="source"/> within every period in <paramref name="mask"/>.
     /// </summary>
-    public static ITimeline Last(this ITimeline source, Period mask) =>
+    public static ITimeline LastWithin(this ITimeline source, Period mask) =>
         source.TakeLastWithin(mask, 1);
 
     /// <summary>
     /// Returns a <see cref="ITimeline"/> that contains the last instant of <paramref name="source"/> within every period in <paramref name="mask"/>.
     /// </summary>
-    public static ITimeline Last(this ITimeline source, IEnumerable<Period> mask) =>
+    public static ITimeline LastWithin(this ITimeline source, IEnumerable<Period> mask) =>
         source.TakeLastWithin(mask, 1);
 
     /// <summary>
     /// Returns a <see cref="ITimeline"/> that contains the last instant of <paramref name="source"/> within every period in <paramref name="mask"/>.
     /// </summary>
-    public static ITimeline Last(this ITimeline source, ITimeline mask) =>
+    public static ITimeline LastWithin(this ITimeline source, ITimeline mask) =>
         source.TakeLastWithin(mask, 1);
 
     /// <summary>
     /// Returns a <see cref="ITimeline"/> that contains the last instant of <paramref name="source"/> within every period in <paramref name="mask"/>.
     /// </summary>
-    public static ITimeline Last(this ITimeline source, IPeriodTimeline mask) =>
+    public static ITimeline LastWithin(this ITimeline source, IPeriodTimeline mask) =>
         source.TakeLastWithin(mask, 1);
 
     /// <summary>
