@@ -1,0 +1,86 @@
+﻿{
+  "largerThan2": [
+    {
+      "source  ": " ",
+      "expected": " "
+    },
+    {
+      "source  ": "<",
+      "expected": "<"
+    },
+    {
+      "source  ": ">",
+      "expected": ">"
+    },
+    {
+      "source  ": "X",
+      "expected": "X"
+    },
+    {
+      "source  ": "X>",
+      "expected": ">"
+    },
+    {
+      "source  ": "<X",
+      "expected": " <"
+    },
+    {
+      "source  ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": "< >",
+      "expected": "   "
+    },
+    {
+      "source  ": "<  >",
+      "expected": "<  >"
+    },
+    {
+      "source  ": "<  > <>",
+      "expected": "<  >   "
+    }
+  ],
+  "smallerThan2": [
+    {
+      "source  ": " ",
+      "expected": " "
+    },
+    {
+      "source  ": "<",
+      "expected": " "
+    },
+    {
+      "source  ": ">",
+      "expected": " "
+    },
+    {
+      "source  ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": "X>",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<X",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "expected": "<>"
+    },
+    {
+      "source  ": "< >",
+      "expected": "   "
+    },
+    {
+      "source  ": "<  >",
+      "expected": "    "
+    },
+    {
+      "source  ": "<  > <>",
+      "expected": "     <>"
+    }
+  ]
+}

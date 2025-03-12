@@ -1,0 +1,107 @@
+﻿[
+  {
+    "source  ": "  >",
+    "offset  ": -2,
+    "expected": ">  "
+  },
+  {
+    "source  ": " >",
+    "offset  ": -1,
+    "expected": "> "
+  },
+  {
+    "source  ": ">",
+    "offset  ": 0,
+    "expected": ">"
+  },
+  {
+    "source  ": "> ",
+    "offset  ": 1,
+    "expected": " >"
+  },
+  {
+    "source  ": ">  ",
+    "offset  ": 2,
+    "expected": "  >"
+  },
+  {
+    "source  ": "  >",
+    "offset  ": -2,
+    "expected": ">  "
+  },
+  {
+    "source  ": "  <",
+    "offset  ": -2,
+    "expected": "<  "
+  },
+  {
+    "source  ": " <",
+    "offset  ": -1,
+    "expected": "< "
+  },
+  {
+    "source  ": "<",
+    "offset  ": 0,
+    "expected": "<"
+  },
+  {
+    "source  ": "< ",
+    "offset  ": 1,
+    "expected": " <"
+  },
+  {
+    "source  ": "<  ",
+    "offset  ": 2,
+    "expected": "  <"
+  },
+  {
+    "source  ": "  <>",
+    "offset  ": -2,
+    "expected": "<>  "
+  },
+  {
+    "source  ": " <>",
+    "offset  ": -1,
+    "expected": "<> "
+  },
+  {
+    "source  ": "<>",
+    "offset  ": 0,
+    "expected": "<>"
+  },
+  {
+    "source  ": "<> ",
+    "offset  ": 1,
+    "expected": " <>"
+  },
+  {
+    "source  ": "<>  ",
+    "offset  ": 2,
+    "expected": "  <>"
+  },
+  {
+    "source  ": "  X",
+    "offset  ": -2,
+    "expected": "X  "
+  },
+  {
+    "source  ": " X",
+    "offset  ": -1,
+    "expected": "X "
+  },
+  {
+    "source  ": "X",
+    "offset  ": 0,
+    "expected": "X"
+  },
+  {
+    "source  ": "X ",
+    "offset  ": 1,
+    "expected": " X"
+  },
+  {
+    "source  ": "X  ",
+    "offset  ": 2,
+    "expected": "  X"
+  }
+]

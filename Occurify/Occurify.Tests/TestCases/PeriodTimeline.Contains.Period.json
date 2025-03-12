@@ -1,0 +1,428 @@
+﻿[
+  // No period
+  [
+    {
+      "source  ": " ",
+      "period  ": " ",
+      "expected": false
+    },
+    {
+      "source  ": "<",
+      "period  ": " ",
+      "expected": false
+    },
+    {
+      "source  ": ">",
+      "period  ": " ",
+      "expected": false
+    },
+
+    {
+      "source  ": "<>",
+      "period  ": "  ",
+      "expected": false
+    },
+    {
+      "source  ": "X",
+      "period  ": " ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": "    ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": "    ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": "    ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": "    ",
+      "expected": false
+    },
+    {
+      "source  ": "<>< >",
+      "period  ": "     ",
+      "expected": false
+    },
+    {
+      "source  ": "< ><>",
+      "period  ": "     ",
+      "expected": false
+    }
+  ],
+
+  // Start only
+  [
+    {
+      "source  ": " ",
+      "period  ": "<",
+      "expected": false
+    },
+    {
+      "source  ": "<",
+      "period  ": "<",
+      "expected": true
+    },
+    {
+      "source  ": " <",
+      "period  ": "< ",
+      "expected": false
+    },
+    {
+      "source  ": "< ",
+      "period  ": " <",
+      "expected": true
+    },
+    {
+      "source  ": ">",
+      "period  ": "<",
+      "expected": false
+    },
+    {
+      "source  ": " >",
+      "period  ": "< ",
+      "expected": false
+    },
+    {
+      "source  ": "> ",
+      "period  ": " <",
+      "expected": false
+    },
+    {
+      "source  ": "X ",
+      "period  ": " <",
+      "expected": true
+    },
+    {
+      "source  ": " X",
+      "period  ": "< ",
+      "expected": false
+    },
+    {
+      "source  ": " <>",
+      "period  ": "<  ",
+      "expected": false
+    },
+    {
+      "source  ": "<>",
+      "period  ": "< ",
+      "expected": false
+    },
+    {
+      "source  ": "<>",
+      "period  ": " <",
+      "expected": false
+    },
+    {
+      "source  ": "<> ",
+      "period  ": "  <",
+      "expected": false
+    },
+    {
+      "source  ": "< >",
+      "period  ": " < ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": "<   ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": " <  ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": "  < ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": "   <",
+      "expected": false
+    },
+    {
+      "source  ": "<>< >",
+      "period  ": "   < ",
+      "expected": false
+    },
+    {
+      "source  ": "< ><>",
+      "period  ": " <   ",
+      "expected": false
+    }
+  ],
+
+  // End only
+  [
+    {
+      "source  ": " ",
+      "period  ": ">",
+      "expected": false
+    },
+    {
+      "source  ": "<",
+      "period  ": ">",
+      "expected": false
+    },
+    {
+      "source  ": " <",
+      "period  ": "> ",
+      "expected": false
+    },
+    {
+      "source  ": "< ",
+      "period  ": " >",
+      "expected": false
+    },
+    {
+      "source  ": ">",
+      "period  ": ">",
+      "expected": true
+    },
+    {
+      "source  ": " >",
+      "period  ": "> ",
+      "expected": true
+    },
+    {
+      "source  ": "> ",
+      "period  ": " >",
+      "expected": false
+    },
+    {
+      "source  ": "X ",
+      "period  ": " >",
+      "expected": false
+    },
+    {
+      "source  ": " X",
+      "period  ": "> ",
+      "expected": true
+    },
+    {
+      "source  ": " <>",
+      "period  ": ">  ",
+      "expected": false
+    },
+    {
+      "source  ": "<>",
+      "period  ": "> ",
+      "expected": false
+    },
+    {
+      "source  ": "<>",
+      "period  ": " >",
+      "expected": false
+    },
+    {
+      "source  ": "<> ",
+      "period  ": "  >",
+      "expected": false
+    },
+    {
+      "source  ": "< >",
+      "period  ": " > ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": ">   ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": " >  ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": "  > ",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": "   >",
+      "expected": false
+    },
+    {
+      "source  ": "<>< >",
+      "period  ": "   > ",
+      "expected": false
+    },
+    {
+      "source  ": "< ><>",
+      "period  ": " >   ",
+      "expected": false
+    }
+  ],
+
+  // Complete period
+  [
+    {
+      "source  ": "  ",
+      "period  ": "<>",
+      "expected": false
+    },
+    {
+      "source  ": "<  ",
+      "period  ": " <>",
+      "expected": true
+    },
+    {
+      "source  ": "< ",
+      "period  ": "<>",
+      "expected": true
+    },
+    {
+      "source  ": " <",
+      "period  ": "<>",
+      "expected": false
+    },
+    {
+      "source  ": "  <",
+      "period  ": "<> ",
+      "expected": false
+    },
+    {
+      "source  ": ">  ",
+      "period  ": " <>",
+      "expected": false
+    },
+    {
+      "source  ": "> ",
+      "period  ": "<>",
+      "expected": false
+    },
+    {
+      "source  ": " >",
+      "period  ": "<>",
+      "expected": true
+    },
+    {
+      "source  ": "  >",
+      "period  ": "<> ",
+      "expected": true
+    },
+    {
+      "source  ": "X  ",
+      "period  ": " <>",
+      "expected": true
+    },
+    {
+      "source  ": "X ",
+      "period  ": "<>",
+      "expected": true
+    },
+    {
+      "source  ": " X",
+      "period  ": "<>",
+      "expected": true
+    },
+    {
+      "source  ": "  X",
+      "period  ": "<> ",
+      "expected": true
+    },
+    {
+      "source  ": " <>",
+      "period  ": "<> ",
+      "expected": false
+    },
+    {
+      "source  ": "<>",
+      "period  ": "<>",
+      "expected": true
+    },
+    {
+      "source  ": "<> ",
+      "period  ": " <>",
+      "expected": false
+    },
+    {
+      "source  ": " < >",
+      "period  ": "<>  ",
+      "expected": false
+    },
+    {
+      "source  ": "< >",
+      "period  ": "<> ",
+      "expected": true
+    },
+    {
+      "source  ": "< >",
+      "period  ": " <>",
+      "expected": true
+    },
+    {
+      "source  ": "< > ",
+      "period  ": "  <>",
+      "expected": false
+    },
+    {
+      "source  ": "<  >",
+      "period  ": " <> ",
+      "expected": true
+    },
+    {
+      "source  ": "< > ",
+      "period  ": " < >",
+      "expected": false
+    },
+    {
+      "source  ": " < >",
+      "period  ": "< > ",
+      "expected": false
+    },
+    {
+      "source  ": " <> ",
+      "period  ": "<  >",
+      "expected": false
+    },
+    {
+      "source  ": "<><>",
+      "period  ": "<>  ",
+      "expected": true
+    },
+    {
+      "source  ": "<><>",
+      "period  ": "  <>",
+      "expected": true
+    },
+    {
+      "source  ": "<> <>",
+      "period  ": "<>   ",
+      "expected": true
+    },
+    {
+      "source  ": "<> <>",
+      "period  ": "   <>",
+      "expected": true
+    },
+    {
+      "source  ": "<><  >",
+      "period  ": "   <> ",
+      "expected": true
+    },
+    {
+      "source  ": "<  ><>",
+      "period  ": " <>   ",
+      "expected": true
+    },
+    {
+      "source  ": " <><> ",
+      "period  ": "<    >",
+      "expected": false
+    }
+  ]
+]

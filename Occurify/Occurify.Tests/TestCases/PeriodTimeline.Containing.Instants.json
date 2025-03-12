@@ -1,0 +1,219 @@
+﻿[
+  // No period
+  [
+    {
+      "source  ": " ",
+      "instants": " ",
+      "expected": " "
+    },
+    {
+      "source  ": " ",
+      "instants": "|",
+      "expected": " "
+    }
+  ],
+
+  // Start only
+  [
+    {
+      "source  ": "<",
+      "instants": " ",
+      "expected": " "
+    },
+    {
+      "source  ": "<",
+      "instants": "|",
+      "expected": "<"
+    },
+    {
+      "source  ": "< ",
+      "instants": " |",
+      "expected": "< "
+    },
+    {
+      "source  ": " <",
+      "instants": "| ",
+      "expected": "  "
+    }
+  ],
+
+  // End only
+  [
+    {
+      "source  ": ">",
+      "instants": " ",
+      "expected": " "
+    },
+    {
+      "source  ": "> ",
+      "instants": " |",
+      "expected": "  "
+    },
+    {
+      "source  ": ">",
+      "instants": "|",
+      "expected": " "
+    },
+    {
+      "source  ": " >",
+      "instants": "| ",
+      "expected": " >"
+    }
+  ],
+
+  // Complete period
+  [
+    {
+      "source  ": "<>",
+      "instants": "  ",
+      "expected": "  "
+    },
+    {
+      "source  ": " <>",
+      "instants": "|  ",
+      "expected": "   "
+    },
+    {
+      "source  ": "<>",
+      "instants": "| ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "instants": " |",
+      "expected": "  "
+    },
+    {
+
+      "source  ": "<> ",
+      "instants": "  |",
+      "expected": "   "
+    },
+    {
+      "source  ": " < >",
+      "instants": "|   ",
+      "expected": "    "
+    },
+    {
+      "source  ": "< >",
+      "instants": "|  ",
+      "expected": "< >"
+    },
+    {
+      "source  ": "< >",
+      "instants": " | ",
+      "expected": "< >"
+    },
+    {
+      "source  ": "< >",
+      "instants": "  |",
+      "expected": "   "
+    },
+    {
+      "source  ": "<  >",
+      "instants": " |  ",
+      "expected": "<  >"
+    },
+    {
+      "source  ": "<  >",
+      "instants": "  | ",
+      "expected": "<  >"
+    }
+  ],
+
+  // Multiple periods
+  [
+    {
+      "source  ": "<><>",
+      "instants": "    ",
+      "expected": "    "
+    },
+    {
+      "source  ": " <><>",
+      "instants": "|    ",
+      "expected": "     "
+    },
+    {
+      "source  ": "<><>",
+      "instants": "|   ",
+      "expected": "<>  "
+    },
+    {
+      "source  ": "<><>",
+      "instants": " |  ",
+      "expected": "    "
+    },
+    {
+
+      "source  ": "<><>< ",
+      "instants": "     |",
+      "expected": "    < "
+    },
+    {
+      "source  ": " ><><>",
+      "instants": "|     ",
+      "expected": " >    "
+    },
+
+    {
+      "source  ": "<><>",
+      "instants": "  | ",
+      "expected": "  <>"
+    },
+    {
+      "source  ": "<><>",
+      "instants": "|   ",
+      "expected": "<>  "
+    },
+
+    {
+      "source  ": "<X>",
+      "instants": "   ",
+      "expected": "   "
+    },
+    {
+      "source  ": "<X>",
+      "instants": "|  ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<X>",
+      "instants": " | ",
+      "expected": " <>"
+    }
+  ],
+
+  // Multiple instants
+  [
+    {
+      "source  ": "  ",
+      "instants": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": " <> ",
+      "instants": "|  |",
+      "expected": "    "
+    },
+    {
+      "source  ": "<> ",
+      "instants": "| |",
+      "expected": "<> "
+    },
+    {
+      "source  ": " <>",
+      "instants": "|| ",
+      "expected": " <>"
+    },
+    {
+      "source  ": "<><>",
+      "instants": "|  |",
+      "expected": "<>  "
+    },
+    {
+      "source  ": "<><> ",
+      "instants": "| |  ",
+      "expected": "<><> "
+    }
+  ]
+]

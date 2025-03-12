@@ -1,0 +1,27 @@
+﻿[
+  {
+    "source  ": "  |",
+    "offset": -2,
+    "expected": "|  "
+  },
+  {
+    "source  ": " |",
+    "offset": -1,
+    "expected": "| "
+  },
+  {
+    "source  ": "|",
+    "offset": 0,
+    "expected": "|"
+  },
+  {
+    "source  ": "| ",
+    "offset": 1,
+    "expected": " |"
+  },
+  {
+    "source  ": "|  ",
+    "offset": 2,
+    "expected": "  |"
+  }
+]

@@ -1,0 +1,261 @@
+﻿[
+  // Endless period
+  [
+    {
+      "period1": " ",
+      "period2": " ",
+      "expected": true
+    },
+    {
+      "period1": "<",
+      "period2": " ",
+      "expected": true
+    },
+    {
+      "period1": ">",
+      "period2": " ",
+      "expected": true
+    },
+
+    {
+      "period1": "<>",
+      "period2": "  ",
+      "expected": true
+    }
+  ],
+
+  // Start only
+  [
+    {
+      "period1": " ",
+      "period2": "<",
+      "expected": true
+    },
+    {
+      "period1": "<",
+      "period2": "<",
+      "expected": true
+    },
+    {
+      "period1": " <",
+      "period2": "< ",
+      "expected": true
+    },
+    {
+      "period1": "< ",
+      "period2": " <",
+      "expected": true
+    },
+    {
+      "period1": ">",
+      "period2": "<",
+      "expected": false
+    },
+    {
+      "period1": " >",
+      "period2": "< ",
+      "expected": true
+    },
+    {
+      "period1": "> ",
+      "period2": " <",
+      "expected": false
+    },
+
+    {
+      "period1": " <>",
+      "period2": "<  ",
+      "expected": true
+    },
+    {
+      "period1": "<>",
+      "period2": "< ",
+      "expected": true
+    },
+    {
+      "period1": "<>",
+      "period2": " <",
+      "expected": false
+    },
+    {
+      "period1": "<> ",
+      "period2": "  <",
+      "expected": false
+    },
+    {
+      "period1": "< >",
+      "period2": " < ",
+      "expected": true
+    }
+  ],
+
+  // End only
+  [
+    {
+      "period1": " ",
+      "period2": ">",
+      "expected": true
+    },
+    {
+      "period1": "<",
+      "period2": ">",
+      "expected": false
+    },
+    {
+      "period1": " <",
+      "period2": "> ",
+      "expected": false
+    },
+    {
+      "period1": "< ",
+      "period2": " >",
+      "expected": true
+    },
+    {
+      "period1": ">",
+      "period2": ">",
+      "expected": true
+    },
+    {
+      "period1": " >",
+      "period2": "> ",
+      "expected": true
+    },
+    {
+      "period1": "> ",
+      "period2": " >",
+      "expected": true
+    },
+
+    {
+      "period1": " <>",
+      "period2": ">  ",
+      "expected": false
+    },
+    {
+      "period1": "<>",
+      "period2": "> ",
+      "expected": false
+    },
+    {
+      "period1": "<>",
+      "period2": " >",
+      "expected": true
+    },
+    {
+      "period1": "<> ",
+      "period2": "  >",
+      "expected": true
+    },
+    {
+      "period1": "< >",
+      "period2": " > ",
+      "expected": true
+    }
+  ],
+
+  // Complete period
+  [
+    {
+      "period1": "  ",
+      "period2": "<>",
+      "expected": true
+    },
+    {
+      "period1": "<  ",
+      "period2": " <>",
+      "expected": true
+    },
+    {
+      "period1": "< ",
+      "period2": "<>",
+      "expected": true
+    },
+    {
+      "period1": " <",
+      "period2": "<>",
+      "expected": false
+    },
+    {
+      "period1": "  <",
+      "period2": "<> ",
+      "expected": false
+    },
+    {
+      "period1": ">  ",
+      "period2": " <>",
+      "expected": false
+    },
+    {
+      "period1": "> ",
+      "period2": "<>",
+      "expected": false
+    },
+    {
+      "period1": " >",
+      "period2": "<>",
+      "expected": true
+    },
+    {
+      "period1": "  >",
+      "period2": "<> ",
+      "expected": true
+    },
+
+    {
+      "period1": " <>",
+      "period2": "<> ",
+      "expected": false
+    },
+    {
+      "period1": "<>",
+      "period2": "<>",
+      "expected": true
+    },
+    {
+      "period1": "<> ",
+      "period2": " <>",
+      "expected": false
+    },
+    {
+      "period1": " < >",
+      "period2": "<>  ",
+      "expected": false
+    },
+    {
+      "period1": "< >",
+      "period2": "<> ",
+      "expected": true
+    },
+    {
+      "period1": "< >",
+      "period2": " <>",
+      "expected": true
+    },
+    {
+      "period1": "< > ",
+      "period2": "  <>",
+      "expected": false
+    },
+    {
+      "period1": "<  >",
+      "period2": " <> ",
+      "expected": true
+    },
+    {
+      "period1": "< > ",
+      "period2": " < >",
+      "expected": true
+    },
+    {
+      "period1": "< >",
+      "period2": "< >",
+      "expected": true
+    },
+    {
+      "period1": " < >",
+      "period2": "< > ",
+      "expected": true
+    }
+  ]
+]

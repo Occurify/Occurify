@@ -1,0 +1,166 @@
+﻿[
+  {
+    "source  ": " ",
+    "expected": " "
+  },
+  {
+    "source  ": "<",
+    "expected": "<"
+  },
+  {
+    "source  ": ">",
+    "expected": ">"
+  },
+  {
+    "source  ": "X",
+    "expected": "X"
+  },
+
+  {
+    "source  ": "<<",
+    "expected": "< "
+  },
+  {
+    "source  ": "<>",
+    "expected": "<>"
+  },
+  {
+    "source  ": "<X",
+    "expected": "<X"
+  },
+  {
+    "source  ": "><",
+    "expected": "><"
+  },
+  {
+    "source  ": ">>",
+    "expected": "> "
+  },
+  {
+    "source  ": ">X",
+    "expected": "><"
+  },
+  {
+    "source  ": "X<",
+    "expected": "X "
+  },
+  {
+    "source  ": "X>",
+    "expected": "X>"
+  },
+  {
+    "source  ": "XX",
+    "expected": "XX"
+  },
+
+  {
+    "source  ": "<<<",
+    "expected": "<  "
+  },
+  {
+    "source  ": "<<>",
+    "expected": "< >"
+  },
+  {
+    "source  ": "<<X",
+    "expected": "< X"
+  },
+  {
+    "source  ": "<><",
+    "expected": "<><"
+  },
+  {
+    "source  ": "<>>",
+    "expected": "<> "
+  },
+  {
+    "source  ": "<>X",
+    "expected": "<><"
+  },
+  {
+    "source  ": "<X<",
+    "expected": "<X "
+  },
+  {
+    "source  ": "<X>",
+    "expected": "<X>"
+  },
+  {
+    "source  ": "<XX",
+    "expected": "<XX"
+  },
+
+  {
+    "source  ": "><<",
+    "expected": ">< "
+  },
+  {
+    "source  ": "><>",
+    "expected": "><>"
+  },
+  {
+    "source  ": "><X",
+    "expected": "><X"
+  },
+  {
+    "source  ": ">><",
+    "expected": "> <"
+  },
+  {
+    "source  ": ">>>",
+    "expected": ">  "
+  },
+  {
+    "source  ": ">>X",
+    "expected": "> <"
+  },
+  {
+    "source  ": ">X<",
+    "expected": ">< "
+  },
+  {
+    "source  ": ">X>",
+    "expected": "><>"
+  },
+  {
+    "source  ": ">XX",
+    "expected": "><X"
+  },
+
+  {
+    "source  ": "X<<",
+    "expected": "X  "
+  },
+  {
+    "source  ": "X<>",
+    "expected": "X >"
+  },
+  {
+    "source  ": "X<X",
+    "expected": "X X"
+  },
+  {
+    "source  ": "X><",
+    "expected": "X><"
+  },
+  {
+    "source  ": "X>>",
+    "expected": "X> "
+  },
+  {
+    "source  ": "X>X",
+    "expected": "X><"
+  },
+  {
+    "source  ": "XX<",
+    "expected": "XX "
+  },
+  {
+    "source  ": "XX>",
+    "expected": "XX>"
+  },
+  {
+    "source  ": "XXX",
+    "expected": "XXX"
+  }
+]

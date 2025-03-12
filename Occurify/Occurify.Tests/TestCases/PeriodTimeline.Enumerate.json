@@ -1,0 +1,1538 @@
+﻿{
+  "enumerate": [
+    {
+      "source  ": " ",
+      "expected": " "
+    },
+    {
+      "source  ": ">",
+      "expected": ">"
+    },
+    {
+      "source  ": "><",
+      "expected": "><"
+    },
+    {
+      "source  ": "><>",
+      "expected": "><>"
+    },
+    {
+      "source  ": "<",
+      "expected": "<"
+    },
+    {
+      "source  ": "<>",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<><",
+      "expected": "<><"
+    },
+    {
+      "source  ": "X",
+      "expected": "X"
+    },
+    {
+      "source  ": "<X>",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<><>",
+      "expected": "<><>"
+    }
+  ],
+  "enumerateFrom": [
+    {
+      "source  ": " ",
+      "from    ": "|",
+      "expected": " "
+    },
+    {
+      "source  ": " >",
+      "from    ": "| ",
+      "expected": "  "
+    },
+    {
+      "source  ": ">",
+      "from    ": "|",
+      "expected": " "
+    },
+    {
+      "source  ": " ><",
+      "from    ": "|  ",
+      "expected": "  <"
+    },
+    {
+      "source  ": " <",
+      "from    ": "| ",
+      "expected": " <"
+    },
+    {
+      "source  ": "><",
+      "from    ": " |",
+      "expected": " <"
+    },
+    {
+      "source  ": " ><>",
+      "from    ": "|   ",
+      "expected": "  <>"
+    },
+    {
+      "source  ": "><>",
+      "from    ": "|  ",
+      "expected": " <>"
+    },
+    {
+      "source  ": "><>",
+      "from    ": " | ",
+      "expected": " <>"
+    },
+    {
+      "source  ": "><>",
+      "from    ": "  |",
+      "expected": "   "
+    },
+    {
+      "source  ": "<",
+      "from    ": "|",
+      "expected": "<"
+    },
+    {
+      "source  ": "< ",
+      "from    ": " |",
+      "expected": "  "
+    },
+    {
+      "source  ": "<>",
+      "from    ": "|",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "from    ": " |",
+      "expected": "  "
+    },
+    {
+      "source  ": "<><",
+      "from    ": "|  ",
+      "expected": "<><"
+    },
+    {
+      "source  ": "<><",
+      "from    ": " | ",
+      "expected": "  <"
+    },
+    {
+      "source  ": "<><",
+      "from    ": "  |",
+      "expected": "  <"
+    },
+    {
+      "source  ": "X",
+      "from    ": "|",
+      "expected": "<"
+    },
+    {
+      "source  ": "<X>",
+      "from    ": "|  ",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "from    ": " | ",
+      "expected": " <>"
+    },
+    {
+      "source  ": "<><>",
+      "from    ": "|   ",
+      "expected": "<><>"
+    },
+    {
+      "source  ": "<><>",
+      "from    ": " |  ",
+      "expected": "  <>"
+    },
+    {
+      "source  ": "<><>",
+      "from    ": "  | ",
+      "expected": "  <>"
+    },
+    {
+      "source  ": "<><>",
+      "from    ": "   |",
+      "expected": "    "
+    }
+  ],
+  "enumerateFromIncludingPartial": [
+    {
+      "source  ": " ",
+      "from    ": "|",
+      "expected": " "
+    },
+    {
+      "source  ": " >",
+      "from    ": "| ",
+      "expected": " >"
+    },
+    {
+      "source  ": ">",
+      "from    ": "|",
+      "expected": " "
+    },
+    {
+      "source  ": " ><",
+      "from    ": "|  ",
+      "expected": " ><"
+    },
+    {
+      "source  ": " <",
+      "from    ": "|  ",
+      "expected": " <"
+    },
+    {
+      "source  ": "><",
+      "from    ": " |",
+      "expected": " <"
+    },
+    {
+      "source  ": " ><>",
+      "from    ": "|   ",
+      "expected": " ><>"
+    },
+    {
+      "source  ": "><>",
+      "from    ": "|  ",
+      "expected": " <>"
+    },
+    {
+      "source  ": "><>",
+      "from    ": " | ",
+      "expected": " <>"
+    },
+    {
+      "source  ": "><>",
+      "from    ": "  |",
+      "expected": "   "
+    },
+    {
+      "source  ": "<",
+      "from    ": "|",
+      "expected": "<"
+    },
+    {
+      "source  ": "< ",
+      "from    ": " |",
+      "expected": "< "
+    },
+    {
+      "source  ": "<>",
+      "from    ": "| ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "from    ": " |",
+      "expected": "  "
+    },
+    {
+      "source  ": "<><",
+      "from    ": "|  ",
+      "expected": "<><"
+    },
+    {
+      "source  ": "<><",
+      "from    ": " | ",
+      "expected": "  <"
+    },
+    {
+      "source  ": "<><",
+      "from    ": "  |",
+      "expected": "  <"
+    },
+    {
+      "source  ": " X",
+      "from    ": "| ",
+      "expected": " X"
+    },
+    {
+      "source  ": "X",
+      "from    ": "|",
+      "expected": "<"
+    },
+    {
+      "source  ": "<X>",
+      "from    ": "|  ",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "from    ": " | ",
+      "expected": " <>"
+    },
+    {
+      "source  ": "<><>",
+      "from    ": "|   ",
+      "expected": "<><>"
+    },
+    {
+      "source  ": "<><>",
+      "from    ": " |  ",
+      "expected": "  <>"
+    },
+    {
+      "source  ": "<><>",
+      "from    ": "  | ",
+      "expected": "  <>"
+    },
+    {
+      "source  ": "<><>",
+      "from    ": "   |",
+      "expected": "    "
+    }
+  ],
+  "enumerateTo": [
+    {
+      "source  ": " ",
+      "to      ": "|",
+      "expected": " "
+    },
+    {
+      "source  ": ">",
+      "to      ": "|",
+      "expected": ">"
+    },
+    {
+      "source  ": "> ",
+      "to      ": " |",
+      "expected": "> "
+    },
+    {
+      "source  ": ">< ",
+      "to      ": "  |",
+      "expected": ">  "
+    },
+    {
+      "source  ": "< ",
+      "to      ": " |",
+      "expected": "  "
+    },
+    {
+      "source  ": "><",
+      "to      ": "| ",
+      "expected": "> "
+    },
+    {
+      "source  ": "<>< ",
+      "to      ": "   |",
+      "expected": "<>  "
+    },
+    {
+      "source  ": "<><",
+      "to      ": "  |",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<><",
+      "to      ": " | ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<><",
+      "to      ": "|  ",
+      "expected": "   "
+    },
+    {
+      "source  ": "<",
+      "to      ": "|",
+      "expected": " "
+    },
+    {
+      "source  ": " <",
+      "to      ": "| ",
+      "expected": "  "
+    },
+    {
+      "source  ": "<>",
+      "to      ": " |",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "to      ": "| ",
+      "expected": "  "
+    },
+    {
+      "source  ": "><>",
+      "to      ": "|  ",
+      "expected": ">  "
+    },
+    {
+      "source  ": "><>",
+      "to      ": " | ",
+      "expected": ">  "
+    },
+    {
+      "source  ": "><>",
+      "to      ": "  |",
+      "expected": "><>"
+    },
+    {
+      "source  ": "X",
+      "to      ": "|",
+      "expected": ">"
+    },
+    {
+      "source  ": "<X>",
+      "to      ": "  |",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "to      ": " | ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<><>",
+      "to      ": "|   ",
+      "expected": "    "
+    },
+    {
+      "source  ": "<><>",
+      "to      ": " |  ",
+      "expected": "<>  "
+    },
+    {
+      "source  ": "<><>",
+      "to      ": "  | ",
+      "expected": "<>  "
+    },
+    {
+      "source  ": "<><>",
+      "to      ": "   |",
+      "expected": "<><>"
+    }
+  ],
+  "enumerateToIncludingPartial": [
+    {
+      "source  ": " ",
+      "to      ": "|",
+      "expected": " "
+    },
+    {
+      "source  ": ">",
+      "to      ": "|",
+      "expected": ">"
+    },
+    {
+      "source  ": "> ",
+      "to      ": " |",
+      "expected": "> "
+    },
+    {
+      "source  ": ">< ",
+      "to      ": "  |",
+      "expected": ">< "
+    },
+    {
+      "source  ": "< ",
+      "to      ": " |",
+      "expected": "< "
+    },
+    {
+      "source  ": "><",
+      "to      ": "| ",
+      "expected": "> "
+    },
+    {
+      "source  ": "<>< ",
+      "to      ": "   |",
+      "expected": "<>< "
+    },
+    {
+      "source  ": "<><",
+      "to      ": "  |",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<><",
+      "to      ": " | ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<><",
+      "to      ": "|  ",
+      "expected": "   "
+    },
+    {
+      "source  ": "< ",
+      "to      ": " |",
+      "expected": "< "
+    },
+    {
+      "source  ": "<",
+      "to      ": "|",
+      "expected": " "
+    },
+    {
+      "source  ": "<>",
+      "to      ": " |",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "to      ": "| ",
+      "expected": "  "
+    },
+    {
+      "source  ": "><>",
+      "to      ": "|  ",
+      "expected": ">  "
+    },
+    {
+      "source  ": "><>",
+      "to      ": " | ",
+      "expected": ">  "
+    },
+    {
+      "source  ": "><>",
+      "to      ": "  |",
+      "expected": "><>"
+    },
+    {
+      "source  ": "X",
+      "to      ": "|",
+      "expected": ">"
+    },
+    {
+      "source  ": "<X>",
+      "to      ": "  |",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "to      ": " | ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<><>",
+      "to      ": "|   ",
+      "expected": "    "
+    },
+    {
+      "source  ": "<><>",
+      "to      ": " |  ",
+      "expected": "<>  "
+    },
+    {
+      "source  ": "<><>",
+      "to      ": "  | ",
+      "expected": "<>  "
+    },
+    {
+      "source  ": "<><>",
+      "to      ": "   |",
+      "expected": "<><>"
+    }
+  ],
+  "enumerateRangeCompleteOnly": [
+    {
+      "source  ": "  ",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": " ",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": "<",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": "< ",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": ">",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": " >",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": "X",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": " X ",
+      "range   ": "| |",
+      "expected": "   "
+    },
+    {
+      "source  ": " <> ",
+      "range   ": "|  |",
+      "expected": " <> "
+    },
+    {
+      "source  ": "<>",
+      "range   ": "||",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "range   ": "X ",
+      "expected": "  "
+    },
+    {
+      "source  ": "<>",
+      "range   ": " X",
+      "expected": "  "
+    },
+    {
+      "source  ": "<><",
+      "range   ": "| |",
+      "expected": "<> "
+    },
+    {
+      "source  ": "><>",
+      "range   ": "| |",
+      "expected": " <>"
+    },
+    {
+      "source  ": " ><",
+      "range   ": "|| ",
+      "expected": "   "
+    },
+    {
+      "source  ": "><",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": ">< ",
+      "range   ": " ||",
+      "expected": "   "
+    },
+    {
+      "source  ": "<X>",
+      "range   ": "| |",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "range   ": "|| ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<X>",
+      "range   ": " ||",
+      "expected": " <>"
+    }
+  ],
+  "enumerateRangeStartPartialAllowed": [
+    {
+      "source  ": "  ",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": " ",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": "<",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": "< ",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": ">",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": " >",
+      "range   ": "||",
+      "expected": " >"
+    },
+    {
+      "source  ": "X",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": " X ",
+      "range   ": "| |",
+      "expected": " > "
+    },
+    {
+      "source  ": " <> ",
+      "range   ": "|  |",
+      "expected": " <> "
+    },
+    {
+      "source  ": "<>",
+      "range   ": "||",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "range   ": "X ",
+      "expected": "  "
+    },
+    {
+      "source  ": "<>",
+      "range   ": " X",
+      "expected": "  "
+    },
+    {
+      "source  ": "<><",
+      "range   ": "| |",
+      "expected": "<> "
+    },
+    {
+      "source  ": "><>",
+      "range   ": "| |",
+      "expected": " <>"
+    },
+    {
+      "source  ": " ><",
+      "range   ": "|| ",
+      "expected": " > "
+    },
+    {
+      "source  ": "><",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": ">< ",
+      "range   ": " ||",
+      "expected": "   "
+    },
+    {
+      "source  ": "<X>",
+      "range   ": "| |",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "range   ": "|| ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<X>",
+      "range   ": " ||",
+      "expected": " <>"
+    }
+  ],
+  "enumerateRangeEndPartialAllowed": [
+    {
+      "source  ": "  ",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": " ",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": "<",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": "< ",
+      "range   ": "||",
+      "expected": "< "
+    },
+    {
+      "source  ": ">",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": " >",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": "X",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": " X ",
+      "range   ": "| |",
+      "expected": " < "
+    },
+    {
+      "source  ": " <> ",
+      "range   ": "|  |",
+      "expected": " <> "
+    },
+    {
+      "source  ": "<>",
+      "range   ": "||",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "range   ": "X ",
+      "expected": "  "
+    },
+    {
+      "source  ": "<>",
+      "range   ": " X",
+      "expected": "  "
+    },
+    {
+      "source  ": "<><",
+      "range   ": "| |",
+      "expected": "<> "
+    },
+    {
+      "source  ": "><>",
+      "range   ": "| |",
+      "expected": " <>"
+    },
+    {
+      "source  ": " ><",
+      "range   ": "|| ",
+      "expected": "   "
+    },
+    {
+      "source  ": "><",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": ">< ",
+      "range   ": " ||",
+      "expected": " < "
+    },
+    {
+      "source  ": "<X>",
+      "range   ": "| |",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "range   ": "|| ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<X>",
+      "range   ": " ||",
+      "expected": " <>"
+    }
+  ],
+  "enumerateRangePartialAllowed": [
+    {
+      "source  ": "  ",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": " ",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": "<",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": "< ",
+      "range   ": "||",
+      "expected": "< "
+    },
+    {
+      "source  ": ">",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": " >",
+      "range   ": "||",
+      "expected": " >"
+    },
+    {
+      "source  ": "X",
+      "range   ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": " X ",
+      "range   ": "| |",
+      "expected": " X "
+    },
+    {
+      "source  ": " <> ",
+      "range   ": "|  |",
+      "expected": " <> "
+    },
+    {
+      "source  ": "<>",
+      "range   ": "||",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "range   ": "X ",
+      "expected": "  "
+    },
+    {
+      "source  ": "<>",
+      "range   ": " X",
+      "expected": "  "
+    },
+    {
+      "source  ": "<><",
+      "range   ": "| |",
+      "expected": "<> "
+    },
+    {
+      "source  ": "><>",
+      "range   ": "| |",
+      "expected": " <>"
+    },
+    {
+      "source  ": " ><>",
+      "range   ": "| | ",
+      "expected": " >  "
+    },
+    {
+      "source  ": "><",
+      "range   ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": " ><",
+      "range   ": "|| ",
+      "expected": " > "
+    },
+    {
+      "source  ": ">< ",
+      "range   ": " ||",
+      "expected": " < "
+    },
+    {
+      "source  ": "<X>",
+      "range   ": "| |",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "range   ": "|| ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<X>",
+      "range   ": " ||",
+      "expected": " <>"
+    }
+  ],
+  "enumeratePeriodCompleteOnly": [
+    {
+      "source  ": " ",
+      "period  ": " ",
+      "expected": " "
+    },
+    {
+      "source  ": "  ",
+      "period  ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": "<",
+      "period  ": " ",
+      "expected": "<"
+    },
+    {
+      "source  ": ">",
+      "period  ": " ",
+      "expected": ">"
+    },
+    {
+      "source  ": "<>",
+      "period  ": " ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "period  ": "  ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "< ",
+      "period  ": " <",
+      "expected": "  "
+    },
+    {
+      "source  ": "<",
+      "period  ": "<",
+      "expected": "<"
+    },
+    {
+      "source  ": " <",
+      "period  ": "< ",
+      "expected": " <"
+    },
+    {
+      "source  ": " >",
+      "period  ": "< ",
+      "expected": "  "
+    },
+    {
+      "source  ": "<>",
+      "period  ": "< ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "> ",
+      "period  ": " >",
+      "expected": "> "
+    },
+    {
+      "source  ": ">",
+      "period  ": ">",
+      "expected": ">"
+    },
+    {
+      "source  ": " >",
+      "period  ": "> ",
+      "expected": "  "
+    },
+    {
+      "source  ": "< ",
+      "period  ": " >",
+      "expected": "  "
+    },
+    {
+      "source  ": "<>",
+      "period  ": " >",
+      "expected": "<>"
+    },
+    {
+      "source  ": " >",
+      "period  ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": "X",
+      "period  ": " ",
+      "expected": "X"
+    },
+    {
+      "source  ": " X ",
+      "period  ": "< >",
+      "expected": "   "
+    },
+    {
+      "source  ": " <> ",
+      "period  ": "<  >",
+      "expected": " <> "
+    },
+    {
+      "source  ": "<>",
+      "period  ": "<>",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<><",
+      "period  ": "< >",
+      "expected": "<> "
+    },
+    {
+      "source  ": "><>",
+      "period  ": "< >",
+      "expected": " <>"
+    },
+    {
+      "source  ": " ><",
+      "period  ": "<> ",
+      "expected": "   "
+    },
+    {
+      "source  ": "><",
+      "period  ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": ">< ",
+      "period  ": " <>",
+      "expected": "   "
+    },
+    {
+      "source  ": "<X>",
+      "period  ": "< >",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "period  ": "<> ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<X>",
+      "period  ": " <>",
+      "expected": " <>"
+    }
+  ],
+  "enumeratePeriodStartPartialAllowed": [
+    {
+      "source  ": " ",
+      "period  ": " ",
+      "expected": " "
+    },
+    {
+      "source  ": "  ",
+      "period  ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": "<",
+      "period  ": " ",
+      "expected": "<"
+    },
+    {
+      "source  ": ">",
+      "period  ": " ",
+      "expected": ">"
+    },
+    {
+      "source  ": "<>",
+      "period  ": "  ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "period  ": "  ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "< ",
+      "period  ": " <",
+      "expected": "< "
+    },
+    {
+      "source  ": "<",
+      "period  ": "<",
+      "expected": "<"
+    },
+    {
+      "source  ": " <",
+      "period  ": "< ",
+      "expected": " <"
+    },
+    {
+      "source  ": " >",
+      "period  ": "< ",
+      "expected": " >"
+    },
+    {
+      "source  ": "<>",
+      "period  ": "< ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "> ",
+      "period  ": " >",
+      "expected": "> "
+    },
+    {
+      "source  ": ">",
+      "period  ": ">",
+      "expected": ">"
+    },
+    {
+      "source  ": " >",
+      "period  ": "> ",
+      "expected": "  "
+    },
+    {
+      "source  ": "< ",
+      "period  ": " >",
+      "expected": "  "
+    },
+    {
+      "source  ": "<>",
+      "period  ": " >",
+      "expected": "<>"
+    },
+    {
+      "source  ": " >",
+      "period  ": "<>",
+      "expected": " >"
+    },
+    {
+      "source  ": "X",
+      "period  ": " ",
+      "expected": "X"
+    },
+    {
+      "source  ": " X ",
+      "period  ": "< >",
+      "expected": " > "
+    },
+    {
+      "source  ": " <> ",
+      "period  ": "<  >",
+      "expected": " <> "
+    },
+    {
+      "source  ": "<>",
+      "period  ": "<>",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<><",
+      "period  ": "< >",
+      "expected": "<> "
+    },
+    {
+      "source  ": "><>",
+      "period  ": "< >",
+      "expected": " <>"
+    },
+    {
+      "source  ": " ><",
+      "period  ": "<> ",
+      "expected": " > "
+    },
+    {
+      "source  ": "><",
+      "period  ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": ">< ",
+      "period  ": " <>",
+      "expected": "   "
+    },
+    {
+      "source  ": "<X>",
+      "period  ": "< >",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "period  ": "<> ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<X>",
+      "period  ": " <>",
+      "expected": " <>"
+    }
+  ],
+  "enumeratePeriodEndPartialAllowed": [
+    {
+      "source  ": " ",
+      "period  ": " ",
+      "expected": " "
+    },
+    {
+      "source  ": "  ",
+      "period  ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": "<",
+      "period  ": " ",
+      "expected": "<"
+    },
+    {
+      "source  ": ">",
+      "period  ": " ",
+      "expected": ">"
+    },
+    {
+      "source  ": "<>",
+      "period  ": " ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "period  ": "  ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "< ",
+      "period  ": " <",
+      "expected": "  "
+    },
+    {
+      "source  ": "<",
+      "period  ": "<",
+      "expected": "<"
+    },
+    {
+      "source  ": " <",
+      "period  ": "< ",
+      "expected": " <"
+    },
+    {
+      "source  ": " >",
+      "period  ": "< ",
+      "expected": "  "
+    },
+    {
+      "source  ": "<>",
+      "period  ": "< ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "> ",
+      "period  ": " >",
+      "expected": "> "
+    },
+    {
+      "source  ": ">",
+      "period  ": ">",
+      "expected": ">"
+    },
+    {
+      "source  ": " >",
+      "period  ": "> ",
+      "expected": " >"
+    },
+    {
+      "source  ": "< ",
+      "period  ": " >",
+      "expected": "< "
+    },
+    {
+      "source  ": "<>",
+      "period  ": " >",
+      "expected": "<>"
+    },
+    {
+      "source  ": " >",
+      "period  ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": "X",
+      "period  ": " ",
+      "expected": "X"
+    },
+    {
+      "source  ": " X ",
+      "period  ": "< >",
+      "expected": " < "
+    },
+    {
+      "source  ": " <> ",
+      "period  ": "<  >",
+      "expected": " <> "
+    },
+    {
+      "source  ": "<>",
+      "period  ": "<>",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<><",
+      "period  ": "< >",
+      "expected": "<> "
+    },
+    {
+      "source  ": "><>",
+      "period  ": "< >",
+      "expected": " <>"
+    },
+    {
+      "source  ": " ><",
+      "period  ": "<> ",
+      "expected": "   "
+    },
+    {
+      "source  ": "><",
+      "period  ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": ">< ",
+      "period  ": " <>",
+      "expected": " < "
+    },
+    {
+      "source  ": "<X>",
+      "period  ": "< >",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "period  ": "<> ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<X>",
+      "period  ": " <>",
+      "expected": " <>"
+    }
+  ],
+  "enumeratePeriodPartialAllowed": [
+    {
+      "source  ": " ",
+      "period  ": " ",
+      "expected": " "
+    },
+    {
+      "source  ": "  ",
+      "period  ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": "<",
+      "period  ": " ",
+      "expected": "<"
+    },
+    {
+      "source  ": ">",
+      "period  ": " ",
+      "expected": ">"
+    },
+    {
+      "source  ": "<>",
+      "period  ": " ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<>",
+      "period  ": "  ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "< ",
+      "period  ": " <",
+      "expected": "< "
+    },
+    {
+      "source  ": "<",
+      "period  ": "<",
+      "expected": "<"
+    },
+    {
+      "source  ": " <",
+      "period  ": "< ",
+      "expected": " <"
+    },
+    {
+      "source  ": " >",
+      "period  ": "< ",
+      "expected": " >"
+    },
+    {
+      "source  ": "<>",
+      "period  ": "< ",
+      "expected": "<>"
+    },
+    {
+      "source  ": "> ",
+      "period  ": " >",
+      "expected": "> "
+    },
+    {
+      "source  ": ">",
+      "period  ": ">",
+      "expected": ">"
+    },
+    {
+      "source  ": " >",
+      "period  ": "> ",
+      "expected": " >"
+    },
+    {
+      "source  ": "< ",
+      "period  ": " >",
+      "expected": "< "
+    },
+    {
+      "source  ": "<>",
+      "period  ": " >",
+      "expected": "<>"
+    },
+    {
+      "source  ": " >",
+      "period  ": "<>",
+      "expected": " >"
+    },
+    {
+      "source  ": "X",
+      "period  ": " ",
+      "expected": "X"
+    },
+    {
+      "source  ": " X ",
+      "period  ": "< >",
+      "expected": " X "
+    },
+    {
+      "source  ": " <> ",
+      "period  ": "<  >",
+      "expected": " <> "
+    },
+    {
+      "source  ": "<>",
+      "period  ": "<>",
+      "expected": "<>"
+    },
+    {
+      "source  ": "<><",
+      "period  ": "< >",
+      "expected": "<> "
+    },
+    {
+      "source  ": "><>",
+      "period  ": "< >",
+      "expected": " <>"
+    },
+    {
+      "source  ": " ><",
+      "period  ": "<> ",
+      "expected": " > "
+    },
+    {
+      "source  ": "><",
+      "period  ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": ">< ",
+      "period  ": " <>",
+      "expected": " < "
+    },
+    {
+      "source  ": "<X>",
+      "period  ": "< >",
+      "expected": "<X>"
+    },
+    {
+      "source  ": "<X>",
+      "period  ": "<> ",
+      "expected": "<> "
+    },
+    {
+      "source  ": "<X>",
+      "period  ": " <>",
+      "expected": " <>"
+    }
+  ]
+}

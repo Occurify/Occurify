@@ -1,0 +1,112 @@
+﻿[
+  {
+    "source        ": " ",
+    "instant       ": "|",
+    "expectedPeriod": " ",
+    "expectedType  ": "gap"
+  },
+  {
+    "source        ": "< ",
+    "instant       ": " |",
+    "expectedPeriod": "< ",
+    "expectedType  ": "period"
+  },
+  {
+    "source        ": "<",
+    "instant       ": "|",
+    "expectedPeriod": "<",
+    "expectedType  ": "period"
+  },
+  {
+    "source        ": " <",
+    "instant       ": "| ",
+    "expectedPeriod": " >",
+    "expectedType  ": "gap"
+  },
+  {
+    "source        ": "> ",
+    "instant       ": " |",
+    "expectedPeriod": "< ",
+    "expectedType  ": "gap"
+  },
+  {
+    "source        ": ">",
+    "instant       ": "|",
+    "expectedPeriod": "<",
+    "expectedType  ": "gap"
+  },
+  {
+    "source        ": " >",
+    "instant       ": "| ",
+    "expectedPeriod": " >",
+    "expectedType  ": "period"
+  },
+
+  {
+    "source        ": " <>",
+    "instant       ": "|  ",
+    "expectedPeriod": " > ",
+    "expectedType  ": "gap"
+  },
+  {
+    "source        ": "<>",
+    "instant       ": "| ",
+    "expectedPeriod": "<>",
+    "expectedType  ": "period"
+  },
+  {
+    "source        ": "<>",
+    "instant       ": " |",
+    "expectedPeriod": " <",
+    "expectedType  ": "gap"
+  },
+  {
+    "source        ": "<> ",
+    "instant       ": "  |",
+    "expectedPeriod": " < ",
+    "expectedType  ": "gap"
+  },
+
+  {
+    "source        ": " < >",
+    "instant       ": "|   ",
+    "expectedPeriod": " >  ",
+    "expectedType  ": "gap"
+  },
+  {
+    "source        ": "< >",
+    "instant       ": "|  ",
+    "expectedPeriod": "< >",
+    "expectedType  ": "period"
+  },
+  {
+    "source        ": "< >",
+    "instant       ": " | ",
+    "expectedPeriod": "< >",
+    "expectedType  ": "period"
+  },
+  {
+    "source        ": "< >",
+    "instant       ": "  |",
+    "expectedPeriod": "  <",
+    "expectedType  ": "gap"
+  },
+  {
+    "source        ": "<X",
+    "instant       ": " |",
+    "expectedPeriod": " <",
+    "expectedType  ": "period"
+  },
+  {
+    "source        ": " X>",
+    "instant       ": "|  ",
+    "expectedPeriod": " > ",
+    "expectedType  ": "period"
+  },
+  {
+    "source        ": "<X>",
+    "instant       ": " | ",
+    "expectedPeriod": " <>",
+    "expectedType  ": "period"
+  }
+]
