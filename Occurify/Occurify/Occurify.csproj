@@ -4,6 +4,17 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>Occurify</Title>
+    <Version>0.1.0</Version>
+	  <Authors>Jasper Lammers</Authors>
+    <Company>DevJasper</Company>
+    <Description>A comprehensive and intuitive .NET library for defining, filtering, transforming, and scheduling time periods.</Description>
+    <PackageProjectUrl>occurify.dev</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Occurify/Occurify</RepositoryUrl>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageTags>Time;Instant;Instants;Period;Periods;DateTime;Timeline;Time-Period;Time-Management;Schedule;Scheduling;TimeZone;Filter;Transform;Extension;Methods;Fluent;Fluent-Interface;C#;.NET</PackageTags>
   </PropertyGroup>
 
 </Project>
