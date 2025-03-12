@@ -17,4 +17,14 @@
 	<PackageTags>Time;Instant;Instants;Period;Periods;DateTime;Timeline;Time-Period;Time-Management;Schedule;Scheduling;TimeZone;Filter;Transform;Extension;Methods;Fluent;Fluent-Interface;C#;.NET</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup>
+	<None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+	<None Include="..\..\README.md">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+  </ItemGroup>
 </Project>
