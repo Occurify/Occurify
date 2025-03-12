@@ -58,7 +58,7 @@ internal static class DateTimeHelper
         // If doing that, it causes edge cases for period timelines with only a single start or a single end.
 
         var lowerBoundary = origin.AddOrNullOnOverflow(-maxDeviationBefore);
-        if (beforeBoundary != null)
+        if (beforeBoundary != null && maxDeviationBefore.Ticks != 0)
         {
             var beforeFraction = maxDeviationBefore.Ticks / (maxDeviationBefore.Ticks + (double)maxDeviationAfter.Ticks);
             var bound = GetDateInBetween(beforeBoundary.Value, origin, 1 - beforeFraction);
@@ -66,7 +66,7 @@ internal static class DateTimeHelper
         }
 
         var upperBoundary = origin.AddOrNullOnOverflow(maxDeviationAfter);
-        if (afterBoundary != null)
+        if (afterBoundary != null && maxDeviationAfter.Ticks != 0)
         {
             var afterFraction = maxDeviationAfter.Ticks / (maxDeviationBefore.Ticks + (double)maxDeviationAfter.Ticks);
             var bound = GetDateInBetween(origin, afterBoundary.Value, afterFraction);

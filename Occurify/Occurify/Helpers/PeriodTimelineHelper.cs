@@ -10,7 +10,7 @@ namespace Occurify.Helpers
             // While we could use Merge to combine period timelines per provided period but this approach scales poorly as data grows. 
             // Further optimization is possible (e.g., merging here or limiting timelines by adding periods to ones that fit), 
             // but this implementation handles many common cases well.
-            var orderedPeriods = periods.Order().ToArray();
+            var orderedPeriods = periods.OrderBy(p => p).ToArray();
 
             if (!orderedPeriods.Any())
             {
@@ -40,8 +40,8 @@ namespace Occurify.Helpers
                     periodTimelines.Add(new PeriodTimeline(
                         periodStarts.Any() ? new CollectionTimeline(periodStarts) : new EmptyTimeline(),
                         periodEnds.Any() ? new CollectionTimeline(periodEnds) : new EmptyTimeline()));
-                    periodStarts = [];
-                    periodEnds = [];
+                    periodStarts = new List<DateTime>();
+                    periodEnds = new List<DateTime>();
                 }
             }
 

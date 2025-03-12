@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Title>Occurify</Title>
     <Version>0.1.0</Version>
-	  <Authors>Jasper Lammers</Authors>
+    <Authors>Jasper Lammers</Authors>
     <Company>DevJasper</Company>
     <Description>A comprehensive and intuitive .NET library for defining, filtering, transforming, and scheduling time periods.</Description>
     <PackageProjectUrl>occurify.dev</PackageProjectUrl>
