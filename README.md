@@ -7,11 +7,14 @@ A comprehensive and intuitive .NET library for defining, filtering, transforming
 - [Installation](#installation)
 - [Usage](#usage)
 - [Potential Use Cases](#potential-use-cases)
-    - [Between 7 AM and 15 Minutes Past Sunrise](#between-7-am-and-15-minutes-past-sunrise)
+    - [Morning Light](#morning-light)
     - [Use Crons to Create Periods](#use-crons-to-create-periods)
-    - [Working With Different Periods](#working-with-different-periods)
+    - [Working with Different Periods](#working-with-different-periods)
     - [Searching Dates](#searching-dates)
+    - [Finding Available Reservations](#finding-available-reservations)
     - [Solar Phases](#solar-phases)
+    - [Complicated Requirements](#complicated-requirements)
+    - [Working with Multiple Periods](#working-with-multiple-periods)
 - [Design](#design)
     - [Instant](#instant)
     - [Period](#period)
@@ -95,7 +98,7 @@ These examples incorporate additional modules such as `Occurify.TimeZones`, `Occ
 
 >**Note: Instead of using `var`, variable types are explicitly defined in the examples for improved clarity.**
 
-### Between 7 AM and 15 Minutes Past Sunrise
+### Morning Light
 
 The following example demonstrates how to turn on a light between **7 AM and 15 minutes after sunrise**.
 
@@ -160,7 +163,7 @@ foreach (Period period in workingDaysWithoutHolidays.EnumeratePeriod(TimeZonePer
 }
 ```
 
-### Working With Different Periods
+### Working with Different Periods
 
 Occurify allows us to define periods however we want. In this example we use `TimeZoneInstants.StartOfMonth(10)` to get a timeline with the start of every October. Using `AsConsecutivePeriodTimeline` turns those instants into consecutive periods that we can use to represent fiscal years.
 
@@ -195,6 +198,20 @@ foreach (var date in fridaysOfFebruary.EnumeratePeriod(twoYears))
 }
 ```
 
+### Finding Available Reservations
+
+This example demonstrates how to efficiently identify gaps of a minimum duration within a set of reservations, constrained to a specific search range.
+```cs
+public Period[] FindAvailableFreePeriods(Period searchRange, Period[] reservations, TimeSpan minimumDuration)
+{
+    return reservations
+        .Invert() // Identify free periods by inverting the reserved ones
+        .WherePeriods(p => p.Duration >= minimumDuration) // Filter periods that meet the minimum duration requirement
+        .EnumeratePeriod(searchRange) // Restrict results to the given search range
+        .ToArray();
+}
+```
+
 ### Solar Phases
 
 In this example, we calculate how many days in the current year in the Arctic region don't experience either a sunset or a sunrise:
@@ -206,6 +223,102 @@ IPeriodTimeline daysOfCurrentYear = TimeZonePeriods.Days().Within(TimeZonePeriod
 IPeriodTimeline daysWithoutSunsetsOrRises = daysOfCurrentYear - daysOfCurrentYear.Containing(sunsetsAndRises);
 
 Console.WriteLine($"This year on the arctic the sun doesn't rise or set on {daysWithoutSunsetsOrRises.Count()} days.");
+```
+
+### Complicated Requirements
+
+Some scenarios require more complex scheduling logic. In this example, we want to turn on the living room lights in the evening when we're on vacation, but with the following conditions:
+
+- Turn on **10 minutes after sunset**, with a **random deviation of 5 minutes before and 10 minutes after** to make it look natural.
+- **Never turn on before 5:15 PM** and **never after 8 PM**.
+- **Turn off at 11:45 PM**, with a **random deviation of ±20 minutes**.
+- Ensure consistent behavior across restarts by using a fixed random seed.
+
+Here's how we can achieve this using Occurify:
+
+```cs
+int seed = 1337;
+
+// Determine start instants
+ITimeline tenMinAfterSunset = AstroInstants.LocalSunSet + TimeSpan.FromMinutes(10);
+ITimeline randomizedSunset = tenMinAfterSunset.Randomize(seed, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(10));
+// Ensure the light doesn't turn on before 5:15 PM
+ITimeline after515Pm = (randomizedSunset + TimeZoneInstants.DailyAt(hour: 17, minute: 15)).LastWithin(TimeZonePeriods.Days());
+// Ensure the light doesn't turn on after 8 PM
+ITimeline turnOnAt = (after515Pm + TimeZoneInstants.DailyAt(hour: 20)).FirstWithin(TimeZonePeriods.Days());
+
+// Determine end instants
+ITimeline turnOffAt = TimeZoneInstants.DailyAt(hour: 23, minute: 15).Randomize(seed, TimeSpan.FromMinutes(20));
+
+// Create period
+IPeriodTimeline lightOnPeriods = turnOnAt.To(turnOffAt);
+
+// Schedule
+lightOnPeriods.ToBooleanObservableIncludingCurrent(scheduler).Subscribe(inPeriod =>
+{
+    if (inPeriod)
+    {
+        lightEntity.TurnOn();
+        return;
+    }
+    lightEntity.TurnOff();
+});
+```
+
+#### Explanation
+
+- `Randomize(seed, minOffset, maxOffset)` ensures that randomness is applied consistently, even across restarts.
+- `LastWithin(TimeZonePeriods.Days())` makes sure we use the last valid time after the 5:15 PM cutoff.
+- `FirstWithin(TimeZonePeriods.Days())` finds the earliest valid moment within the defined constraints.
+- `ToBooleanObservableIncludingCurrent(scheduler)` immediately updates the light to the correct state when the program starts and schedules future on/off transitions based on the defined period.
+
+This logic ensures the light turns on and off naturally based on the specified conditions, making automation less predictable and more human-like.
+
+### Working with Multiple Periods
+
+Occurify also makes it easy to work with multiple schedules and availability periods. This example demonstrates how to determine when employees are free for a meeting and how many people were in appointments at a given time.
+
+#### Defining Working Hours and Availability
+
+```cs
+IPeriodTimeline workingHours = TimeZonePeriods.Between(startHour: 8, endHour: 18) - TimeZonePeriods.Weekends();
+
+List<Period[]> employeeAppointments = CustomLogic.LoadAppointments();
+IPeriodTimeline[] appointmentTimelines = employeeAppointments.Select(p => p.AsPeriodTimeline()).ToArray();
+IPeriodTimeline[] invertedTimelines = appointmentTimelines.Select(tl => tl.Invert()).ToArray();
+
+IPeriodTimeline availableSlotsTimelines = invertedTimelines.IntersectPeriods() | workingHours;
+```
+
+#### Finding Common Availability
+
+To check which periods all employees are available for a meeting in August 2025:
+
+```cs
+Period august = TimeZonePeriods.Month(8, 2025);
+IEnumerable<Period> periodsEveryoneIsAvailable = availableSlotsTimelines
+    .EnumeratePeriod(august).Where(p => p.Duration > TimeSpan.FromHours(1));
+
+Console.WriteLine("Everyone is available on:");
+foreach (Period period in periodsEveryoneIsAvailable)
+{
+    Console.WriteLine(period.ToString(TimeZoneInfo.Local));
+}
+```
+
+#### Checking How Many People Had an Appointment
+
+To see how many employees had a meeting at a specific time:
+
+```cs
+DateTime timeOfInterest = new DateTime(2025, 3, 7).AsUtcInstant();
+PeriodTimelineSample[] samples = appointmentTimelines.Select(tl => tl.SampleAt(timeOfInterest)).ToArray();
+
+int appointmentPeriods = samples.Count(s => s.IsPeriod);
+int freeTimePeriods = samples.Count(s => s.IsGap);
+
+Console.WriteLine($"{appointmentPeriods} people had an appointment on {timeOfInterest}.");
+Console.WriteLine($"{freeTimePeriods} people had were free on {timeOfInterest}.");
 ```
 
 ## Design
@@ -246,15 +359,15 @@ record Period(DateTime? Start, DateTime? End) : IComparable<Period>
 
 #### Different ways of creating a period:
 ```cs
-var utcNow = DateTime.UtcNow;
+DateTime utcNow = DateTime.UtcNow;
 
 // Using extension methods
-var nowToOneHoursFromNow = utcNow.ToPeriodWithDuration(TimeSpan.FromHours(1));
-var nowToTwoHoursFromNow = utcNow.To(utcNow + TimeSpan.FromHours(2));
-var nowToNeverEnding = utcNow.To(null);
+Period nowToOneHoursFromNow = utcNow.ToPeriodWithDuration(TimeSpan.FromHours(1));
+Period nowToTwoHoursFromNow = utcNow.To(utcNow + TimeSpan.FromHours(2));
+Period nowToNeverEnding = utcNow.To(null);
 
-// Using static construction
-var nowToThreeHoursFromNow = Period.Create(utcNow, utcNow + TimeSpan.FromHours(3));
+// Using static methods
+Period nowToThreeHoursFromNow = Period.Create(utcNow, utcNow + TimeSpan.FromHours(3));
 ```
 
 ### Instant Timeline
@@ -282,15 +395,15 @@ public interface ITimeline : IEnumerable<DateTime>
 
 #### Different ways of creating an instant pipeline:
 ```cs
-var utcNow = DateTime.UtcNow;
+DateTime utcNow = DateTime.UtcNow;
 
 // Using extension methods
-var timelineWithSingleInstant = utcNow.AsTimeline();
-var timelineWithTwoInstants = new[] { utcNow, utcNow + TimeSpan.FromHours(1) }.AsTimeline();
+ITimeline timeline1 = utcNow.AsTimeline();
+ITimeline timeline2 = new[] { utcNow, utcNow + TimeSpan.FromHours(1) }.AsTimeline();
 
-// Using static construction
-var timelineWithThreeInstants = Timeline.FromInstants(utcNow, utcNow + TimeSpan.FromHours(1), utcNow, utcNow + TimeSpan.FromHours(3));
-var timelineWithPeriodicInstants = Timeline.Periodic(TimeSpan.FromHours(1));
+// Using static methods
+ITimeline timeline3 = Timeline.FromInstants(utcNow, utcNow + TimeSpan.FromHours(1), utcNow, utcNow + TimeSpan.FromHours(3));
+ITimeline timeline4 = Timeline.Periodic(TimeSpan.FromHours(1));
 ```
 Note that `timelineWithPeriodInstants` is not a timeline with concrete instants. Only when reading it, will the instants be resolved. Simular to `Linq` methods, filtering only wraps the timeline in a filter class. Instants will only be resolved by reading.
 
@@ -319,16 +432,21 @@ public interface IPeriodTimeline : IEnumerable<Period>
 
 #### Different ways of creating an period pipeline:
 ```cs
-var utcNow = DateTime.UtcNow;
-var period = utcNow.To(utcNow + TimeSpan.FromHours(2));
+DateTime utcNow = DateTime.UtcNow;
+Period period = utcNow.To(utcNow + TimeSpan.FromHours(2));
 
-// Using extension methods
-var periodTimelineWithSinglePeriod = period.AsPeriodTimeline();
-var periodTimelineWithTwoPeriods = new[] { period, period + TimeSpan.FromHours(2) }.AsPeriodTimeline();
+// Using extension methods on periods
+IPeriodTimeline periodTimeline1 = period.AsPeriodTimeline();
+IPeriodTimeline periodTimeline2 = new[] { period, period + TimeSpan.FromHours(2) }.AsPeriodTimeline();
 
-// Using static construction
-var periodTimelineWithThreePeriods = PeriodTimeline.FromPeriods(period, period + TimeSpan.FromHours(2), period + TimeSpan.FromHours(4));
-var periodTimelineWithPeriodicPeriodsOf10Min = Timeline.Periodic(TimeSpan.FromHours(1)).To(Timeline.Periodic(TimeSpan.FromHours(1)) + TimeSpan.FromMinutes(10));
+// Using extension methods on instant timelines
+ITimeline periodStartTimeline = Timeline.Periodic(TimeSpan.FromHours(1));
+ITimeline periodEndTimeline = periodStartTimeline.OffsetMinutes(10);
+IPeriodTimeline periodTimeline3 = periodStartTimeline.To(periodEndTimeline);
+
+// Using static methods
+IPeriodTimeline periodTimeline4 = PeriodTimeline.FromPeriods(period, period + TimeSpan.FromHours(2), period + TimeSpan.FromHours(4));
+IPeriodTimeline periodTimeline5 = PeriodTimeline.Between(periodStartTimeline, periodEndTimeline);
 ```
 
 ## ASCII Representation of Timelines
@@ -699,7 +817,7 @@ Each of these tests is executed at least three times: once for `GetPreviousUtcIn
 
 The concepts behind Occurify are language-agnostic.
 
-This repository currently contains the .NET implementation of Occurify. If you're interested in implementing this concept in another language (e.g., Java, Python, JavaScript), feel free to open an issue or reach out!
+This repository currently contains the .NET implementation of Occurify. If you're interested in implementing this concept in another language (e.g. Java, Python, JavaScript), feel free to open an issue or reach out!
 
 If a new implementation is created, this repo may be renamed to better organize multi-language versions.
 
