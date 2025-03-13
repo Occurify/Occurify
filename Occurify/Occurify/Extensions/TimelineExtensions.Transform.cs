@@ -25,7 +25,7 @@ public static partial class TimelineExtensions
     /// Returns a <see cref="ITimeline"/> with the instants from <paramref name="source"/> and <paramref name="timeline"/>.
     /// </summary>
     public static ITimeline Combine(this ITimeline source, ITimeline timeline) =>
-        new CompositeTimeline(timeline);
+        new CompositeTimeline(source, timeline);
 
     /// <summary>
     /// Returns a <see cref="ITimeline"/> with the instants from <paramref name="source"/> and <paramref name="timelines"/>.
