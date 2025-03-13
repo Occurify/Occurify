@@ -1,0 +1,18 @@
+﻿[
+  {
+    "source  ": "<",
+    "expected": ">"
+  },
+  {
+    "source  ": ">",
+    "expected": "<"
+  },
+  {
+    "source  ": "X",
+    "expected": " "
+  },
+  {
+    "source  ": "<>",
+    "expected": "><"
+  }
+]

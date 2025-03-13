@@ -1,0 +1,136 @@
+﻿[
+  // No period
+  [
+    {
+      "source  ": "|",
+      "periods ": " ",
+      "expected": " "
+    }
+  ],
+
+  // Start only
+  [
+    {
+      "source  ": "| ",
+      "periods ": " <",
+      "expected": "  "
+    },
+    {
+      "source  ": "|",
+      "periods ": "<",
+      "expected": "|"
+    },
+    {
+      "source  ": " |",
+      "periods ": "< ",
+      "expected": " |"
+    }
+  ],
+
+  // End only
+  [
+    {
+      "source  ": "| ",
+      "periods ": " >",
+      "expected": "| "
+    },
+    {
+      "source  ": "|",
+      "periods ": ">",
+      "expected": " "
+    },
+    {
+      "source  ": " |",
+      "periods ": "> ",
+      "expected": "  "
+    }
+  ],
+
+  // Complete period
+  [
+    {
+      "source  ": "|  ",
+      "periods ": " <>",
+      "expected": "   "
+    },
+    {
+      "source  ": "| ",
+      "periods ": "<>",
+      "expected": "| "
+    },
+    {
+      "source  ": " |",
+      "periods ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": "  |",
+      "periods ": "<> ",
+      "expected": "   "
+    },
+    {
+      "source  ": "|   ",
+      "periods ": " < >",
+      "expected": "    "
+    },
+    {
+      "source  ": "|  ",
+      "periods ": "< >",
+      "expected": "|  "
+    },
+    {
+      "source  ": " | ",
+      "periods ": "< >",
+      "expected": " | "
+    },
+    {
+      "source  ": "  |",
+      "periods ": "< >",
+      "expected": "   "
+    },
+    {
+      "source  ": "   |",
+      "periods ": "< > ",
+      "expected": "    "
+    }
+  ],
+
+  // Multiple masks
+  [
+    {
+      "source  ": "|  ",
+      "periods ": "<X>",
+      "expected": "|  "
+    },
+    {
+      "source  ": " | ",
+      "periods ": "<X>",
+      "expected": " | "
+    },
+    {
+      "source  ": "  |",
+      "periods ": "<X>",
+      "expected": "   "
+    },
+    {
+      "source  ": " |  ",
+      "periods ": "<><>",
+      "expected": "    "
+    },
+    {
+      "source  ": "  | ",
+      "periods ": "<><>",
+      "expected": "  | "
+    },
+    {
+      "source  ": "  |  ",
+      "periods ": "<> <>",
+      "expected": "     "
+    },
+    {
+      "source  ": "   | ",
+      "periods ": "<> <>",
+      "expected": "   | "
+    }
+  ]
+]

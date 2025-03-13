@@ -1,0 +1,119 @@
+﻿[
+  [
+    {
+      "periods": [],
+      "expected": " "
+    },
+    {
+      "periods": [
+        " "
+      ],
+      "expected": " "
+    },
+    {
+      "periods": [
+        "<"
+      ],
+      "expected": "<"
+    },
+    {
+      "periods": [
+        ">"
+      ],
+      "expected": ">"
+    },
+    {
+      "periods": [
+        "<>"
+      ],
+      "expected": "<>"
+    },
+    {
+      "periods": [
+        "<>  ",
+        "  <>"
+      ],
+      "expected": "<><>"
+    },
+    {
+      "periods": [
+        "  <>",
+        "<>"
+      ],
+      "expected": "<><>"
+    },
+    {
+      "periods": [
+        "<>  ",
+        "   <>"
+      ],
+      "expected": "<> <>"
+    },
+    {
+      "periods": [
+        ">  ",
+        " <>"
+      ],
+      "expected": "><>"
+    },
+    {
+      "periods": [
+        " <>",
+        ">  "
+      ],
+      "expected": "><>"
+    },
+    {
+      "periods": [
+        "  <",
+        "<>"
+      ],
+      "expected": "<><"
+    },
+    {
+      "periods": [
+        "<> ",
+        "  <"
+      ],
+      "expected": "<><"
+    },
+    {
+      "periods": [
+        "<> ",
+        " <>"
+      ],
+      "expected": "<X>"
+    },
+    {
+      "periods": [
+        " <>",
+        "<> "
+      ],
+      "expected": "<X>"
+    },
+    {
+      "periods": [
+        "< >",
+        "<> "
+      ],
+      "expected": "< >"
+    },
+    {
+      "periods": [
+        "< >",
+        "<> "
+      ],
+      "expected": "< >"
+    },
+    {
+      "periods": [
+        "    <>   ",
+        "< >      ",
+        "       <>",
+        " <>      ",
+        "   <   > "
+      ],
+      "expected": "< ><   X>"
+    }
+  ]
+]

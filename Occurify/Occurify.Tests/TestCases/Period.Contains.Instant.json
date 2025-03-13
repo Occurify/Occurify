@@ -1,0 +1,82 @@
+﻿[
+  {
+    "source  ": " ", // Note that in case of a period, if there is no start or end, it is infinitely long. This is different from defining a source timeline like this, as a source timeline without instants does not contain periods.
+    "instant ": "|",
+    "expected": true
+  },
+  {
+    "source  ": " <",
+    "instant ": "| ",
+    "expected": false
+  },
+  {
+    "source  ": "<",
+    "instant ": "|",
+    "expected": true
+  },
+  {
+    "source  ": "< ",
+    "instant ": " |",
+    "expected": true
+  },
+  {
+    "source  ": " >",
+    "instant ": "| ",
+    "expected": true
+  },
+  {
+    "source  ": ">",
+    "instant ": "|",
+    "expected": false
+  },
+  {
+    "source  ": "> ",
+    "instant ": " |",
+    "expected": false
+  },
+  {
+    "source  ": " <>",
+    "instant ": "|  ",
+    "expected": false
+  },
+  {
+    "source  ": "<>",
+    "instant ": "| ",
+    "expected": true
+  },
+  {
+    "source  ": "<>",
+    "instant ": " |",
+    "expected": false
+  },
+  {
+    "source  ": "<> ",
+    "instant ": "  |",
+    "expected": false
+  },
+  {
+    "source  ": " < >",
+    "instant ": "|   ",
+    "expected": false
+  },
+  {
+    "source  ": " < >",
+    "instant ": " |  ",
+    "expected": true
+  },
+  {
+    "source  ": "< >",
+    "instant ": " | ",
+    "expected": true
+  },
+  {
+    "source  ": "< >",
+    "instant ": "  |",
+    "expected": false
+  },
+  {
+    "source  ": "< > ",
+    "instant ": "   |",
+    "expected": false
+  }
+]

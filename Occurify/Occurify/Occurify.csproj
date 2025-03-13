@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>Occurify</Title>
+    <Version>0.1.0</Version>
+    <Authors>Jasper Lammers</Authors>
+    <Company>DevJasper</Company>
+    <Description>A comprehensive and intuitive .NET library for defining, filtering, transforming, and scheduling time periods.</Description>
+    <PackageProjectUrl>occurify.dev</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Occurify/Occurify</RepositoryUrl>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageTags>Time;Instant;Instants;Period;Periods;DateTime;Timeline;Time-Period;Time-Management;Schedule;Scheduling;TimeZone;Filter;Transform;Extension;Methods;Fluent;Fluent-Interface;C#;.NET</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+	<None Include="..\..\README.md">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+  </ItemGroup>
+</Project>

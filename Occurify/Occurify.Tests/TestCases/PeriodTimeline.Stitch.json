@@ -1,0 +1,30 @@
+﻿[
+  {
+    "source  ": " ",
+    "expected": " "
+  },
+  {
+    "source  ": "<",
+    "expected": "<"
+  },
+  {
+    "source  ": ">",
+    "expected": ">"
+  },
+  {
+    "source  ": "<>",
+    "expected": "<>"
+  },
+  {
+    "source  ": "<X>",
+    "expected": "< >"
+  },
+  {
+    "source  ": "X>",
+    "expected": " >"
+  },
+  {
+    "source  ": "<X",
+    "expected": "< "
+  }
+]

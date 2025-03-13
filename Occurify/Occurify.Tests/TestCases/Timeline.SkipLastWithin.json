@@ -1,0 +1,285 @@
+﻿[
+  // No period
+  [
+    {
+      "source  ": "||",
+      "periods ": "  ",
+      "skip    ": 1, 
+      "expected": "  "
+    }
+  ],
+
+  // Start only
+  [
+    {
+      "source  ": " |",
+      "periods ": "< ",
+      "skip    ": 0,
+      "expected": " |"
+    },
+    {
+      "source  ": "||",
+      "periods ": "< ",
+      "skip    ": 0,
+      "expected": "||"
+    },
+    {
+      "source  ": " ||",
+      "periods ": "<  ",
+      "skip    ": 0,
+      "expected": " ||"
+    },
+    {
+      "source  ": " |",
+      "periods ": "< ",
+      "skip    ": 1,
+      "expected": "  "
+    },
+    {
+      "source  ": "|| ",
+      "periods ": "  <",
+      "skip    ": 1,
+      "expected": "   "
+    },
+    {
+      "source  ": "||",
+      "periods ": " <",
+      "skip    ": 1,
+      "expected": "  "
+    },
+    {
+      "source  ": "||",
+      "periods ": "< ",
+      "skip    ": 1,
+      "expected": "| "
+    },
+    {
+      "source  ": " ||",
+      "periods ": "<  ",
+      "skip    ": 1,
+      "expected": " | "
+    },
+    {
+      "source  ": "|||",
+      "periods ": "<  ",
+      "skip    ": 2,
+      "expected": "|  "
+    },
+    {
+      "source  ": " |||",
+      "periods ": "<   ",
+      "skip    ": 2,
+      "expected": " |  "
+    }
+  ],
+
+  // End only
+  [
+    {
+      "source  ": "| ",
+      "periods ": " >",
+      "skip    ": 0,
+      "expected": "| "
+    },
+    {
+      "source  ": "|| ",
+      "periods ": "  >",
+      "skip    ": 0,
+      "expected": "|| "
+    },
+    {
+      "source  ": "| ",
+      "periods ": " >",
+      "skip    ": 1,
+      "expected": "  "
+    },
+    {
+      "source  ": "|| ",
+      "periods ": "  >",
+      "skip    ": 1,
+      "expected": "|  "
+    },
+    {
+      "source  ": "||",
+      "periods ": " >",
+      "skip    ": 1,
+      "expected": "  "
+    },
+    {
+      "source  ": "||",
+      "periods ": "> ",
+      "skip    ": 1,
+      "expected": "  "
+    },
+    {
+      "source  ": " ||",
+      "periods ": ">  ",
+      "skip    ": 1,
+      "expected": "   "
+    },
+    {
+      "source  ": "||| ",
+      "periods ": "   >",
+      "skip    ": 2,
+      "expected": "|   "
+    },
+    {
+      "source  ": "|||",
+      "periods ": "  >",
+      "skip    ": 2,
+      "expected": "   "
+    }
+  ],
+
+  // Complete period
+  [
+    {
+      "source  ": " | ",
+      "periods ": "< >",
+      "skip    ": 0,
+      "expected": " | "
+    },
+    {
+      "source  ": "|| ",
+      "periods ": "< >",
+      "skip    ": 0,
+      "expected": "|| "
+    },
+    {
+      "source  ": " | ",
+      "periods ": "< >",
+      "skip    ": 1,
+      "expected": "   "
+    },
+    {
+      "source  ": "||  ",
+      "periods ": "  <>",
+      "skip    ": 1,
+      "expected": "    "
+    },
+    {
+      "source  ": "|| ",
+      "periods ": " <>",
+      "skip    ": 1,
+      "expected": "   "
+    },
+    {
+      "source  ": "||",
+      "periods ": "<>",
+      "skip    ": 1,
+      "expected": "  "
+    },
+    {
+      "source  ": " ||",
+      "periods ": "<> ",
+      "skip    ": 1,
+      "expected": "   "
+    },
+    {
+      "source  ": "||   ",
+      "periods ": "  < >",
+      "skip    ": 1,
+      "expected": "     "
+    },
+    {
+      "source  ": "||  ",
+      "periods ": " < >",
+      "skip    ": 1,
+      "expected": "    "
+    },
+    {
+      "source  ": "|| ",
+      "periods ": "< >",
+      "skip    ": 1,
+      "expected": "|  "
+    },
+    {
+      "source  ": " ||",
+      "periods ": "< >",
+      "skip    ": 1,
+      "expected": "   "
+    },
+    {
+      "source  ": "||",
+      "periods ": "<>",
+      "skip    ": 2,
+      "expected": "  "
+    },
+    {
+      "source  ": "|| ",
+      "periods ": "< >",
+      "skip    ": 2,
+      "expected": "   "
+    }
+  ],
+
+  // Multiple masks
+  [
+    {
+      "source  ": "||  ",
+      "periods ": " <X>",
+      "skip    ": 0,
+      "expected": " |  "
+    },
+    {
+      "source  ": "||  ",
+      "periods ": " <X>",
+      "skip    ": 1,
+      "expected": "    "
+    },
+    {
+      "source  ": "|| ",
+      "periods ": "<X>",
+      "skip    ": 0,
+      "expected": "|| "
+    },
+    {
+      "source  ": "|| ",
+      "periods ": "<X>",
+      "skip    ": 1,
+      "expected": "   "
+    },
+    {
+      "source  ": " ||",
+      "periods ": "<X>",
+      "skip    ": 0,
+      "expected": " | "
+    },
+    {
+      "source  ": "||  ",
+      "periods ": "<><>",
+      "skip    ": 0,
+      "expected": "|   "
+    },
+    {
+      "source  ": "||  ",
+      "periods ": "<><>",
+      "skip    ": 1,
+      "expected": "    "
+    },
+    {
+      "source  ": " || ",
+      "periods ": "<><>",
+      "skip    ": 0,
+      "expected": "  | "
+    },
+    {
+      "source  ": " || ",
+      "periods ": "<><>",
+      "skip    ": 1,
+      "expected": "    "
+    },
+    {
+      "source  ": "|||||||||",
+      "periods ": "< X     >",
+      "skip    ": 4,
+      "expected": "  ||     "
+    },
+    {
+      "source  ": "||||||||||",
+      "periods ": " < ><    >",
+      "skip    ": 4,
+      "expected": "    |     "
+    }
+  ]
+]

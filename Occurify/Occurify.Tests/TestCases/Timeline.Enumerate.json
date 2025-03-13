@@ -1,0 +1,154 @@
+﻿{
+  "enumerate": [
+    {
+      "source  ": " ",
+      "expected": " "
+    },
+    {
+      "source  ": "|",
+      "expected": "|"
+    },
+    {
+      "source  ": "||",
+      "expected": "||"
+    }
+  ],
+  "enumerateFrom": [
+    {
+      "source  ": " ",
+      "from     ": "|",
+      "expected": " "
+    },
+    {
+      "source  ": " |",
+      "from     ": "| ",
+      "expected": " |"
+    },
+    {
+      "source  ": "|",
+      "from     ": "|",
+      "expected": "|"
+    },
+    {
+      "source  ": "| ",
+      "from     ": " |",
+      "expected": "  "
+    }
+  ],
+  "enumerateTo": [
+    {
+      "source  ": " ",
+      "to       ": "|",
+      "expected": " "
+    },
+    {
+      "source  ": "| ",
+      "to       ": " |",
+      "expected": "| "
+    },
+    {
+      "source  ": "|",
+      "to       ": "|",
+      "expected": " "
+    }
+  ],
+  "enumerateRange": [
+    {
+      "source  ": "  ",
+      "range    ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": " ",
+      "range    ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": "|",
+      "range    ": "X",
+      "expected": " "
+    },
+    {
+      "source  ": "| ",
+      "range    ": "||",
+      "expected": "| "
+    },
+    {
+      "source  ": " |",
+      "range    ": "||",
+      "expected": "  "
+    },
+    {
+      "source  ": " | ",
+      "range    ": "| |",
+      "expected": " | "
+    }
+  ],
+  "enumeratePeriod": [
+    {
+      "source  ": " ",
+      "period   ": " ",
+      "expected": " "
+    },
+    {
+      "source  ": "  ",
+      "period   ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": "|",
+      "period   ": " ",
+      "expected": "|"
+    },
+    {
+      "source  ": "||",
+      "period   ": "  ",
+      "expected": "||"
+    },
+    {
+      "source  ": "| ",
+      "period   ": " <",
+      "expected": "  "
+    },
+    {
+      "source  ": "|",
+      "period   ": "<",
+      "expected": "|"
+    },
+    {
+      "source  ": " |",
+      "period   ": "< ",
+      "expected": " |"
+    },
+    {
+      "source  ": "| ",
+      "period   ": " >",
+      "expected": "| "
+    },
+    {
+      "source  ": "|",
+      "period   ": ">",
+      "expected": " "
+    },
+    {
+      "source  ": " |",
+      "period   ": "<>",
+      "expected": "  "
+    },
+    {
+      "source  ": "| ",
+      "period   ": "<>",
+      "expected": "| "
+    },
+    {
+      "source  ": " | ",
+      "period   ": "< >",
+      "expected": " | "
+    },
+    {
+      "source  ": " || ",
+      "period   ": "<  >",
+      "expected": " || "
+    }
+  ]
+}

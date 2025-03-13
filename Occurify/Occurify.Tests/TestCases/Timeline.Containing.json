@@ -1,0 +1,47 @@
+﻿[
+  {
+    "source  ": " ",
+    "instants": " ",
+    "expected": " "
+  },
+  {
+    "source  ": "|",
+    "instants": " ",
+    "expected": " "
+  },
+  {
+    "source  ": " ",
+    "instants": "|",
+    "expected": " "
+  },
+  {
+    "source  ": "|",
+    "instants": "|",
+    "expected": "|"
+  },
+  {
+    "source  ": " ||",
+    "instants": "| |",
+    "expected": "  |"
+  },
+  {
+    "source  ": "||",
+    "instants": "| ",
+    "expected": "| "
+  },
+  {
+    "source  ": "||",
+    "instants": " |",
+    "expected": " |"
+  },
+  {
+    "source  ": "|",
+    "instants": "||",
+    "expected": "| "
+  },
+  {
+    "source  ": " |",
+    "instants": "||",
+    "expected": " |"
+  }
+]

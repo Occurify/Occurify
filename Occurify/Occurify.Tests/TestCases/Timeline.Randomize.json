@@ -1,0 +1,317 @@
+﻿[
+  // No random, no deviation
+  [
+    {
+      "source  ": " ",
+      "expected": " ",
+      "maxDeviationBefore": 0,
+      "maxDeviationAfter": 0,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 0
+        }
+      ]
+    },
+    {
+      "source  ": "|",
+      "expected": "|",
+      "maxDeviationBefore": 0,
+      "maxDeviationAfter": 0,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 0
+        }
+      ]
+    },
+    {
+      "source  ": "||",
+      "expected": "||",
+      "maxDeviationBefore": 0,
+      "maxDeviationAfter": 0,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 0
+        },
+        {
+          "index": 1,
+          "result": 0
+        }
+      ]
+    }
+  ],
+
+  // Random, no deviation
+  [
+    {
+      "source  ": " ",
+      "expected": " ",
+      "maxDeviationBefore": 0,
+      "maxDeviationAfter": 0,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 1
+        }
+      ]
+    },
+    {
+      "source  ": "|",
+      "expected": "|",
+      "maxDeviationBefore": 0,
+      "maxDeviationAfter": 0,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 1
+        }
+      ]
+    },
+    {
+      "source  ": "||",
+      "expected": "||",
+      "maxDeviationBefore": 0,
+      "maxDeviationAfter": 0,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 1
+        },
+        {
+          "index": 1,
+          "result": 1
+        }
+      ]
+    }
+  ],
+
+  // Deviation, left
+  [
+    {
+      "source  ": " ",
+      "expected": " ",
+      "maxDeviationBefore": 1,
+      "maxDeviationAfter": 1,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 0
+        }
+      ]
+    },
+    {
+      "source  ": " |",
+      "expected": "| ",
+      "maxDeviationBefore": 1,
+      "maxDeviationAfter": 1,
+      "randomResults": [
+        {
+          "index": 1,
+          "result": 0
+        }
+      ]
+    },
+    {
+      "source  ": " ||",
+      "expected": "| |",
+      "maxDeviationBefore": 1,
+      "maxDeviationAfter": 1,
+      "randomResults": [
+        {
+          "index": 1,
+          "result": 0
+        },
+        {
+          "index": 2,
+          "result": 0
+        }
+      ]
+    }
+  ],
+
+  // Deviation, right
+  [
+    {
+      "source  ": " ",
+      "expected": " ",
+      "maxDeviationBefore": 1,
+      "maxDeviationAfter": 1,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 1
+        }
+      ]
+    },
+    {
+      "source  ": "| ",
+      "expected": " |",
+      "maxDeviationBefore": 1,
+      "maxDeviationAfter": 1,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 1
+        }
+      ]
+    },
+    {
+      "source  ": "|| ",
+      "expected": "| |",
+      "maxDeviationBefore": 1,
+      "maxDeviationAfter": 1,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 1
+        },
+        {
+          "index": 1,
+          "result": 1
+        }
+      ]
+    }
+  ],
+
+  // Different deviations
+  [
+    {
+      "source  ": " |  ",
+      "expected": "|   ",
+      "maxDeviationBefore": 1,
+      "maxDeviationAfter": 2,
+      "randomResults": [
+        {
+          "index": 1,
+          "result": 0
+        }
+      ]
+    },
+    {
+      "source  ": " |  ",
+      "expected": " |  ",
+      "maxDeviationBefore": 1,
+      "maxDeviationAfter": 2,
+      "randomResults": [
+        {
+          "index": 1,
+          "result": 0.33
+        }
+      ]
+    },
+    {
+      "source  ": " |  ",
+      "expected": "  | ",
+      "maxDeviationBefore": 1,
+      "maxDeviationAfter": 2,
+      "randomResults": [
+        {
+          "index": 1,
+          "result": 0.66
+        }
+      ]
+    },
+    {
+      "source  ": " |  ",
+      "expected": "   |",
+      "maxDeviationBefore": 1,
+      "maxDeviationAfter": 2,
+      "randomResults": [
+        {
+          "index": 1,
+          "result": 1
+        }
+      ]
+    }
+  ],
+
+  // Meet in the middle
+  [
+    {
+      "source  ": "| |",
+      "expected": " ||",
+      "maxDeviationBefore": 1,
+      "maxDeviationAfter": 1,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 1
+        },
+        {
+          "index": 2,
+          "result": 0
+        }
+      ]
+    },
+    {
+      "source  ": "|  |",
+      "expected": " || ",
+      "maxDeviationBefore": 2,
+      "maxDeviationAfter": 2,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 1
+        },
+        {
+          "index": 3,
+          "result": 0
+        }
+      ]
+    },
+    {
+      "source  ": "|   |",
+      "expected": "  || ",
+      "maxDeviationBefore": 2,
+      "maxDeviationAfter": 2,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 1
+        },
+        {
+          "index": 4,
+          "result": 0
+        }
+      ]
+    }
+  ],
+
+  // Meet in the middle by ratio
+  [
+    {
+      "source  ": "|    |",
+      "expected": "   || ",
+      "maxDeviationBefore": 2,
+      "maxDeviationAfter": 4,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 1
+        },
+        {
+          "index": 5,
+          "result": 0
+        }
+      ]
+    },
+    {
+      "source  ": "|    |",
+      "expected": " ||   ",
+      "maxDeviationBefore": 4,
+      "maxDeviationAfter": 2,
+      "randomResults": [
+        {
+          "index": 0,
+          "result": 1
+        },
+        {
+          "index": 5,
+          "result": 0
+        }
+      ]
+    }
+  ]
+]
