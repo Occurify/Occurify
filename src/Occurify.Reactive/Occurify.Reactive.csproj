@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>Occurify.Reactive</Title>
+    <Authors>Jasper Lammers</Authors>
+    <Company>DevJasper</Company>
+    <Description>Reactive Extensions for Occurify: Enabling seamless scheduling of instant and period-based timelines.</Description>
+    <PackageProjectUrl>occurify.dev</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Occurify/Occurify.Reactive</RepositoryUrl>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageTags>Occurify;Time;Instant;Instants;Period;Periodically;Periods;DateTime;Timeline;Time-Period;Time-Management;Recurring;Repeat;Repeating;Schedule;Scheduling;Reactive;ReactiveX;Rx;Filter;Transform;Extension;Methods;Fluent;Fluent-Interface;C#;.NET;Occurrence;Occur;UTC;Bidirectional;MIT</PackageTags>
+  </PropertyGroup>
+  
+  <ItemGroup>
+	<None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+	<None Include="..\..\README.md">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="6.0.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Occurify\Occurify.csproj" />
+  </ItemGroup>
+
+</Project>

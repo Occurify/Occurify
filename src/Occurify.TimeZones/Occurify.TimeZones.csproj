@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>Occurify.TimeZones</Title>
+    <Authors>Jasper Lammers</Authors>
+    <Company>DevJasper</Company>
+    <Description>Time zone and cron expression support for Occurify: Filter, manipulate, and schedule instants and periods across time zones.</Description>
+    <PackageProjectUrl>occurify.dev</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Occurify/Occurify.TimeZones</RepositoryUrl>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageTags>Occurify;Time;Instant;Instants;Period;Periodically;Periods;DateTime;Timeline;Time-Period;Time-Management;Recurring;Repeat;Repeating;Schedule;Scheduling;TimeZone;Year;Month;Week;Day;Hour;Minute;Annual;Annually;Monthly;Daily;Cron;CronJob;Cronos;Filter;Transform;Extension;Methods;Fluent;Fluent-Interface;C#;.NET;Reactive;ReactiveX;Rx;Occurrence;Occur;UTC;Bidirectional;Geography;MIT</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cronos" Version="0.9.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+	<None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+	<None Include="..\..\README.md">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Occurify\Occurify.csproj" />
+  </ItemGroup>
+
+</Project>

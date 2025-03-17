@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>Occurify.Astro</Title>
+    <Authors>Jasper Lammers</Authors>
+    <Company>DevJasper</Company>
+    <Description>Astronomical instants and periods for Occurify: Track sun states, perform calculations, and manage events.</Description>
+    <PackageProjectUrl>occurify.dev</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Occurify/Occurify.Astro</RepositoryUrl>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageTags>Occurify;Astronomy;Astronomical;Astro;Coordinate;Coordinates;Longitude;Latitude;Sunrise;Sunset;Sun-Phase;Sun;Solar;Noon;Night;Dawn;Dusk;Nautical;Golden-Hour;Celestial;Evening;Morning;Nadir;SunCalcNet;Time;Instant;Instants;Period;Periodically;Periods;DateTime;Timeline;Time-Period;Time-Management;Recurring;Repeat;Repeating;Schedule;Scheduling;Reactive;ReactiveX;Rx;Filter;Transform;Extension;Methods;Algorithms;Fluent;Fluent-Interface;C#;.NET;Occurrence;Occur;UTC;Bidirectional;Geography;MIT</PackageTags>
+  </PropertyGroup>
+  
+  <ItemGroup>
+	<None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+	<None Include="..\..\README.md">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="SunCalcNet" Version="1.2.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Occurify\Occurify.csproj" />
+  </ItemGroup>
+
+</Project>

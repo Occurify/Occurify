@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Occurify\Occurify.csproj" />
+    <ProjectReference Include="..\..\src\Occurify\Occurify.csproj" />
   </ItemGroup>
 
   <ItemGroup>

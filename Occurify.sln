@@ -1,11 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify", "src\Occurify\Occurify.csproj", "{6A869B01-C39F-4A74-BAB9-17394AE332FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify.Tests", "tests\Occurify.Tests\Occurify.Tests.csproj", "{22036185-D933-417D-B9A7-D79EA4B79C0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify.Astro", "src\Occurify.Astro\Occurify.Astro.csproj", "{1B973A94-D4F0-4C9C-AB99-A60388B88C7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify.Reactive", "src\Occurify.Reactive\Occurify.Reactive.csproj", "{98CBBD91-FE16-465A-B523-2E08D089A35D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify.TimeZones", "src\Occurify.TimeZones\Occurify.TimeZones.csproj", "{9AEFD284-9023-4782-93B3-4044D0533B7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify.Astro.Tests", "tests\Occurify.Astro.Tests\Occurify.Astro.Tests.csproj", "{83F9B11B-8691-454E-B4A0-E8AE345457B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify.Reactive.Tests", "tests\Occurify.Reactive.Tests\Occurify.Reactive.Tests.csproj", "{6CAEEC25-0BEE-4940-8B2C-447975052267}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify.TimeZones.Tests", "tests\Occurify.TimeZones.Tests\Occurify.TimeZones.Tests.csproj", "{A0FE90B2-40C2-4DF7-9EE8-8BF0BA552DF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CAF7160B-01FE-4E1A-9188-A010C5D211D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +35,38 @@ Global
 		{22036185-D933-417D-B9A7-D79EA4B79C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22036185-D933-417D-B9A7-D79EA4B79C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22036185-D933-417D-B9A7-D79EA4B79C0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B973A94-D4F0-4C9C-AB99-A60388B88C7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B973A94-D4F0-4C9C-AB99-A60388B88C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B973A94-D4F0-4C9C-AB99-A60388B88C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B973A94-D4F0-4C9C-AB99-A60388B88C7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98CBBD91-FE16-465A-B523-2E08D089A35D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98CBBD91-FE16-465A-B523-2E08D089A35D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98CBBD91-FE16-465A-B523-2E08D089A35D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98CBBD91-FE16-465A-B523-2E08D089A35D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AEFD284-9023-4782-93B3-4044D0533B7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AEFD284-9023-4782-93B3-4044D0533B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AEFD284-9023-4782-93B3-4044D0533B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AEFD284-9023-4782-93B3-4044D0533B7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83F9B11B-8691-454E-B4A0-E8AE345457B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83F9B11B-8691-454E-B4A0-E8AE345457B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83F9B11B-8691-454E-B4A0-E8AE345457B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83F9B11B-8691-454E-B4A0-E8AE345457B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CAEEC25-0BEE-4940-8B2C-447975052267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CAEEC25-0BEE-4940-8B2C-447975052267}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CAEEC25-0BEE-4940-8B2C-447975052267}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CAEEC25-0BEE-4940-8B2C-447975052267}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0FE90B2-40C2-4DF7-9EE8-8BF0BA552DF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0FE90B2-40C2-4DF7-9EE8-8BF0BA552DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0FE90B2-40C2-4DF7-9EE8-8BF0BA552DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0FE90B2-40C2-4DF7-9EE8-8BF0BA552DF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{22036185-D933-417D-B9A7-D79EA4B79C0C} = {CAF7160B-01FE-4E1A-9188-A010C5D211D1}
+		{83F9B11B-8691-454E-B4A0-E8AE345457B6} = {CAF7160B-01FE-4E1A-9188-A010C5D211D1}
+		{6CAEEC25-0BEE-4940-8B2C-447975052267} = {CAF7160B-01FE-4E1A-9188-A010C5D211D1}
+		{A0FE90B2-40C2-4DF7-9EE8-8BF0BA552DF4} = {CAF7160B-01FE-4E1A-9188-A010C5D211D1}
 	EndGlobalSection
 EndGlobal
