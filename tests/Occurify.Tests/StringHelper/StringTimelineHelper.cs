@@ -203,7 +203,7 @@ internal class StringTimelineHelper
             var distance = dateTime.Ticks - previous.Value.Ticks;
             if (sb.Length + distance > convertLength)
             {
-                return $"|…{sb.ToString().PadLeft(convertLength)}";
+                return $"|_{sb.ToString().PadLeft(convertLength)}";
             }
 
             if (distance > 1)
@@ -249,7 +249,7 @@ internal class StringTimelineHelper
             var distance = next.Value.Ticks - dateTime.Ticks;
             if (sb.Length + distance > convertLength)
             {
-                return $"{sb.ToString().PadRight(convertLength)}…|";
+                return $"{sb.ToString().PadRight(convertLength)}_|";
             }
 
             if (distance > 1)
@@ -309,7 +309,7 @@ internal class StringTimelineHelper
 
             if (sb.Length + distance > convertLength)
             {
-                return $"{periodChar}…{sb.ToString().PadLeft(convertLength)}";
+                return $"{periodChar}_{sb.ToString().PadLeft(convertLength)}";
             }
 
             if (distance > 1)
@@ -360,7 +360,7 @@ internal class StringTimelineHelper
                 
             if (sb.Length + distance > convertLength)
             {
-                return $"{sb.ToString().PadRight(convertLength)}…{periodChar}";
+                return $"{sb.ToString().PadRight(convertLength)}_{periodChar}";
             }
 
             if (distance > 1)

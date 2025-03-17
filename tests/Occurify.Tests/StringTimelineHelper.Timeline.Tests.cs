@@ -12,10 +12,10 @@ public class StringTimelineHelperTimelineTests
     [DataRow(new[] { 0 }, "| ")]
     [DataRow(new[] { 0, 2 }, "| |")]
 
-    [DataRow(new[] { -1 }, "|… ", 1)]
-    [DataRow(new[] { -100 }, "|… ", 1)]
-    [DataRow(new[] { -1, 0 }, "|…|", 1)]
-    [DataRow(new[] { -100, 0 }, "|…|", 1)]
+    [DataRow(new[] { -1 }, "|_ ", 1)]
+    [DataRow(new[] { -100 }, "|_ ", 1)]
+    [DataRow(new[] { -1, 0 }, "|_|", 1)]
+    [DataRow(new[] { -100, 0 }, "|_|", 1)]
 
     [DataRow(new[] { 1 }, " ", 1)]
     public void TimelineToString_GetPreviousUtcInstant(int[] instants, string expectedTimeline, int? convertLength = null)
@@ -62,10 +62,10 @@ public class StringTimelineHelperTimelineTests
     [DataRow(new[] { 0 }, "| ")]
     [DataRow(new[] { 0, 2 }, "| |")]
 
-    [DataRow(new[] { 1 }, " …|", 1)]
-    [DataRow(new[] { 100 }, " …|", 1)]
-    [DataRow(new[] { 0, 1 }, "|…|", 1)]
-    [DataRow(new[] { 0, 100 }, "|…|", 1)]
+    [DataRow(new[] { 1 }, " _|", 1)]
+    [DataRow(new[] { 100 }, " _|", 1)]
+    [DataRow(new[] { 0, 1 }, "|_|", 1)]
+    [DataRow(new[] { 0, 100 }, "|_|", 1)]
 
     [DataRow(new[] { -1 }, " ", 1)]
     public void TimelineToString_GetNextUtcInstant(int[] instants, string expectedTimeline, int? convertLength = null)
