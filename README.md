@@ -66,7 +66,7 @@ PM> Install-Package Occurify
 
 ## Usage
 
-Rather than working with concrete instants and periods in time, Occurify allows for conceptual representation of time using intstant and period timelines.
+Rather than working with concrete instants and periods in time, Occurify allows for conceptual representation of time using instant and period timelines.
 
 For example, rather than listing all workdays of a year to work with, you can define the concept of "all workdays", apply transformations or filters, and extract the relevant periods as needed.
 
@@ -152,7 +152,7 @@ string[] holidayCrons = [
     "0 0 0 25 12 ?" //Christmas
 ];
 
-IPeriodTimeline holidays = holidayCrons.Select(TimeZonePeriods.Days).Merge(); // TimeZonePeriods.Days allows us to turn a cron expression into a period of a day in one step.
+IPeriodTimeline holidays = TimeZonePeriods.Days(holidayCrons.Select(TimeZoneInstants.FromCron).Combine());
 IPeriodTimeline workingDays = TimeZonePeriods.Workdays();
 IPeriodTimeline workingDaysWithoutHolidays = workingDays - holidays;
 
@@ -405,7 +405,7 @@ ITimeline timeline2 = new[] { utcNow, utcNow + TimeSpan.FromHours(1) }.AsTimelin
 ITimeline timeline3 = Timeline.FromInstants(utcNow, utcNow + TimeSpan.FromHours(1), utcNow, utcNow + TimeSpan.FromHours(3));
 ITimeline timeline4 = Timeline.Periodic(TimeSpan.FromHours(1));
 ```
-Note that `timelineWithPeriodInstants` is not a timeline with concrete instants. Only when reading it, will the instants be resolved. Simular to `Linq` methods, filtering only wraps the timeline in a filter class. Instants will only be resolved by reading.
+Note that `timeline4` is not a timeline with concrete instants. Only when reading it, will the instants be resolved. Simular to `Linq` methods, filtering only wraps the timeline in a filter class. Instants will only be resolved by reading.
 
 ### Period Timeline
 
