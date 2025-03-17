@@ -19,15 +19,25 @@ jobs:
       - name: 📤 Checkout the repository
         uses: actions/checkout@main
 
+      # - name: 🥅 Install .NET 6
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: '6.0.x'
+          
+      - name: 🥅 Install .NET 7
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '7.0.x'
+          
+      # - name: 🥅 Install .NET 8
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: '8.0.x'
+          
       - name: 🥅 Install .NET 9
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
-          
-      - name: 🥅 Install .NET 6
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '6.0.x'
 
       - name: 🛠️ Build code
         run: dotnet build --configuration Release
