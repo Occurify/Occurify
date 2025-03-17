@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify", "Occurify\Occurify.csproj", "{6A869B01-C39F-4A74-BAB9-17394AE332FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify", "src\Occurify\Occurify.csproj", "{6A869B01-C39F-4A74-BAB9-17394AE332FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify.Tests", "Occurify.Tests\Occurify.Tests.csproj", "{22036185-D933-417D-B9A7-D79EA4B79C0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Occurify.Tests", "tests\Occurify.Tests\Occurify.Tests.csproj", "{22036185-D933-417D-B9A7-D79EA4B79C0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
