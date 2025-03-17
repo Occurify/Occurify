@@ -24,17 +24,10 @@ jobs:
         with:
           dotnet-version: '9.0.x'
           
-      - name: 🥅 Install .NET 6 runtime
-        run: |
-          sudo apt-get install -y dotnet-runtime-6.0
-
-      - name: 🥅 Install .NET 7 runtime
-        run: |
-          sudo apt-get install -y dotnet-runtime-7.0
-
-      - name: 🥅 Install .NET 8 runtime
-        run: |
-          sudo apt-get install -y dotnet-runtime-8.0
+      - name: 🥅 Install .NET 6
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
 
       - name: 🛠️ Build code
         run: dotnet build --configuration Release
