@@ -6,7 +6,6 @@
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Title>Occurify</Title>
-    <Version>0.1.0</Version>
     <Authors>Jasper Lammers</Authors>
     <Company>DevJasper</Company>
     <Description>A comprehensive and intuitive .NET library for defining, filtering, transforming, and scheduling time periods.</Description>

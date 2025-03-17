@@ -14,8 +14,8 @@ public class StringTimelineHelperPeriodTimelineTests
     [DataRow(new[] { 0 }, new int[0], "<")]
     [DataRow(new[] { 0 }, new int[0], "< ")]
 
-    [DataRow(new[] { -1 }, new int[0], "<… ", 1)]
-    [DataRow(new[] { -100 }, new int[0], "<… ", 1)]
+    [DataRow(new[] { -1 }, new int[0], "<_ ", 1)]
+    [DataRow(new[] { -100 }, new int[0], "<_ ", 1)]
 
     [DataRow(new[] { 1 }, new int[0], " ", 1)]
 
@@ -23,8 +23,8 @@ public class StringTimelineHelperPeriodTimelineTests
     [DataRow(new int[0], new[] { 0 }, ">")]
     [DataRow(new int[0], new[] { 0 }, "> ")]
 
-    [DataRow(new int[0], new[] { -1 }, ">… ", 1)]
-    [DataRow(new int[0], new[] { -100 }, ">… ", 1)]
+    [DataRow(new int[0], new[] { -1 }, ">_ ", 1)]
+    [DataRow(new int[0], new[] { -100 }, ">_ ", 1)]
 
     [DataRow(new int[0], new[] { 1 }, " ", 1)]
 
@@ -34,15 +34,15 @@ public class StringTimelineHelperPeriodTimelineTests
     [DataRow(new[] { 0 }, new[] { 2 }, "< >")]
     [DataRow(new[] { 2 }, new[] { 0 }, "> <")]
     [DataRow(new[] { 0, 2 }, new[] { 0, 2 }, "X X")]
-    [DataRow(new[] { -1 }, new[] { 0 }, "<…>", 1)]
-    [DataRow(new[] { -100 }, new[] { 0 }, "<…>", 1)]
-    [DataRow(new[] { 0 }, new[] { -1 }, ">…<", 1)]
-    [DataRow(new[] { 0 }, new[] { -100 }, ">…<", 1)]
+    [DataRow(new[] { -1 }, new[] { 0 }, "<_>", 1)]
+    [DataRow(new[] { -100 }, new[] { 0 }, "<_>", 1)]
+    [DataRow(new[] { 0 }, new[] { -1 }, ">_<", 1)]
+    [DataRow(new[] { 0 }, new[] { -100 }, ">_<", 1)]
 
-    [DataRow(new[] { -1 }, new[] { -1 }, "X… ", 1)]
-    [DataRow(new[] { -100 }, new[] { -100 }, "X… ", 1)]
-    [DataRow(new[] { -1, 0 }, new[] { -1, 0 }, "X…X", 1)]
-    [DataRow(new[] { -100, 0 }, new[] { -100, 0 }, "X…X", 1)]
+    [DataRow(new[] { -1 }, new[] { -1 }, "X_ ", 1)]
+    [DataRow(new[] { -100 }, new[] { -100 }, "X_ ", 1)]
+    [DataRow(new[] { -1, 0 }, new[] { -1, 0 }, "X_X", 1)]
+    [DataRow(new[] { -100, 0 }, new[] { -100, 0 }, "X_X", 1)]
 
     [DataRow(new[] { 1 }, new[] { 1 }, " ", 1)]
     public void PeriodTimelineToString_GetPreviousUtcInstant(int[] startInstants, int[] endInstants, string expectedTimeline, int? convertLength = null)
@@ -91,8 +91,8 @@ public class StringTimelineHelperPeriodTimelineTests
     [DataRow(new[] { 0 }, new int[0], "<")]
     [DataRow(new[] { 0 }, new int[0], "< ")]
 
-    [DataRow(new[] { 1 }, new int[0], " …<", 1)]
-    [DataRow(new[] { 100 }, new int[0], " …<", 1)]
+    [DataRow(new[] { 1 }, new int[0], " _<", 1)]
+    [DataRow(new[] { 100 }, new int[0], " _<", 1)]
 
     [DataRow(new[] { -1 }, new int[0], " ", 1)]
 
@@ -100,8 +100,8 @@ public class StringTimelineHelperPeriodTimelineTests
     [DataRow(new int[0], new[] { 0 }, ">")]
     [DataRow(new int[0], new[] { 0 }, "> ")]
 
-    [DataRow(new int[0], new[] { 1 }, " …>", 1)]
-    [DataRow(new int[0], new[] { 100 }, " …>", 1)]
+    [DataRow(new int[0], new[] { 1 }, " _>", 1)]
+    [DataRow(new int[0], new[] { 100 }, " _>", 1)]
 
     [DataRow(new int[0], new[] { -1 }, " ", 1)]
 
@@ -111,15 +111,15 @@ public class StringTimelineHelperPeriodTimelineTests
     [DataRow(new[] { 0 }, new[] { 2 }, "< >")]
     [DataRow(new[] { 2 }, new[] { 0 }, "> <")]
     [DataRow(new[] { 0, 2 }, new[] { 0, 2 }, "X X")]
-    [DataRow(new[] { 0 }, new[] { 1 }, "<…>", 1)]
-    [DataRow(new[] { 0 }, new[] { 100 }, "<…>", 1)]
-    [DataRow(new[] { 1 }, new[] { 0 }, ">…<", 1)]
-    [DataRow(new[] { 100 }, new[] { 0 }, ">…<", 1)]
+    [DataRow(new[] { 0 }, new[] { 1 }, "<_>", 1)]
+    [DataRow(new[] { 0 }, new[] { 100 }, "<_>", 1)]
+    [DataRow(new[] { 1 }, new[] { 0 }, ">_<", 1)]
+    [DataRow(new[] { 100 }, new[] { 0 }, ">_<", 1)]
 
-    [DataRow(new[] { 1 }, new[] { 1 }, " …X", 1)]
-    [DataRow(new[] { 100 }, new[] { 100 }, " …X", 1)]
-    [DataRow(new[] { 0, 1 }, new[] { 0, 1 }, "X…X", 1)]
-    [DataRow(new[] { 0, 100 }, new[] { 0, 100 }, "X…X", 1)]
+    [DataRow(new[] { 1 }, new[] { 1 }, " _X", 1)]
+    [DataRow(new[] { 100 }, new[] { 100 }, " _X", 1)]
+    [DataRow(new[] { 0, 1 }, new[] { 0, 1 }, "X_X", 1)]
+    [DataRow(new[] { 0, 100 }, new[] { 0, 100 }, "X_X", 1)]
 
     [DataRow(new[] { -1 }, new[] { -1 }, " ", 1)]
     public void PeriodTimelineToString_GetNextUtcInstant(int[] startInstants, int[] endInstants, string expectedTimeline, int? convertLength = null)

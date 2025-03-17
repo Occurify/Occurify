@@ -29,14 +29,14 @@ A comprehensive and intuitive .NET library for defining, filtering, transforming
 
 ## Overview
 
-**Occurify** *(core library, this repository)*
+**Occurify**
 
 - Supports instants, periods, timelines and period timelines.
 - Implements collection and periodic timelines.
 - Supports an extensive set of fluent extension methods to filter and transform instants, periods, timelines and period timelines.
 - Includes 4500+ unit tests to ensure reliability.
 
-**Occurify.TimeZones** ([Github page](https://github.com/Occurify/Occurify.TimeZones))
+**Occurify.TimeZones**
 
 - Supports time zone based instants and periods (e.g. time of day, day, week, etc).
 - Supports both forwards and backwards iteration through Cron instants and periods.
@@ -47,13 +47,13 @@ A comprehensive and intuitive .NET library for defining, filtering, transforming
 - Does not skip interval-based occurrences, when the clock jumps backward from Summer time.
 - Does not retry non-interval based occurrences, when the clock jumps backward from Summer time.
 
-**Occurify.Astro** ([Github page](https://github.com/Occurify/Occurify.Astro))
+**Occurify.Astro**
 
 - Uses the *SunCalcNet* library to enable functionality that:
 - Supports location (coordinate) based instants and periods (e.g. dawn, daytime, etc).
 - Supports multiple solar phases (sunrise, sunset, end of sunrise, start of sunset, (nautical) dawn, (nautical) dusk, (end of) night, (end of) golden hour, solar noon and nadir).
 
-**Occurify.Reactive** ([Github page](https://github.com/Occurify/Occurify.Reactive))
+**Occurify.Reactive**
 
 - Uses ReactiveX to enable scheduling for both timelines and periods.
 
