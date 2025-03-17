@@ -6,7 +6,7 @@ namespace Occurify.TimeZones.Tests
     [TestClass]
     public class CronTimelineTests
     {
-        private static readonly TimeZoneInfo NetherlandsTimeZone = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
+        private static readonly TimeZoneInfo DutchTimeZone = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
 
         [TestMethod]
         public void GetPreviousUtcInstant()
@@ -91,18 +91,18 @@ namespace Occurify.TimeZones.Tests
         {
             // Arrange
             var timeOnly = new TimeOnly(2, 30, 0); // Daylight savings in The Netherlands starts at 2am and turns the clock to 3am. 2:30 should be skipped.
-            var timeline = TimeZoneInstants.FromCron(timeOnly.ToCronExpression(), NetherlandsTimeZone);
+            var timeline = TimeZoneInstants.FromCron(timeOnly.ToCronExpression(), DutchTimeZone);
 
             // 5 minutes before daylight savings
             var localJustBeforeDaylightSavings = new DateTime(2024, 3, 31, 1, 55, 0);
-            var utcJustBeforeDaylightSavings = TimeZoneInfo.ConvertTimeToUtc(localJustBeforeDaylightSavings, NetherlandsTimeZone);
+            var utcJustBeforeDaylightSavings = TimeZoneInfo.ConvertTimeToUtc(localJustBeforeDaylightSavings, DutchTimeZone);
 
             // Act
             var nextInstant = timeline.GetNextUtcInstant(utcJustBeforeDaylightSavings);
 
             // Assert
             var expectedLocalTime = new DateTime(2024, 3, 31, 3, 0, 0); // The corrected time.
-            Assert.AreEqual(TimeZoneInfo.ConvertTimeToUtc(expectedLocalTime, NetherlandsTimeZone), nextInstant);
+            Assert.AreEqual(TimeZoneInfo.ConvertTimeToUtc(expectedLocalTime, DutchTimeZone), nextInstant);
         }
 
         [TestMethod]
@@ -110,18 +110,18 @@ namespace Occurify.TimeZones.Tests
         {
             // Arrange
             var timeOnly = new TimeOnly(2, 30, 0); // Daylight savings in The Netherlands starts at 2am and turns the clock to 3am. 2:30 should be skipped.
-            var timeline = TimeZoneInstants.FromCron(timeOnly.ToCronExpression(), NetherlandsTimeZone);
+            var timeline = TimeZoneInstants.FromCron(timeOnly.ToCronExpression(), DutchTimeZone);
 
             // 35 minutes after daylight savings
             var localJustBeforeDaylightSavings = new DateTime(2024, 3, 31, 3, 35, 0);
-            var utcJustBeforeDaylightSavings = TimeZoneInfo.ConvertTimeToUtc(localJustBeforeDaylightSavings, NetherlandsTimeZone);
+            var utcJustBeforeDaylightSavings = TimeZoneInfo.ConvertTimeToUtc(localJustBeforeDaylightSavings, DutchTimeZone);
 
             // Act
             var nextInstant = timeline.GetPreviousUtcInstant(utcJustBeforeDaylightSavings);
 
             // Assert
             var expectedLocalTime = new DateTime(2024, 3, 31, 3, 0, 0); // The corrected time.
-            Assert.AreEqual(TimeZoneInfo.ConvertTimeToUtc(expectedLocalTime, NetherlandsTimeZone), nextInstant);
+            Assert.AreEqual(TimeZoneInfo.ConvertTimeToUtc(expectedLocalTime, DutchTimeZone), nextInstant);
         }
 
         // Note: as we are using a third party library, we perform some simple sanity checks.

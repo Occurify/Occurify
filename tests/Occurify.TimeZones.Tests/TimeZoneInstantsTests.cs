@@ -5,7 +5,7 @@ namespace Occurify.TimeZones.Tests
     [TestClass]
     public class TimeZoneInstantsTests
     {
-        private static readonly TimeZoneInfo NetherlandsTimeZone = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
+        private static readonly TimeZoneInfo DutchTimeZone = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
 
         [TestMethod]
         public void DailyAt_InvalidTime_Substituted()
@@ -16,7 +16,7 @@ namespace Occurify.TimeZones.Tests
             var periodEnd = DateTime.SpecifyKind(new DateTime(2024, 4, 03), DateTimeKind.Utc);
 
             // Act
-            var daily = TimeZoneInstants.DailyAt(2, 30, NetherlandsTimeZone);
+            var daily = TimeZoneInstants.DailyAt(2, 30, DutchTimeZone);
             var results = daily.EnumeratePeriod(periodStart.To(periodEnd)).ToArray();
 
             // Assert
@@ -27,7 +27,7 @@ namespace Occurify.TimeZones.Tests
                 new DateTime(2024, 4, 1, 2, 30, 0),
                 new DateTime(2024, 4, 2, 2, 30, 0)
             };
-            var expectedUtc = expectedLocal.Select(dt => TimeZoneInfo.ConvertTimeToUtc(dt, NetherlandsTimeZone)).ToArray();
+            var expectedUtc = expectedLocal.Select(dt => TimeZoneInfo.ConvertTimeToUtc(dt, DutchTimeZone)).ToArray();
             CollectionAssert.AreEqual(expectedUtc, results);
         }
 
@@ -40,7 +40,7 @@ namespace Occurify.TimeZones.Tests
             var periodEnd = DateTime.SpecifyKind(new DateTime(2024, 4, 03), DateTimeKind.Utc);
 
             // Act
-            var daily = TimeZoneInstants.StartOfDays([DayOfWeek.Monday, DayOfWeek.Friday, DayOfWeek.Tuesday], NetherlandsTimeZone);
+            var daily = TimeZoneInstants.StartOfDays([DayOfWeek.Monday, DayOfWeek.Friday, DayOfWeek.Tuesday], DutchTimeZone);
             var results = daily.EnumeratePeriod(periodStart.To(periodEnd)).ToArray();
 
             // Assert
@@ -50,7 +50,7 @@ namespace Occurify.TimeZones.Tests
                 new DateTime(2024, 4, 1),
                 new DateTime(2024, 4, 2)
             };
-            var expectedUtc = expectedLocal.Select(dt => TimeZoneInfo.ConvertTimeToUtc(dt, NetherlandsTimeZone)).ToArray();
+            var expectedUtc = expectedLocal.Select(dt => TimeZoneInfo.ConvertTimeToUtc(dt, DutchTimeZone)).ToArray();
             CollectionAssert.AreEqual(expectedUtc, results);
         }
 
