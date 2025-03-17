@@ -1,0 +1,32 @@
+#### Build and tests all pushes, also code coverage
+name: 🛠️ CI build & test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 2 * * *" # run at 2 AM UTC
+jobs:
+  build:
+    name: 🔨 Build and test (CI)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: 📤 Checkout the repository
+        uses: actions/checkout@main
+
+      - name: 🥅 Install .Net 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: 🛠️ Build code
+        run: dotnet build --configuration Release -p:TreatWarningsAsErrors=true
+
+      - name: 👀 Unit Test
+        run: |
+          echo "## ❔ Unit test results" >> $GITHUB_STEP_SUMMARY
+          dotnet test --no-build --configuration Release Occurify/Occurify.Tests/Occurify.Tests.csproj -- RunConfiguration.CollectSourceInformation=true
