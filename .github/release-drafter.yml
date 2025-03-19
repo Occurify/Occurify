@@ -1,4 +1,4 @@
-name-template: 'Release $RESOLVED_VERSION'
+name-template: '$RESOLVED_VERSION'
 tag-template: '$RESOLVED_VERSION'
 change-template: '- #$NUMBER $TITLE'
 sort-direction: ascending
@@ -19,9 +19,7 @@ categories:
     label: 'pr: documentation'
 
   - title: '⬆️ Dependency Updates'
-    labels:
-      - 'pr: dependency-update'
-      - 'dependencies'
+    label: 'pr: dependency-update'
 
 include-labels:
   - 'pr: breaking change'
