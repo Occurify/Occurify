@@ -5,12 +5,16 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   update-release-draft:
     name: ⏫ Update Release Draft
     runs-on: ubuntu-latest
     steps:
-      - name: 🏃 Run Release Drafter
+      - name: 📝 Run release drafter
         uses: release-drafter/release-drafter@v6
         with:
           tag: ${{ steps.version.outputs.version }}

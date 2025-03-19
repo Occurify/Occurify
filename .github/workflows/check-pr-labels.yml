@@ -1,0 +1,17 @@
+name: 🏷️ Check PR Labels
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled, synchronize, reopened]
+jobs:
+    check_labels:
+        name: 🏷️ Check valid labels
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check valid labels
+              run: |
+                  labels=$(jq -r '.pull_request.labels[] | .name' ${{github.event_path }}  | grep 'pr:') 
+                  if [[ ! $labels ]]; then
+                    echo "::error::You need to provide one or more labels that starts with 'pr:'"
+                    exit 1
+                  fi
+                  exit 0

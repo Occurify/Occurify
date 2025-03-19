@@ -1,33 +1,37 @@
 name-template: 'Release $RESOLVED_VERSION'
 tag-template: '$RESOLVED_VERSION'
-change-template: '- #$NUMBER $TITLE @$AUTHOR'
+change-template: '- #$NUMBER $TITLE'
 sort-direction: ascending
 categories:
-  - title: ':boom: Breaking changes'
+  - title: '💥 Breaking changes'
     label: 'pr: breaking change'
 
-  - title: ':sparkles: New features'
+  - title: '✨ New features'
     label: 'pr: new-feature'
 
-  - title: ':zap: Enhancements'
+  - title: '⚡ Enhancements'
     label: 'pr: enhancement'
 
-  - title: ':bug: Bug Fixes'
+  - title: '🐛 Bug Fixes'
     label: 'pr: bugfix'
+    
+  - title: '📖 Documentation'
+    label: 'pr: documentation'
 
-  - title: ':arrow_up: Dependency Updates'
+  - title: '⬆️ Dependency Updates'
     labels:
       - 'pr: dependency-update'
       - 'dependencies'
 
 include-labels:
   - 'pr: breaking change'
-  - 'pr: enhancement'
-  - 'pr: dependency-update'
   - 'pr: new-feature'
+  - 'pr: enhancement'
   - 'pr: bugfix'
+  - 'pr: documentation'
+  - 'pr: dependency-update'
 
 template: |
-  ## 👀 Summary
+  ## Summary
 
   $CHANGES
