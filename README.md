@@ -20,6 +20,7 @@ A comprehensive and intuitive .NET library for defining, filtering, transforming
     - [Period](#period)
     - [Instant Timeline](#instant-timeline)
     - [Period Timeline](#period-timeline)
+- [Coordinates](#coordinates)
 - [ASCII Representation of Timelines](#ascii-representation-of-timelines)
 - [Extension Methods](#extension-methods)
 - [Unit Tests](#unit-tests)
@@ -31,12 +32,16 @@ A comprehensive and intuitive .NET library for defining, filtering, transforming
 
 **Occurify**
 
+A comprehensive and intuitive .NET library for defining, filtering, transforming, and scheduling time periods.
+
 - Supports instants, periods, timelines and period timelines.
 - Implements collection and periodic timelines.
 - Supports an extensive set of fluent extension methods to filter and transform instants, periods, timelines and period timelines.
 - Includes 4500+ unit tests to ensure reliability.
 
 **Occurify.TimeZones**
+
+Time zone and cron expression support for Occurify: Filter, manipulate, and schedule instants and periods across time zones.
 
 - Supports time zone based instants and periods (e.g. time of day, day, week, etc).
 - Supports both forwards and backwards iteration through Cron instants and periods.
@@ -49,46 +54,148 @@ A comprehensive and intuitive .NET library for defining, filtering, transforming
 
 **Occurify.Astro**
 
+Astronomical instants and periods for Occurify: Track sun states, perform calculations, and manage events.
+
 - Uses the *SunCalcNet* library to enable functionality that:
 - Supports location (coordinate) based instants and periods (e.g. dawn, daytime, etc).
 - Supports multiple solar phases (sunrise, sunset, end of sunrise, start of sunset, (nautical) dawn, (nautical) dusk, (end of) night, (end of) golden hour, solar noon and nadir).
 
 **Occurify.Reactive**
 
+Reactive Extensions for Occurify: Enabling seamless scheduling of instant and period-based timelines.
+
 - Uses ReactiveX to enable scheduling for both timelines and periods.
 
 ## Installation
 
-Occurify is distributed as a [NuGet package](https://www.nuget.org/packages/Occurify), you can install it from the official NuGet Gallery. Please use the following command to install it using the NuGet Package Manager Console window.
-```
+Occurify is distributed as the following NuGet packages:
+
+Package | Description
+--- |---
+[Occurify](https://www.nuget.org/packages/Occurify) | A comprehensive and intuitive .NET library for defining, filtering, transforming, and scheduling time periods.
+[Occurify.TimeZones](https://www.nuget.org/packages/Occurify.TimeZones) | Time zone and cron expression support for Occurify: Filter, manipulate, and schedule instants and periods across time zones.
+[Occurify.Astro](https://www.nuget.org/packages/Occurify.Astro) | Astronomical instants and periods for Occurify: Track sun states, perform calculations, and manage events.
+[Occurify.Reactive](https://www.nuget.org/packages/Occurify.Reactive) | Reactive Extensions for Occurify: Enabling seamless scheduling of instant and period-based timelines.
+
+To install the core Occurify package, use the NuGet Package Manager Console:
+
+```powershell
 PM> Install-Package Occurify
 ```
 
+Alternatively, you can install it using the .NET CLI:
+
+```powershell
+dotnet add package Occurify
+```
+
+For other packages, replace `Occurify` with the desired package name.
+
 ## Usage
 
-Rather than working with concrete instants and periods in time, Occurify allows for conceptual representation of time using instant and period timelines.
+Instead of dealing with fixed timestamps, Occurify lets you think about time in a more **human-friendly** way. You don't need to precompute every possible event—just define the concept of an event, like *"all sunsets,"* and let Occurify handle the rest.
 
-For example, rather than listing all workdays of a year to work with, you can define the concept of "all workdays", apply transformations or filters, and extract the relevant periods as needed.
+As an example, let’s imagine we want to automate our lights to turn on in the evening.
 
-The following example demonstrates how to define a period timeline, `workingHours` that includes all periods between **8 AM and 6 PM**. By subtracting weekends, we obtain a new period timeline, `workingTime`, that represents all workdays within that range:
-```cs
-IPeriodTimeline workingHours = TimeZonePeriods.Between(startHour: 8, endHour: 18);
-IPeriodTimeline weekends = TimeZonePeriods.Days(DayOfWeek.Saturday, DayOfWeek.Sunday);
-IPeriodTimeline workingTime = workingHours - weekends;
-```
-Now, `workingTime` represents all workdays from **8 AM and 6 PM**.
+### Defining Timelines
+
+Instead of manually maintaining a list of sunset times, we can simply define:
 
 ```cs
-Console.WriteLine(workingTime.IsNow() ? "You should still be working" : "You can go home!");
+ITimeline sunsets = AstroInstants.LocalSunset;
 ```
-Or
-```cs
-Console.WriteLine($"The year 1025 contained {workingTime.EnumeratePeriod(TimeZonePeriods.Year(1025)).Count()} workdays.");
-Console.WriteLine($"The year 3025 will contain {workingTime.EnumeratePeriod(TimeZonePeriods.Year(3025)).Count()} workdays.");
-```
-The period timeline **only resolves the necessary periods when enumerated**, ensuring efficiency.
 
-This approach allows developers to focus on what they need—such as "workdays"—without manually managing time calculations. As a result, coding becomes more intuitive and use case-driven.
+This timeline now represents every sunset dynamically—no need for hardcoded schedules.
+
+### Transforming Timelines
+
+Want to schedule events **20 minutes after sunset**? Just shift the timeline:
+
+```cs
+ITimeline twentyMinAfterSunset = sunsets + TimeSpan.FromMinutes(20);
+```
+
+Now, `twentyMinAfterSunset` dynamically represents every sunset, plus 20 minutes—no manual calculations needed.
+
+### Combining Timelines Into Periods
+
+Now, let’s define a time when the lights should **turn off** and create a period from **20 minutes after sunset** until **11 PM**:
+
+```cs
+ITimeline elevenPm = TimeZoneInstants.DailyAt(hour: 23);
+IPeriodTimeline lightOnPeriods = twentyMinAfterSunset.To(elevenPm);
+```
+
+With this, lightOnPeriods now represents **all the evening periods** when the lights should be on.
+
+### Filtering & Randomization
+
+If you want the lights to turn on **only on weekdays**, you can filter the periods like this:
+
+```cs
+lightOnPeriods = lightOnPeriods.Within(TimeZonePeriods.Workdays());
+```
+
+To make the timing feel more natural, we can **randomize** the periods slightly by adding a variation of up to 10 minutes:
+
+```cs
+lightOnPeriods = lightOnPeriods.Randomize(TimeSpan.FromMinutes(10));
+```
+
+### Using the Timeline
+
+#### Checking if the Lights Should Be On Right Now
+
+To check if the lights should be on at the current moment, you can simply use `IsNow()` on the `lightOnPeriods` timeline:
+
+```cs
+if (lightOnPeriods.IsNow()) {
+    // Turn lights on.
+}
+else {
+    // Turn lights off.
+}
+```
+
+#### Enumerating Future (or Past) Events
+
+You can easily enumerate future or past periods to check when the lights will go on. For example, let’s find out when the lights will turn on during the **rest of the current month**:
+
+```cs
+Console.WriteLine("The rest of the current month the lights will go on at:");
+foreach (Period period in lightOnPeriods.EnumerateRange(DateTime.UtcNow, TimeZoneInstants.CurrentMonth().End!.Value)){
+    Console.WriteLine(period.Start);
+}
+```
+
+But due to the dynamic nature of timelines we can just as easily see when the lights will turn on in **February 2050**:
+
+```cs
+Console.WriteLine("In February 2050 the lights will go on at:");
+foreach (Period period in lightOnPeriods.EnumeratePeriod(TimeZonePeriods.Month(2, 2050))){
+    Console.WriteLine(period.Start);
+}
+```
+> Note that the period timeline **only resolves the necessary periods when enumerated**, ensuring efficiency.
+
+#### Scheduling Automatic Actions
+
+To automate actions based on the timeline, you can leverage **ReactiveX**. Methods like `ToBooleanObservable` return an `IObservable`, which makes it easy to schedule events reactively.
+
+```cs
+lightOnPeriods.ToBooleanObservable(scheduler)
+    .Subscribe(lightOn =>
+    {
+        if (lightOn) {
+            // Turn lights on.
+        }
+        else {
+            // Turn lights off.
+        }
+    });
+```
+
+This approach allows you to focus on what matters—like defining when you want your lights to turn on—without manually handling the timing and scheduling. As a result, your code becomes more **intuitive**, **dynamic**, and **use case-driven**.
 
 ## Potential Use Cases
 
@@ -447,6 +554,14 @@ IPeriodTimeline periodTimeline3 = periodStartTimeline.To(periodEndTimeline);
 // Using static methods
 IPeriodTimeline periodTimeline4 = PeriodTimeline.FromPeriods(period, period + TimeSpan.FromHours(2), period + TimeSpan.FromHours(4));
 IPeriodTimeline periodTimeline5 = PeriodTimeline.Between(periodStartTimeline, periodEndTimeline);
+```
+
+## Coordinates
+
+All methods in `Occurify.Astro` have a signature with and without `Coordinates` object. If no `Coordinates` object is provided, the method will use `Coordinates.Local` by default. Note that this static property needs to be set before use:
+
+```cs
+Coordinates.Local = new Coordinates(48.8584, 2.2945);
 ```
 
 ## ASCII Representation of Timelines
