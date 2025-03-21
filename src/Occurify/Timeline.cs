@@ -3,6 +3,9 @@ using Occurify.Extensions;
 
 namespace Occurify;
 
+/// <summary>
+/// Represents a timeline of instants.
+/// </summary>
 public abstract partial class Timeline : ITimeline
 {
     /// <inheritdoc/>

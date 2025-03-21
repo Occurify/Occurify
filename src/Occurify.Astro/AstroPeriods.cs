@@ -3,6 +3,9 @@ using Occurify.Extensions;
 
 namespace Occurify.Astro
 {
+    /// <summary>
+    /// Provides sun related periods and period timelines.
+    /// </summary>
     public static class AstroPeriods
     {
         /// <summary>

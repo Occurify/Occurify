@@ -1,6 +1,9 @@
 ﻿
 namespace Occurify.Astro
 {
+    /// <summary>
+    /// Provides sun related instants and instant timelines.
+    /// </summary>
     public static class AstroInstants
     {
         /// <summary>

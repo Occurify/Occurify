@@ -1,7 +1,13 @@
 ﻿namespace Occurify.TimeZones.Extensions
 {
+    /// <summary>
+    /// Extension methods for <see cref="TimeOnly"/>.
+    /// </summary>
     public static class TimeOnlyExtensions
     {
+        /// <summary>
+        /// Converts a <paramref name="timeOnly"/> to a cron expression.
+        /// </summary>
         public static string ToCronExpression(this TimeOnly timeOnly)
         {
             if (timeOnly.Millisecond != 0)

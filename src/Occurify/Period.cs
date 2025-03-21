@@ -2,6 +2,9 @@
 
 namespace Occurify;
 
+/// <summary>
+/// Represents a period of time.
+/// </summary>
 public partial record Period(DateTime? Start, DateTime? End) : IComparable<Period>
 {
     /// <summary>
@@ -24,10 +27,16 @@ public partial record Period(DateTime? Start, DateTime? End) : IComparable<Perio
     [MemberNotNullWhen(false, nameof(End))]
     public bool NeverEnds => End == null;
 
+    /// <summary>
+    /// True when the period is infinite in both directions.
+    /// </summary>
     [MemberNotNullWhen(false, nameof(Start))]
     [MemberNotNullWhen(false, nameof(End))]
     public bool IsInfiniteInBothDirections => Start == null && End == null;
 
+    /// <summary>
+    /// Compare this period to another period.
+    /// </summary>
     public int CompareTo(Period? other)
     {
         if (other == null) return 1;

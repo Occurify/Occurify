@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
-using Occurify.Helpers;
+﻿using Occurify.Helpers;
 
 namespace Occurify.Extensions;
 
+/// <summary>
+/// Provides extension methods for working with <see cref="Period"/>.
+/// </summary>
 public static partial class PeriodExtensions
 {
     /// <summary>

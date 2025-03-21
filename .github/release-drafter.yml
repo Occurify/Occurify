@@ -29,7 +29,4 @@ include-labels:
   - 'pr: documentation'
   - 'pr: dependency-update'
 
-template: |
-  ## Summary
-
-  $CHANGES
+template: '$CHANGES'

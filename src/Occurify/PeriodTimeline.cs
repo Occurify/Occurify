@@ -3,6 +3,9 @@ using Occurify.Extensions;
 
 namespace Occurify;
 
+/// <summary>
+/// Represents a timeline of periods (<see cref="Period"/>).
+/// </summary>
 public partial class PeriodTimeline : IPeriodTimeline
 {
     internal PeriodTimeline(ITimeline startTimeline, ITimeline endTimeline)
@@ -28,6 +31,7 @@ public partial class PeriodTimeline : IPeriodTimeline
         return GetEnumerator();
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"{StartTimeline} to {EndTimeline}";

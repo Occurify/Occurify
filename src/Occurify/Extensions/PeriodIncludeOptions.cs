@@ -1,5 +1,8 @@
 ﻿namespace Occurify.Extensions;
 
+/// <summary>
+/// Options for including periods.
+/// </summary>
 public enum PeriodIncludeOptions
 {
     /// <summary>
