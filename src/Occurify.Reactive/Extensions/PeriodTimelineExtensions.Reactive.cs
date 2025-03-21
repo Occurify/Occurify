@@ -51,7 +51,7 @@ public static class PeriodTimelineExtensions
                 periodTimeline.StartTimeline.GetNextUtcInstant(sample!.Value),
                 periodTimeline.EndTimeline.GetNextUtcInstant(sample.Value)),
             sample => periodTimeline.SampleAt(sample!.Value),
-            sample => sample!.Value, scheduler).Prepend(periodTimeline.SampleAt(relativeTo));
+            sample => sample!.Value, scheduler);
 
         static DateTime? MinAssumingNullIsPlusInfinity(DateTime? dateTime1, DateTime? dateTime2)
         {
