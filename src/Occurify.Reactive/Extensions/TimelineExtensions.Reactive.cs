@@ -1,4 +1,5 @@
-﻿using System.Reactive;
+﻿using Occurify.Extensions;
+using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 
@@ -39,7 +40,7 @@ public static class TimelineExtensions
             sample => sample!.Value,
             sample => sample!.Value, scheduler);
     }
-
+    
     /// <summary>
     /// Returns a <see cref="IObservable{DateTime}"/> that immediately emits <see cref="DateTime.UtcNow"/> upon subscribing and then emits an instant as <see cref="DateTime"/> when it occurs.
     /// </summary>
@@ -59,5 +60,18 @@ public static class TimelineExtensions
         IScheduler scheduler)
     {
         return Observable.Defer(() => timeline.ToInstantObservable(relativeTo, scheduler).Prepend(relativeTo));
+    }
+
+    /// <summary>
+    /// Returns a <see cref="IObservable{TimelineSample}"/> that emits a sample every time an instant occurs using <paramref name="relativeTo"/> as a starting time.
+    /// </summary>
+    public static IObservable<TimelineSample> ToSampleObservable(this ITimeline timeline, DateTime relativeTo, IScheduler scheduler)
+    {
+        return Observable.Generate(
+            timeline.GetNextUtcInstant(relativeTo),
+            sample => sample != null,
+            sample => timeline.GetNextUtcInstant(sample!.Value),
+            sample => timeline.SampleAt(sample!.Value),
+            sample => sample!.Value, scheduler);
     }
 }
