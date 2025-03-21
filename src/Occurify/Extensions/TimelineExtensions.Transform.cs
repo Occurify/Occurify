@@ -40,11 +40,6 @@ public static partial class TimelineExtensions
         new CompositeTimeline(timelines.Prepend(source));
 
     /// <summary>
-    /// Returns a <see cref="ITimeline"/> with the instants from all <paramref name="timelines"/>.
-    /// </summary>
-    public static ITimeline Combine(this IEnumerable<ITimeline> timelines) => new CompositeTimeline(timelines);
-
-    /// <summary>
     /// Offsets <paramref name="source"/> with <paramref name="offset"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
     public static ITimeline Offset(this ITimeline source, TimeSpan offset) => new OffsetTimeline(source, offset);
