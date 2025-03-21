@@ -3,6 +3,9 @@ using Occurify.Helpers;
 
 namespace Occurify.Extensions;
 
+/// <summary>
+/// Provides extension methods for working with <see cref="IPeriodTimeline"/>.
+/// </summary>
 public static partial class PeriodTimelineExtensions
 {
     /// <summary>

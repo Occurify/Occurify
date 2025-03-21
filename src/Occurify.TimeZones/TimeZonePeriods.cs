@@ -3,6 +3,9 @@ using Occurify.Extensions;
 
 namespace Occurify.TimeZones
 {
+    /// <summary>
+    /// Provides TimeZone-related periods and period timelines.
+    /// </summary>
     public class TimeZonePeriods
     {
         /// <summary>
@@ -91,7 +94,7 @@ namespace Occurify.TimeZones
         }
 
         /// <summary>
-        /// Returns a <see cref="IPeriodTimeline"/> with hours that contain instants in <paramref name="instantsToContain"/> in provided timezone <paramref name="timeZone"/>.
+        /// Returns a <see cref="IPeriodTimeline"/> with hours that contain instants in <paramref name="instantsToContain"/> in <see cref="TimeZoneInfo.Local"/>.
         /// </summary>
         public static IPeriodTimeline Hours(ITimeline instantsToContain)
         {
@@ -175,7 +178,7 @@ namespace Occurify.TimeZones
         }
 
         /// <summary>
-        /// Returns a <see cref="IPeriodTimeline"/> with days that contain instants in <paramref name="instantsToContain"/> in provided timezone <paramref name="timeZone"/>.
+        /// Returns a <see cref="IPeriodTimeline"/> with days that contain instants in <paramref name="instantsToContain"/> in <see cref="TimeZoneInfo.Local"/>.
         /// </summary>
         public static IPeriodTimeline Days(ITimeline instantsToContain)
         {
@@ -230,7 +233,7 @@ namespace Occurify.TimeZones
         }
 
         /// <summary>
-        /// Returns a <see cref="IPeriodTimeline"/> with weeks that contain instants in <paramref name="instantsToContain"/> in provided timezone <paramref name="timeZone"/>.
+        /// Returns a <see cref="IPeriodTimeline"/> with weeks that contain instants in <paramref name="instantsToContain"/> in <see cref="TimeZoneInfo.Local"/>.
         /// </summary>
         public static IPeriodTimeline Weeks(ITimeline instantsToContain)
         {
@@ -309,7 +312,7 @@ namespace Occurify.TimeZones
         }
 
         /// <summary>
-        /// Returns a <see cref="IPeriodTimeline"/> with months that contain instants in <paramref name="instantsToContain"/> in provided timezone <paramref name="timeZone"/>.
+        /// Returns a <see cref="IPeriodTimeline"/> with months that contain instants in <paramref name="instantsToContain"/> in <see cref="TimeZoneInfo.Local"/>.
         /// </summary>
         public static IPeriodTimeline Months(ITimeline instantsToContain)
         {
@@ -338,7 +341,7 @@ namespace Occurify.TimeZones
         }
 
         /// <summary>
-        /// Returns a <see cref="IPeriodTimeline"/> with years that contain instants in <paramref name="instantsToContain"/> in provided timezone <paramref name="timeZone"/>.
+        /// Returns a <see cref="IPeriodTimeline"/> with years that contain instants in <paramref name="instantsToContain"/> in <see cref="TimeZoneInfo.Local"/>.
         /// </summary>
         public static IPeriodTimeline Years(ITimeline instantsToContain)
         {
@@ -393,7 +396,7 @@ namespace Occurify.TimeZones
         }
 
         /// <summary>
-        /// Returns a <see cref="IPeriodTimeline"/> with weekends that contain instants in <paramref name="instantsToContain"/> in provided timezone <paramref name="timeZone"/>.
+        /// Returns a <see cref="IPeriodTimeline"/> with weekends that contain instants in <paramref name="instantsToContain"/> in <see cref="TimeZoneInfo.Local"/>.
         /// </summary>
         public static IPeriodTimeline Weekends(ITimeline instantsToContain)
         {
@@ -448,7 +451,7 @@ namespace Occurify.TimeZones
         }
 
         /// <summary>
-        /// Returns a <see cref="IPeriodTimeline"/> with workdays that contain instants in <paramref name="instantsToContain"/> in provided timezone <paramref name="timeZone"/>.
+        /// Returns a <see cref="IPeriodTimeline"/> with workdays that contain instants in <paramref name="instantsToContain"/> in <see cref="TimeZoneInfo.Local"/>.
         /// </summary>
         public static IPeriodTimeline Workdays(ITimeline instantsToContain)
         {

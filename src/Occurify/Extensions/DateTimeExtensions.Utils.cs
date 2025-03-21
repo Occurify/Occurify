@@ -1,5 +1,8 @@
 ﻿namespace Occurify.Extensions;
 
+/// <summary>
+/// Provides extension methods for working with <see cref="DateTime"/>.
+/// </summary>
 public static partial class DateTimeExtensions
 {
     /// <summary>

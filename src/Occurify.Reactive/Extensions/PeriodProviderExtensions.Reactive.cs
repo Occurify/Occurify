@@ -4,6 +4,9 @@ using Occurify.Extensions;
 
 namespace Occurify.Reactive.Extensions;
 
+/// <summary>
+/// Provides reactive extension methods for working with <see cref="IPeriodTimeline"/>.
+/// </summary>
 public static class PeriodTimelineExtensions
 {
     /// <summary>

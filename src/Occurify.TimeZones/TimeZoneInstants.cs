@@ -4,6 +4,9 @@ using Occurify.TimeZones.Extensions;
 
 namespace Occurify.TimeZones;
 
+/// <summary>
+/// Provides TimeZone-related instants and instant timelines.
+/// </summary>
 public static class TimeZoneInstants
 {
     /// <summary>

@@ -4,6 +4,9 @@ using System.Reactive.Linq;
 
 namespace Occurify.Reactive.Extensions;
 
+/// <summary>
+/// Provides reactive extension methods for working with <see cref="ITimeline"/>.
+/// </summary>
 public static class TimelineExtensions
 {
     /// <summary>
