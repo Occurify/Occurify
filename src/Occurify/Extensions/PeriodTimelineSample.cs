@@ -7,10 +7,7 @@ namespace Occurify.Extensions;
 /// </summary>
 public record PeriodTimelineSample
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PeriodTimelineSample"/> class.
-    /// </summary>
-    public PeriodTimelineSample(DateTime utcSampleInstant, Period? period, Period? gap)
+    internal PeriodTimelineSample(DateTime utcSampleInstant, Period? period, Period? gap)
     {
         if ((period == null) == (gap == null))
         {

@@ -3,6 +3,9 @@ using Occurify.TimelineUtils;
 
 namespace Occurify.Extensions;
 
+/// <summary>
+/// Provides extension methods for working with <see cref="ITimeline"/>.
+/// </summary>
 public static partial class TimelineExtensions
 {
     /// <summary>
@@ -56,6 +59,18 @@ public static partial class TimelineExtensions
     /// Determines whether <paramref name="timeline"/> contains no instants.
     /// </summary>
     public static bool IsEmpty(this ITimeline timeline) => timeline.GetCurrentOrNextUtcInstant(DateTimeHelper.MinValueUtc) == null;
+
+    /// <summary>
+    /// Takes a sample of <paramref name="source"/> at <paramref name="instant"/>.
+    /// </summary>
+    public static TimelineSample SampleAt(this ITimeline source, DateTime instant)
+    {
+        return new TimelineSample(
+            instant, 
+            source.IsInstant(instant), 
+            source.GetPreviousUtcInstant(instant),
+            source.GetNextUtcInstant(instant));
+    }
 
     /// <summary>
     /// Synchronizes <paramref name="source"/> such that method calls cannot occur concurrently.
