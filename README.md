@@ -1,11 +1,18 @@
 # Occurify
 
-A comprehensive and intuitive .NET library for defining, filtering, transforming, and scheduling time periods.
+A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling timelines.
 
 ## 📖 Table of Contents  
 - [Overview](#Overview)
 - [Installation](#installation)
 - [Usage](#usage)
+    - [Defining Timelines](#defining-timelines)
+    - [Transforming Timelines](#transforming-timelines)
+    - [Combining Timelines Into Periods](#combining-timelines-into-periods)
+    - [Filtering & Randomization](#filtering--randomization)
+    - [Sampling](#checking-if-the-lights-should-be-on-right-now)
+    - [Enumerating](#enumerating-future-or-past-events)
+    - [Scheduling](#scheduling-automatic-actions)
 - [Potential Use Cases](#potential-use-cases)
     - [Morning Light](#morning-light)
     - [Use Crons to Create Periods](#use-crons-to-create-periods)
@@ -20,6 +27,7 @@ A comprehensive and intuitive .NET library for defining, filtering, transforming
     - [Period](#period)
     - [Instant Timeline](#instant-timeline)
     - [Period Timeline](#period-timeline)
+    - [Collections](#collections)
 - [Coordinates](#coordinates)
 - [ASCII Representation of Timelines](#ascii-representation-of-timelines)
 - [Extension Methods](#extension-methods)
@@ -30,16 +38,16 @@ A comprehensive and intuitive .NET library for defining, filtering, transforming
 
 ## Overview
 
-**Occurify**
+### [Occurify](https://www.nuget.org/packages/Occurify)
 
-A comprehensive and intuitive .NET library for defining, filtering, transforming, and scheduling time periods.
+A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling timelines.
 
 - Supports instants, periods, timelines and period timelines.
 - Implements collection and periodic timelines.
 - Supports an extensive set of fluent extension methods to filter and transform instants, periods, timelines and period timelines.
 - Includes 4500+ unit tests to ensure reliability.
 
-**Occurify.TimeZones**
+### [Occurify.TimeZones](https://www.nuget.org/packages/Occurify.TimeZones)
 
 Time zone and cron expression support for Occurify: Filter, manipulate, and schedule instants and periods across time zones.
 
@@ -52,7 +60,7 @@ Time zone and cron expression support for Occurify: Filter, manipulate, and sche
 - Does not skip interval-based occurrences, when the clock jumps backward from Summer time.
 - Does not retry non-interval based occurrences, when the clock jumps backward from Summer time.
 
-**Occurify.Astro**
+### [Occurify.Astro](https://www.nuget.org/packages/Occurify.Astro)
 
 Astronomical instants and periods for Occurify: Track sun states, perform calculations, and manage events.
 
@@ -60,7 +68,7 @@ Astronomical instants and periods for Occurify: Track sun states, perform calcul
 - Supports location (coordinate) based instants and periods (e.g. dawn, daytime, etc).
 - Supports multiple solar phases (sunrise, sunset, end of sunrise, start of sunset, (nautical) dawn, (nautical) dusk, (end of) night, (end of) golden hour, solar noon and nadir).
 
-**Occurify.Reactive**
+### [Occurify.Reactive](https://www.nuget.org/packages/Occurify.Reactive)
 
 Reactive Extensions for Occurify: Enabling seamless scheduling of instant and period-based timelines.
 
@@ -72,7 +80,7 @@ Occurify is distributed as the following NuGet packages:
 
 Package | Description
 --- |---
-[Occurify](https://www.nuget.org/packages/Occurify) | A comprehensive and intuitive .NET library for defining, filtering, transforming, and scheduling time periods.
+[Occurify](https://www.nuget.org/packages/Occurify) | A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling timelines.
 [Occurify.TimeZones](https://www.nuget.org/packages/Occurify.TimeZones) | Time zone and cron expression support for Occurify: Filter, manipulate, and schedule instants and periods across time zones.
 [Occurify.Astro](https://www.nuget.org/packages/Occurify.Astro) | Astronomical instants and periods for Occurify: Track sun states, perform calculations, and manage events.
 [Occurify.Reactive](https://www.nuget.org/packages/Occurify.Reactive) | Reactive Extensions for Occurify: Enabling seamless scheduling of instant and period-based timelines.
@@ -434,10 +442,10 @@ Occurify uses 4 main concepts:
 
 Concept | Represented by | Description
 --- | --- | ----
-Instant | UTC `DateTime` | A single instant in time.
-Period | `Period` | A period of time, defined by a start and end instant.
-Instant timeline | `ITimeline` | A timeline containing instants.
-period timeline | `IPeriodTimeline` | A timeline containing periods.
+[Instant](#instant) | UTC `DateTime` | A single instant in time.
+[Period](#period) | `Period` | A period of time, defined by a start and end instant.
+[Instant timeline](#instant-timeline) | `ITimeline` | A timeline containing instants.
+[Period timeline](#period-timeline) | `IPeriodTimeline` | A timeline containing periods.
 
 ### Instant
 
@@ -459,7 +467,7 @@ A period contains all instants that are greater than or equal to the start insta
 
 **Key Concept:** Consecutive periods (a period with the same start as the end of another) do not overlap, ensuring that each instant belongs to only one period.
 
-#### Period:
+#### Period Record:
 ```cs
 record Period(DateTime? Start, DateTime? End) : IComparable<Period>
 ```
@@ -556,12 +564,18 @@ IPeriodTimeline periodTimeline4 = PeriodTimeline.FromPeriods(period, period + Ti
 IPeriodTimeline periodTimeline5 = PeriodTimeline.Between(periodStartTimeline, periodEndTimeline);
 ```
 
+### Collections
+
+In Occurify, collections of `ITimeline` (and soon `IPeriodTimeline` as well) are treated as first-class citizens. This means that all extension methods available for `ITimeline` can also be used on `IEnumerable<ITimeline>` and `IEnumerable<KeyValuePair<ITimeline, TValue>>`.
+
+The latter is particularly useful, as it enables assigning values to timelines while still being able to manipulate them.
+
 ## Coordinates
 
 All methods in `Occurify.Astro` have a signature with and without `Coordinates` object. If no `Coordinates` object is provided, the method will use `Coordinates.Local` by default. Note that this static property needs to be set before use:
 
 ```cs
-Coordinates.Local = new Coordinates(48.8584, 2.2945);
+Coordinates.Local = new Coordinates(78.2384, 15.4463, height: 126);
 ```
 
 ## ASCII Representation of Timelines
@@ -572,7 +586,7 @@ The following characters are used in the notation:
 Character | Meaning
 ---|---
 *space* | No instant
-\|| Instant on a instant timeline
+\|| Instant on an instant timeline
 < |Instant on start of a period timeline
 \> |Instant on end of a period timeline
 X|Instant on the exact same moment on both the start and end of a period timeline
