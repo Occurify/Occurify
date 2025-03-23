@@ -6,10 +6,7 @@ namespace Occurify.Extensions;
 /// </summary>
 public record TimelineSample
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TimelineSample"/> class.
-    /// </summary>
-    public TimelineSample(DateTime utcSampleInstant, bool sampleIsInstant, DateTime? previous, DateTime? next)
+    internal TimelineSample(DateTime utcSampleInstant, bool sampleIsInstant, DateTime? previous, DateTime? next)
     {
         UtcSampleInstant = utcSampleInstant;
         SampleIsInstant = sampleIsInstant;
