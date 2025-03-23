@@ -5,7 +5,7 @@ using Occurify.Reactive.Extensions;
 namespace Occurify.Reactive.Tests;
 
 [TestClass]
-public class PeriodTimelineToObservableTests
+public class PeriodTimelineExtensionsReactiveTests
 {
     [TestMethod]
     public void ToPeriodObservable_SinglePeriod()
