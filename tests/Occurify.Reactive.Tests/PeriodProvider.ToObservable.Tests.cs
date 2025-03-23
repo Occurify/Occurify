@@ -25,13 +25,13 @@ public class PeriodTimelineToObservableTests
 
         observable.Subscribe(results.Add);
 
-        Assert.AreEqual(0, results.Count);
+        Assert.IsFalse(results.Any());
 
         // First set the current time. Note that we do this after creating the observable, as Observable.Generate also uses the scheduler for the first iteration, and this triggers that setup.
         scheduler.AdvanceTo(now.Ticks);
             
         scheduler.AdvanceBy(timeGap1 - 1);
-        Assert.AreEqual(0, results.Count);
+        Assert.IsFalse(results.Any());
 
         scheduler.AdvanceBy(1);
         CollectionAssert.AreEqual(new[] { 
@@ -68,13 +68,13 @@ public class PeriodTimelineToObservableTests
 
         observable.Subscribe(results.Add);
 
-        Assert.AreEqual(0, results.Count);
+        Assert.IsFalse(results.Any());
 
         // First set the current time. Note that we do this after creating the observable, as Observable.Generate also uses the scheduler for the first iteration, and this triggers that setup.
         scheduler.AdvanceTo(now.Ticks);
 
         scheduler.AdvanceBy(timeGap1 - 1);
-        Assert.AreEqual(0, results.Count);
+        Assert.IsFalse(results.Any());
 
         scheduler.AdvanceBy(1);
         CollectionAssert.AreEqual(new[] {
@@ -108,6 +108,9 @@ public class PeriodTimelineToObservableTests
         var periodTimeline = start.To(end).AsPeriodTimeline();
 
         var observable = periodTimeline.ToPeriodObservableIncludingCurrentSample(now, scheduler);
+
+        // The first result should only be emitted after Subscribe is called.
+        Assert.IsFalse(results.Any());
 
         observable.Subscribe(results.Add);
 
@@ -155,6 +158,9 @@ public class PeriodTimelineToObservableTests
         var periodTimeline = PeriodTimeline.FromInstantsAsConsecutive(time1, time2);
 
         var observable = periodTimeline.ToPeriodObservableIncludingCurrentSample(now, scheduler);
+
+        // The first result should only be emitted after Subscribe is called.
+        Assert.IsFalse(results.Any());
 
         observable.Subscribe(results.Add);
 
