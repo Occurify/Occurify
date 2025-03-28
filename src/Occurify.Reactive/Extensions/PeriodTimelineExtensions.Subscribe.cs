@@ -24,20 +24,7 @@ public static partial class PeriodTimelineExtensions
         ArgumentNullException.ThrowIfNull(startAction);
         ArgumentNullException.ThrowIfNull(endAction);
 
-        if (includeCurrentSample)
-        {
-            return periodTimeline.ToBooleanObservableIncludingCurrent(relativeTo, scheduler).Subscribe(b =>
-            {
-                if (b)
-                {
-                    startAction();
-                    return;
-                }
-
-                endAction();
-            });
-        }
-        return periodTimeline.ToBooleanObservable(relativeTo, scheduler).Subscribe(b =>
+        return periodTimeline.ToBooleanObservable(relativeTo, scheduler, includeCurrentSample).Subscribe(b =>
         {
             if (b)
             {
@@ -66,9 +53,10 @@ public static partial class PeriodTimelineExtensions
         ArgumentNullException.ThrowIfNull(scheduler);
         ArgumentNullException.ThrowIfNull(startAction);
 
-        return includeCurrentSample ? 
-            periodTimeline.ToBooleanObservableIncludingCurrent(relativeTo, scheduler).Where(x => x).Subscribe(_ => startAction()) : 
-            periodTimeline.ToBooleanObservable(relativeTo, scheduler).Where(x => x).Subscribe(_ => startAction());
+        return periodTimeline
+            .ToBooleanObservable(relativeTo, scheduler, includeCurrentSample)
+            .Where(x => x)
+            .Subscribe(_ => startAction());
     }
 
     /// <summary>
@@ -88,8 +76,9 @@ public static partial class PeriodTimelineExtensions
         ArgumentNullException.ThrowIfNull(scheduler);
         ArgumentNullException.ThrowIfNull(endAction);
 
-        return includeCurrentSample ?
-            periodTimeline.ToBooleanObservableIncludingCurrent(relativeTo, scheduler).Where(x => !x).Subscribe(_ => endAction()) :
-            periodTimeline.ToBooleanObservable(relativeTo, scheduler).Where(x => !x).Subscribe(_ => endAction());
+        return periodTimeline
+            .ToBooleanObservable(relativeTo, scheduler, includeCurrentSample)
+            .Where(x => !x)
+            .Subscribe(_ => endAction());
     }
 }
