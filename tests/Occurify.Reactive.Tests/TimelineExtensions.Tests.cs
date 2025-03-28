@@ -5,7 +5,7 @@ using Occurify.Reactive.Extensions;
 namespace Occurify.Reactive.Tests;
 
 [TestClass]
-public class TimelineExtensionsReactiveTests
+public class TimelineExtensionsTests
 {
     [TestMethod]
     public void ToInstantObservable()

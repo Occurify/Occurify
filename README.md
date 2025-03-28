@@ -107,7 +107,7 @@ As an example, let’s imagine we want to automate our lights to turn on in the 
 
 ### Defining Timelines
 
-Instead of manually maintaining a list of sunset times, we can simply define:
+Instead of manually maintaining a list of sunset times, we can simply use:
 
 ```cs
 ITimeline sunsets = AstroInstants.LocalSunset;
@@ -188,19 +188,12 @@ foreach (Period period in lightOnPeriods.EnumeratePeriod(TimeZonePeriods.Month(2
 
 #### Scheduling Automatic Actions
 
-To automate actions based on the timeline, you can leverage **ReactiveX**. Methods like `ToBooleanObservable` return an `IObservable`, which makes it easy to schedule events reactively.
+To automate actions based on the timeline, you can use **ReactiveX**, which provides a powerful way to handle event-driven programming. The `SubscribeStartEnd` method internally utilizes an `IObservable`, allowing you to schedule events reactively.
+
+By default, this method even evaluates the current state of the timeline, invoking the applicable method on startup.
 
 ```cs
-lightOnPeriods.ToBooleanObservable(scheduler)
-    .Subscribe(lightOn =>
-    {
-        if (lightOn) {
-            // Turn lights on.
-        }
-        else {
-            // Turn lights off.
-        }
-    });
+lightOnPeriods.SubscribeStartEnd(() => TurnLightsOn(), () => TurnLightsOff(), scheduler);
 ```
 
 This approach allows you to focus on what matters—like defining when you want your lights to turn on—without manually handling the timing and scheduling. As a result, your code becomes more **intuitive**, **dynamic**, and **use case-driven**.
@@ -237,17 +230,9 @@ IPeriodTimeline between7AndSunRiseInTheMorning = between7AndSunRise.Within(TimeZ
 
 #### Using ReactiveX for Scheduling
 
-Now we can use `ToBooleanObservableIncludingCurrent` from `Occurify.Reactive` to integrate with `ReactiveX` for event-driven scheduling:
+Now we can use `SubscribeStartEnd` from `Occurify.Reactive` to integrate with `ReactiveX` for event-driven scheduling:
 ```cs
-between7AndSunRiseInTheMorning.ToBooleanObservableIncludingCurrent(scheduler).Subscribe(inPeriod =>
-{
-    if (inPeriod)
-    {
-        lightEntity.TurnOn();
-        return;
-    }
-    lightEntity.TurnOff();
-});
+between7AndSunRiseInTheMorning.SubscribeStartEnd(() => lightEntity.TurnOn(), () => lightEntity.TurnOff(), scheduler);
 ```
 
 This ensures the light automatically turns **on or off** based on whether the current time falls within the defined period. Additionally, it will set the light to the correct state initially, matching the period's condition at the time the program starts.
@@ -369,15 +354,7 @@ ITimeline turnOffAt = TimeZoneInstants.DailyAt(hour: 23, minute: 15).Randomize(s
 IPeriodTimeline lightOnPeriods = turnOnAt.To(turnOffAt);
 
 // Schedule
-lightOnPeriods.ToBooleanObservableIncludingCurrent(scheduler).Subscribe(inPeriod =>
-{
-    if (inPeriod)
-    {
-        lightEntity.TurnOn();
-        return;
-    }
-    lightEntity.TurnOff();
-});
+lightOnPeriods.SubscribeStartEnd(() => lightEntity.TurnOn(), () => lightEntity.TurnOff(), scheduler);
 ```
 
 #### Explanation
@@ -385,7 +362,7 @@ lightOnPeriods.ToBooleanObservableIncludingCurrent(scheduler).Subscribe(inPeriod
 - `Randomize(seed, minOffset, maxOffset)` ensures that randomness is applied consistently, even across restarts.
 - `LastWithin(TimeZonePeriods.Days())` makes sure we use the last valid time after the 5:15 PM cutoff.
 - `FirstWithin(TimeZonePeriods.Days())` finds the earliest valid moment within the defined constraints.
-- `ToBooleanObservableIncludingCurrent(scheduler)` immediately updates the light to the correct state when the program starts and schedules future on/off transitions based on the defined period.
+- `SubscribeStartEnd(() => lightEntity.TurnOn(), () => lightEntity.TurnOff(), scheduler)` immediately updates the light to the correct state when the program starts and schedules future on/off transitions based on the defined period.
 
 This logic ensures the light turns on and off naturally based on the specified conditions, making automation less predictable and more human-like.
 
