@@ -7,7 +7,7 @@ namespace Occurify.Reactive.Extensions;
 /// <summary>
 /// Provides reactive extension methods for working with <see cref="IPeriodTimeline"/>.
 /// </summary>
-public static class PeriodTimelineExtensions
+public static partial class PeriodTimelineExtensions
 {
     /// <summary>
     /// Returns a <c>IObservable</c> that emits <c>true</c> when a period starts and <c>false</c> when it ends.
