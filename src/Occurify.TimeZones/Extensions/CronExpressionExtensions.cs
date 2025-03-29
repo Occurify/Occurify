@@ -6,8 +6,7 @@ namespace Occurify.TimeZones.Extensions
     {
         internal static TimeSpan? GetFirstPeriodDuration(this CronExpression cronExpression, TimeZoneInfo timeZone)
         {
-            // Note: there is a bug in Cronos causing it to think there is no result if the first result is 0 ticks. Therefor we start at tick 1.
-            var first = cronExpression.GetNextOccurrence(new (1, DateTimeKind.Utc), timeZone, inclusive: true);
+            var first = cronExpression.GetNextOccurrence(new (0, DateTimeKind.Utc), timeZone, inclusive: true);
             if (first == null)
             {
                 return null;
