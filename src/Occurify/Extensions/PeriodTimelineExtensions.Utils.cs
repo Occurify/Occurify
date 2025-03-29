@@ -193,13 +193,39 @@ public static partial class PeriodTimelineExtensions
             {
                 return null;
             }
+            // Note: As a period timeline doesn't contain any overlapping periods, the total duration will never exceed the range of a DateTime if no infinite periods are present.
+            // As this is far smaller than the range of a TimeSpan, we don't need to check for overflow here.
             return sum.Value + p.Duration.Value;
         });
 
     /// <summary>
     /// Calculates the total duration of <paramref name="source"/>.
+    /// If <paramref name="addIndividualTimelineDurations"/> is <c>true</c>, the total duration is calculated by summing the durations of all individual timelines. If <c>false</c>, the total duration of the merged timelines is calculated.
     /// </summary>
-    public static TimeSpan? TotalDuration(this IEnumerable<IPeriodTimeline> source) => source.Merge().TotalDuration();
+    public static TimeSpan? TotalDuration(this IEnumerable<IPeriodTimeline> source, bool addIndividualTimelineDurations = false)
+    {
+        if (addIndividualTimelineDurations)
+        {
+            return source.Aggregate((TimeSpan?)TimeSpan.Zero, (sum, p) =>
+            {
+                if (sum == null)
+                {
+                    return null;
+                }
+
+                var duration = p.TotalDuration();
+                if (duration == null)
+                {
+                    return null;
+                }
+
+                // Note: Even though unlikely due to the range of TimeSpan (which is the range of a long), given enough period timelines it is possible to overflow the range of TimeSpan.
+                // Therefor we need to check for overflow here.
+                return sum.Value.AddOrNullOnOverflow(duration.Value);
+            });
+        }
+        return source.Merge().TotalDuration();
+    }
 
     internal static bool ContainsEnd(this IPeriodTimeline periodTimeline, DateTime endOfPeriod)
     {
