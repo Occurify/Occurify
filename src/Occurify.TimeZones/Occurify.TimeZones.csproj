@@ -15,10 +15,6 @@
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageTags>Occurify;Time;Instant;Instants;Period;Periodically;Periods;DateTime;Timeline;Time-Period;Time-Management;Recurring;Repeat;Repeating;Schedule;Scheduling;TimeZone;Year;Month;Week;Day;Hour;Minute;Annual;Annually;Monthly;Daily;Cron;CronJob;Cronos;Filter;Transform;Extension;Methods;Fluent;Fluent-Interface;C#;.NET;Reactive;ReactiveX;Rx;Occurrence;Occur;UTC;Bidirectional;Geography;MIT</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Cronos" Version="0.9.0" />
-  </ItemGroup>
   
   <ItemGroup>
 	<None Include="..\..\LICENSE">
@@ -29,6 +25,10 @@
 	  <Pack>True</Pack>
 	  <PackagePath>\</PackagePath>
 	</None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Cronos.Unlimited" Version="0.9.0" />
   </ItemGroup>
   
   <ItemGroup>
