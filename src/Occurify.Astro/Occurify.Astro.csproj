@@ -14,7 +14,7 @@
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageTags>Occurify;Astronomy;Astronomical;Astro;Coordinate;Coordinates;Longitude;Latitude;Sunrise;Sunset;Sun-Phase;Sun;Solar;Noon;Night;Dawn;Dusk;Nautical;Golden-Hour;Celestial;Evening;Morning;Nadir;SunCalcNet;Time;Instant;Instants;Period;Periodically;Periods;DateTime;Timeline;Time-Period;Time-Management;Recurring;Repeat;Repeating;Schedule;Scheduling;Reactive;ReactiveX;Rx;Filter;Transform;Extension;Methods;Algorithms;Fluent;Fluent-Interface;C#;.NET;Occurrence;Occur;UTC;Bidirectional;Geography;MIT</PackageTags>
-	<icon>icon.png</icon>
+	<PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
   
   <ItemGroup>

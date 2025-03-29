@@ -14,7 +14,7 @@
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageTags>Occurify;Time;Instant;Instants;Period;Periodically;Periods;DateTime;Timeline;Time-Period;Time-Management;Recurring;Repeat;Repeating;Schedule;Scheduling;TimeZone;Year;Month;Week;Day;Hour;Minute;Annual;Annually;Monthly;Daily;Cron;CronJob;Cronos;Filter;Transform;Extension;Methods;Fluent;Fluent-Interface;C#;.NET;Reactive;ReactiveX;Rx;Occurrence;Occur;UTC;Bidirectional;Geography;MIT</PackageTags>
-	<icon>icon.png</icon>
+	<PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
   
   <ItemGroup>
