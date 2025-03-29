@@ -61,6 +61,8 @@ Time zone and cron expression support for Occurify: Filter, manipulate, and sche
 - Does not skip interval-based occurrences, when the clock jumps backward from Summer time.
 - Does not retry non-interval based occurrences, when the clock jumps backward from Summer time.
 
+> Note: Rather than using **Cronos**, Occurify currently uses **Cronos.Unlimited** to remove the year 2499 limitation and ensure optimal functionality. For more information, please check the [README of Cronos.Unlimited](https://github.com/DevJasperNL/Cronos.Unlimited).
+
 ### [Occurify.Astro](https://www.nuget.org/packages/Occurify.Astro)
 
 Astronomical instants and periods for Occurify: Track sun states, perform calculations, and manage events.
