@@ -21,7 +21,7 @@ public class PeriodTimelineExtensionsTests
         var end = now + TimeSpan.FromTicks(timeGap1 + timeGap2);
         var periodTimeline = start.To(end).AsPeriodTimeline();
             
-        var observable = periodTimeline.ToSampleObservable(now, scheduler, includeCurrentSample: false);
+        var observable = periodTimeline.ToSampleObservable(now, scheduler, emitSampleUponSubscribe: false);
 
         observable.Subscribe(results.Add);
 
@@ -64,7 +64,7 @@ public class PeriodTimelineExtensionsTests
         var time2 = now + TimeSpan.FromTicks(timeGap1 + timeGap2);
         var periodTimeline = PeriodTimeline.FromInstantsAsConsecutive(time1, time2);
             
-        var observable = periodTimeline.ToSampleObservable(now, scheduler, includeCurrentSample: false);
+        var observable = periodTimeline.ToSampleObservable(now, scheduler, emitSampleUponSubscribe: false);
 
         observable.Subscribe(results.Add);
 

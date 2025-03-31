@@ -8,7 +8,7 @@ namespace Occurify.Reactive.Tests;
 public class TimelineExtensionsTests
 {
     [TestMethod]
-    public void ToInstantObservable()
+    public void ToInstantObservable_ExcludingCurrentInstant()
     {
         const int timeGap1 = 42;
         const int timeGap2 = 1337;
@@ -21,7 +21,7 @@ public class TimelineExtensionsTests
         var time2 = now + TimeSpan.FromTicks(timeGap1 + timeGap2);
         var timeline = Timeline.FromInstants(time1, time2);
             
-        var observable = timeline.ToInstantObservable(now, scheduler);
+        var observable = timeline.ToInstantObservable(now, scheduler, emitInstantUponSubscribe: false);
             
         observable.Subscribe(results.Add);
 
@@ -44,7 +44,7 @@ public class TimelineExtensionsTests
     }
 
     [TestMethod]
-    public void ToInstantObservableIncludingCurrentInstant()
+    public void ToInstantObservable_IncludingCurrentInstant()
     {
         const int timeGap1 = 42;
         const int timeGap2 = 1337;
@@ -57,7 +57,7 @@ public class TimelineExtensionsTests
         var time2 = now + TimeSpan.FromTicks(timeGap1 + timeGap2);
         var timeline = Timeline.FromInstants(time1, time2);
 
-        var observable = timeline.ToInstantObservableIncludingCurrentInstant(now, scheduler);
+        var observable = timeline.ToInstantObservable(now, scheduler);
 
         // The first result should only be emitted after Subscribe is called.
         Assert.IsFalse(results.Any());
@@ -86,7 +86,7 @@ public class TimelineExtensionsTests
     }
 
     [TestMethod]
-    public void ToSampleObservable()
+    public void ToSampleObservable_ExcludingCurrentSample()
     {
         const int timeGap1 = 42;
         const int timeGap2 = 1337;
@@ -99,7 +99,7 @@ public class TimelineExtensionsTests
         var time2 = now + TimeSpan.FromTicks(timeGap1 + timeGap2);
         var timeline = Timeline.FromInstants(time1, time2);
 
-        var observable = timeline.ToSampleObservable(now, scheduler);
+        var observable = timeline.ToSampleObservable(now, scheduler, emitSampleUponSubscribe: false);
 
         observable.Subscribe(results.Add);
 
@@ -127,7 +127,7 @@ public class TimelineExtensionsTests
     }
 
     [TestMethod]
-    public void ToSampleObservableIncludingCurrentInstant()
+    public void ToSampleObservable_IncludingCurrentSample()
     {
         const int timeGap1 = 42;
         const int timeGap2 = 1337;
@@ -140,7 +140,7 @@ public class TimelineExtensionsTests
         var time2 = now + TimeSpan.FromTicks(timeGap1 + timeGap2);
         var timeline = Timeline.FromInstants(time1, time2);
 
-        var observable = timeline.ToSampleObservableIncludingCurrentInstant(now, scheduler);
+        var observable = timeline.ToSampleObservable(now, scheduler);
 
         // The first result should only be emitted after Subscribe is called.
         Assert.IsFalse(results.Any());
