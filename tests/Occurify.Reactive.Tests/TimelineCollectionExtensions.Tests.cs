@@ -8,7 +8,7 @@ namespace Occurify.Reactive.Tests;
 public class TimelineCollectionExtensionsTests
 {
     [TestMethod]
-    public void ToSampleObservable()
+    public void ToSampleObservable_ExcludingCurrentSample()
     {
         const int timeGap1 = 42;
         const int timeGap2 = 1337;
@@ -29,7 +29,7 @@ public class TimelineCollectionExtensionsTests
 
         var timelines = new[] { timeline1, timeline2 };
 
-        var observable = timelines.ToSampleObservable(now, scheduler);
+        var observable = timelines.ToSampleObservable(now, scheduler, emitSampleUponSubscribe: false);
 
         observable.Subscribe(results.Add);
 
@@ -118,7 +118,7 @@ public class TimelineCollectionExtensionsTests
     }
 
     [TestMethod]
-    public void ToSampleObservableIncludingCurrentInstant()
+    public void ToSampleObservable_IncludingCurrentSample()
     {
         const int timeGap1 = 42;
         const int timeGap2 = 1337;
@@ -139,7 +139,7 @@ public class TimelineCollectionExtensionsTests
 
         var timelines = new[] { timeline1, timeline2 };
 
-        var observable = timelines.ToSampleObservableIncludingCurrentInstant(now, scheduler);
+        var observable = timelines.ToSampleObservable(now, scheduler);
 
         // The first result should only be emitted after Subscribe is called.
         Assert.IsFalse(results.Any());

@@ -11,35 +11,46 @@ public static partial class PeriodTimelineExtensions
 {
     /// <summary>
     /// Returns a <c>IObservable</c> that emits <c>true</c> when a period starts and <c>false</c> when it ends.
+    /// If <paramref name="emitStateUponSubscribe"/> is true, the state at the current time will be emitted immediately upon subscribing.
     /// </summary>
-    public static IObservable<bool> ToBooleanObservable(this IPeriodTimeline periodTimeline, IScheduler scheduler) =>
-        periodTimeline.ToBooleanObservable(DateTime.UtcNow, scheduler);
+    public static IObservable<bool> ToBooleanObservable(this IPeriodTimeline periodTimeline, IScheduler scheduler,
+        bool emitStateUponSubscribe = true) =>
+        periodTimeline.ToSampleObservable(scheduler, emitStateUponSubscribe).Select(s => s.IsPeriod);
 
     /// <summary>
     /// Returns a <c>IObservable</c> that emits <c>true</c> when a period starts and <c>false</c> when it ends using <paramref name="relativeTo"/> as a starting time.
+    /// If <paramref name="emitStateUponSubscribe"/> is true, the state at <paramref name="relativeTo"/> will be emitted immediately upon subscribing.
     /// </summary>
-    public static IObservable<bool> ToBooleanObservable(this IPeriodTimeline periodTimeline, DateTime relativeTo, IScheduler scheduler) => periodTimeline.ToPeriodObservable(relativeTo, scheduler).Select(s => s.IsPeriod);
-
-    /// <summary>
-    /// Returns a <c>IObservable</c> that immediately emits a boolean based on the period state on <see cref="DateTime.UtcNow"/> upon subscribing and then emits <c>true</c> when a period starts and <c>false</c> when it ends.
-    /// </summary>
-    public static IObservable<bool> ToBooleanObservableIncludingCurrent(this IPeriodTimeline periodTimeline, IScheduler scheduler) => periodTimeline.ToPeriodObservableIncludingCurrentSample(scheduler).Select(s => s.IsPeriod);
-
-    /// <summary>
-    /// Returns a <c>IObservable</c> that immediately emits a boolean based on the period state on <paramref name="relativeTo"/> upon subscribing and then emits <c>true</c> when a period starts and <c>false</c> when it ends using <paramref name="relativeTo"/> as a starting time.
-    /// </summary>
-    public static IObservable<bool> ToBooleanObservableIncludingCurrent(this IPeriodTimeline periodTimeline, DateTime relativeTo, IScheduler scheduler) => periodTimeline.ToPeriodObservableIncludingCurrentSample(relativeTo, scheduler).Select(s => s.IsPeriod);
+    public static IObservable<bool> ToBooleanObservable(this IPeriodTimeline periodTimeline, DateTime relativeTo,
+        IScheduler scheduler, bool emitStateUponSubscribe = true) =>
+        periodTimeline.ToSampleObservable(relativeTo, scheduler, emitStateUponSubscribe).Select(s => s.IsPeriod);
 
     /// <summary>
     /// Returns a <c>IObservable</c> that emits a <see cref="PeriodTimelineSample"/> every time a period starts or ends.
+    /// If <paramref name="emitSampleUponSubscribe"/> is true, the sample at the current time will be emitted immediately upon subscribing.
     /// </summary>
-    public static IObservable<PeriodTimelineSample> ToPeriodObservable(this IPeriodTimeline periodTimeline,
-        IScheduler scheduler) => periodTimeline.ToPeriodObservable(DateTime.UtcNow, scheduler);
+    public static IObservable<PeriodTimelineSample> ToSampleObservable(this IPeriodTimeline periodTimeline,
+        IScheduler scheduler, bool emitSampleUponSubscribe = true) =>
+        periodTimeline.ToSampleObservable(DateTime.UtcNow, scheduler, emitSampleUponSubscribe);
 
     /// <summary>
     /// Returns a <c>IObservable</c> that emits a <see cref="PeriodTimelineSample"/> every time a period starts or ends using <paramref name="relativeTo"/> as a starting time.
+    /// If <paramref name="emitSampleUponSubscribe"/> is true, the sample at <paramref name="relativeTo"/> will be emitted immediately upon subscribing.
     /// </summary>
-    public static IObservable<PeriodTimelineSample> ToPeriodObservable(this IPeriodTimeline periodTimeline,
+    public static IObservable<PeriodTimelineSample> ToSampleObservable(this IPeriodTimeline periodTimeline,
+        DateTime relativeTo, IScheduler scheduler, bool emitSampleUponSubscribe = true)
+    {
+        if (emitSampleUponSubscribe)
+        {
+            return Observable.Defer(() =>
+                periodTimeline.ToPeriodObservableInternal(relativeTo, scheduler)
+                    .Prepend(periodTimeline.SampleAt(relativeTo)));
+        }
+
+        return periodTimeline.ToPeriodObservableInternal(relativeTo, scheduler);
+    }
+
+    private static IObservable<PeriodTimelineSample> ToPeriodObservableInternal(this IPeriodTimeline periodTimeline,
         DateTime relativeTo, IScheduler scheduler)
     {
         return Observable.Generate(
@@ -59,37 +70,18 @@ public static partial class PeriodTimelineExtensions
             {
                 return null;
             }
+
             if (dateTime1 != null && dateTime2 == null)
             {
                 return dateTime1;
             }
+
             if (dateTime1 == null && dateTime2 != null)
             {
                 return dateTime2;
             }
+
             return dateTime1 < dateTime2 ? dateTime1 : dateTime2;
         }
-    }
-
-    /// <summary>
-    /// Returns a <c>IObservable</c> that immediately emits a <see cref="PeriodTimelineSample"/> on <see cref="DateTime.UtcNow"/> upon subscribing and then emits a <see cref="PeriodTimelineSample"/> every time a period starts or ends.
-    /// </summary>
-    public static IObservable<PeriodTimelineSample> ToPeriodObservableIncludingCurrentSample(this IPeriodTimeline periodTimeline, IScheduler scheduler)
-    {
-        return Observable.Defer(() =>
-        {
-            var utcNow = DateTime.UtcNow;
-            return periodTimeline.ToPeriodObservable(utcNow, scheduler)
-                .Prepend(periodTimeline.SampleAt(utcNow));
-        });
-    }
-
-    /// <summary>
-    /// Returns a <c>IObservable</c> that immediately emits a <see cref="PeriodTimelineSample"/> on <paramref name="relativeTo"/> upon subscribing and then emits a <see cref="PeriodTimelineSample"/> every time a period starts or ends using <paramref name="relativeTo"/> as a starting time.
-    /// </summary>
-    public static IObservable<PeriodTimelineSample> ToPeriodObservableIncludingCurrentSample(this IPeriodTimeline periodTimeline,
-        DateTime relativeTo, IScheduler scheduler)
-    {
-        return Observable.Defer(() => periodTimeline.ToPeriodObservable(relativeTo, scheduler).Prepend(periodTimeline.SampleAt(relativeTo)));
     }
 }

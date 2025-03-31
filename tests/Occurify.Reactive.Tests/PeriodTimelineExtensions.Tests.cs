@@ -8,7 +8,7 @@ namespace Occurify.Reactive.Tests;
 public class PeriodTimelineExtensionsTests
 {
     [TestMethod]
-    public void ToPeriodObservable_SinglePeriod()
+    public void ToSampleObservable_ExcludingCurrentSample_SinglePeriod()
     {
         const int timeGap1 = 42;
         const int timeGap2 = 1337;
@@ -21,7 +21,7 @@ public class PeriodTimelineExtensionsTests
         var end = now + TimeSpan.FromTicks(timeGap1 + timeGap2);
         var periodTimeline = start.To(end).AsPeriodTimeline();
             
-        var observable = periodTimeline.ToPeriodObservable(now, scheduler);
+        var observable = periodTimeline.ToSampleObservable(now, scheduler, emitSampleUponSubscribe: false);
 
         observable.Subscribe(results.Add);
 
@@ -51,7 +51,7 @@ public class PeriodTimelineExtensionsTests
     }
 
     [TestMethod]
-    public void ToPeriodObservable_ConsecutivePeriods()
+    public void ToSampleObservable_ExcludingCurrentSample_ConsecutivePeriods()
     {
         const int timeGap1 = 42;
         const int timeGap2 = 1337;
@@ -64,7 +64,7 @@ public class PeriodTimelineExtensionsTests
         var time2 = now + TimeSpan.FromTicks(timeGap1 + timeGap2);
         var periodTimeline = PeriodTimeline.FromInstantsAsConsecutive(time1, time2);
             
-        var observable = periodTimeline.ToPeriodObservable(now, scheduler);
+        var observable = periodTimeline.ToSampleObservable(now, scheduler, emitSampleUponSubscribe: false);
 
         observable.Subscribe(results.Add);
 
@@ -94,7 +94,7 @@ public class PeriodTimelineExtensionsTests
     }
 
     [TestMethod]
-    public void ToPeriodObservableIncludingCurrentSample_SinglePeriod()
+    public void ToSampleObservable_IncludingCurrentSample_SinglePeriod()
     {
         const int timeGap1 = 42;
         const int timeGap2 = 1337;
@@ -107,7 +107,7 @@ public class PeriodTimelineExtensionsTests
         var end = now + TimeSpan.FromTicks(timeGap1 + timeGap2);
         var periodTimeline = start.To(end).AsPeriodTimeline();
 
-        var observable = periodTimeline.ToPeriodObservableIncludingCurrentSample(now, scheduler);
+        var observable = periodTimeline.ToSampleObservable(now, scheduler);
 
         // The first result should only be emitted after Subscribe is called.
         Assert.IsFalse(results.Any());
@@ -144,7 +144,7 @@ public class PeriodTimelineExtensionsTests
     }
 
     [TestMethod]
-    public void ToPeriodObservableIncludingCurrentSample_ConsecutivePeriods()
+    public void ToSampleObservable_IncludingCurrentSample_ConsecutivePeriods()
     {
         const int timeGap1 = 42;
         const int timeGap2 = 1337;
@@ -157,7 +157,7 @@ public class PeriodTimelineExtensionsTests
         var time2 = now + TimeSpan.FromTicks(timeGap1 + timeGap2);
         var periodTimeline = PeriodTimeline.FromInstantsAsConsecutive(time1, time2);
 
-        var observable = periodTimeline.ToPeriodObservableIncludingCurrentSample(now, scheduler);
+        var observable = periodTimeline.ToSampleObservable(now, scheduler);
 
         // The first result should only be emitted after Subscribe is called.
         Assert.IsFalse(results.Any());
