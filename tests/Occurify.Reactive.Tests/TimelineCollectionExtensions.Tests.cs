@@ -8,6 +8,33 @@ namespace Occurify.Reactive.Tests;
 public class TimelineCollectionExtensionsTests
 {
     [TestMethod]
+    public void SampleAt_CheckPreviousAndNext()
+    {
+        const int timeGap1 = 42;
+        const int timeGap2 = 1337;
+        const int timeGap3 = timeGap1 + timeGap2;
+        const int timeGap4 = timeGap2 - timeGap1;
+
+        var now = DateTime.UtcNow;
+
+        var time1 = now + TimeSpan.FromTicks(timeGap1);
+        var time2 = now + TimeSpan.FromTicks(timeGap1 + timeGap2);
+        var time3 = now + TimeSpan.FromTicks(timeGap1 + timeGap2 + timeGap3);
+        var time4 = now + TimeSpan.FromTicks(timeGap1 + timeGap2 + timeGap3 + timeGap4);
+
+        var timeline1 = Timeline.FromInstants(time1, time3);
+        var timeline2 = Timeline.FromInstants(time2, time4);
+
+        var timelines = new[] { timeline1, timeline2 };
+
+        var sample = timelines.SampleAt(time3);
+
+        Assert.AreEqual(time3, sample.UtcSampleInstant);
+        Assert.AreEqual(time2, sample.Previous);
+        Assert.AreEqual(time4, sample.Next);
+    }
+
+    [TestMethod]
     public void ToSampleObservable_ExcludingCurrentSample()
     {
         const int timeGap1 = 42;
