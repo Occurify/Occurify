@@ -56,22 +56,6 @@ namespace Occurify.TimeZones.Tests
         }
 
         [TestMethod]
-        public void GetNextUtcInstant_NoMoreResults()
-        {
-            // Arrange
-            var timeOnly = new TimeOnly(13, 37, 42);
-            var timeline = TimeZoneInstants.FromCron(timeOnly.ToCronExpression(), TimeZoneInfo.Utc);
-            var maxCronosTime = new DateTime(2500, 1, 1);
-            var dateTime = (maxCronosTime - TimeSpan.FromDays(1) + timeOnly.ToTimeSpan()).AsUtcInstant();
-
-            // Act
-            var nextInstant = timeline.GetNextUtcInstant(dateTime);
-
-            // Assert
-            Assert.IsNull(nextInstant);
-        }
-
-        [TestMethod]
         public void IsInstant()
         {
             // Arrange

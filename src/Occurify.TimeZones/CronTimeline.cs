@@ -7,13 +7,9 @@ namespace Occurify.TimeZones
 {
     internal class CronTimeline : Timeline
     {
-        private const int MaxYear = 2499; // This is a limitation of Cronos
-
         private readonly CronExpression _cronExpression;
         private readonly TimeZoneInfo _timeZoneInfo;
         private readonly TimeSpan? _firstPeriodDuration;
-        private readonly DateTime _maxCronosTime = DateTime.SpecifyKind(new DateTime(MaxYear + 1, 1, 1), DateTimeKind.Utc)
-            .Subtract(TimeSpan.FromTicks(1));
 
         internal CronTimeline(
             string cronExpression,
@@ -41,11 +37,6 @@ namespace Occurify.TimeZones
             if (utcRelativeTo.Kind != DateTimeKind.Utc)
             {
                 throw new ArgumentException($"{nameof(utcRelativeTo)} should be UTC time.");
-            }
-
-            if (utcRelativeTo.Year > MaxYear)
-            {
-                utcRelativeTo = _maxCronosTime;
             }
 
             if (_firstPeriodDuration == null)
@@ -99,10 +90,6 @@ namespace Occurify.TimeZones
             {
                 throw new ArgumentException($"{nameof(utcRelativeTo)} should be UTC time.");
             }
-            if (utcRelativeTo.Year > MaxYear)
-            {
-                return null;
-            }
 
             return _cronExpression.GetNextOccurrence(utcRelativeTo, _timeZoneInfo);
         }
@@ -112,10 +99,6 @@ namespace Occurify.TimeZones
             if (utcDateTime.Kind != DateTimeKind.Utc)
             {
                 throw new ArgumentException($"{nameof(utcDateTime)} should be UTC time.");
-            }
-            if (utcDateTime.Year > MaxYear)
-            {
-                return false;
             }
 
             var nextIncludingCurrent = _cronExpression.GetNextOccurrence(utcDateTime, _timeZoneInfo, true);

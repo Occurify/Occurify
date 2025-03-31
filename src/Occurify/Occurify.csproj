@@ -14,6 +14,7 @@
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageTags>Occurify;Time;Instant;Instants;Period;Periodically;Periods;DateTime;Timeline;Time-Period;Time-Management;Recurring;Repeat;Repeating;Schedule;Scheduling;TimeZone;Cron;CronJob;Cronos;Filter;Transform;Extension;Methods;Fluent;Fluent-Interface;C#;.NET;Reactive;ReactiveX;Rx;Astronomy;Astronomical;Astro;Coordinate;Coordinates;Longitude;Latitude;Sunrise;Sunset;Sun-Phase;Sun;Solar;Noon;Night;Dawn;Dusk;Nautical;Golden-Hour;Celestial;Evening;Morning;Nadir;Year;Month;Week;Day;Hour;Minute;Annual;Annually;Monthly;Daily;Occurrence;Occur;UTC;Bidirectional;Geography;MIT</PackageTags>
+	<PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +23,10 @@
       <PackagePath>\</PackagePath>
     </None>
 	<None Include="..\..\README.md">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+	<None Include="..\..\img\icon.png">
 	  <Pack>True</Pack>
 	  <PackagePath>\</PackagePath>
 	</None>

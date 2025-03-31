@@ -34,6 +34,7 @@ A powerful and intuitive .NET library for defining, filtering, transforming, and
 - [Unit Tests](#unit-tests)
 - [Important Considerations](#important-considerations)
 - [Multi-Language Support](#multi-language-support)
+- [Versioning and Stability](#versioning-and-stability)
 - [License](#license)
 
 ## Overview
@@ -59,6 +60,8 @@ Time zone and cron expression support for Occurify: Filter, manipulate, and sche
 - Does not skip occurrences, when the clock jumps forward to daylight saving time (known as Summer time).
 - Does not skip interval-based occurrences, when the clock jumps backward from Summer time.
 - Does not retry non-interval based occurrences, when the clock jumps backward from Summer time.
+
+> Note: Rather than using **Cronos**, Occurify currently uses **Cronos.Unlimited** to remove the year 2499 limitation and ensure optimal functionality. For more information, please check the [README of Cronos.Unlimited](https://github.com/DevJasperNL/Cronos.Unlimited).
 
 ### [Occurify.Astro](https://www.nuget.org/packages/Occurify.Astro)
 
@@ -918,6 +921,18 @@ Here’s an example snippet from `PeriodTimeline.Merge.json`:
 ```
 
 Each of these tests is executed at least three times: once for `GetPreviousUtcInstant`, once for `GetNextUtcInstant` and once for `IsInstant`.
+
+## Versioning and Stability
+
+This library follows Semantic Versioning (SemVer), using the format MAJOR.MINOR.PATCH (x.y.z):
+
+- MAJOR (X) – Increases when there are breaking changes (starting from 1.0.0).
+- MINOR (Y) – Increases when new features are introduced (or breaking changes while still in 0.x).
+- PATCH (Z) – Increases when making backward-compatible bug fixes.
+
+⚠️ Since this library is still in version 0.x, breaking changes may occur even in minor version updates (e.g., 0.2.0 → 0.3.0). Until we reach a stable 1.0.0, updates may require adjustments to your code.
+
+For ongoing discussions and future changes, check out [this GitHub discussion](https://github.com/Occurify/Occurify/discussions/4).
 
 ## Multi-Language Support
 
