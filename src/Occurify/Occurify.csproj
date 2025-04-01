@@ -33,6 +33,9 @@
   </ItemGroup>
   
   <ItemGroup>
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Occurify.Tests</_Parameter1>
+    </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>Occurify.Reactive.Tests</_Parameter1>
     </AssemblyAttribute>
