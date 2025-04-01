@@ -11,8 +11,8 @@ public record TimelineCollectionSample
         UtcSampleInstant = utcSampleInstant;
         Samples = samples;
         TimelinesWithInstantOnSampleLocation = samples.Where(kvp => kvp.Value.SampleIsInstant).Select(kvp => kvp.Key).ToArray();
-        Previous = samples.Values.Select(s => s.Previous).OrderBy(x => x == null).ThenBy(x => x).First();
-        Next = samples.Values.Select(s => s.Next).OrderBy(x => x == null).ThenBy(x => x).First();
+        Previous = samples.Values.Select(s => s.Previous).OrderAndPutNullFirst().Last();
+        Next = samples.Values.Select(s => s.Next).OrderAndPutNullLast().First();
         TimelinesOnPrevious = samples.Where(kvp => kvp.Value.Previous == Previous).Select(kvp => kvp.Key).ToArray();
         TimelinesOnNext = samples.Where(kvp => kvp.Value.Next == Next).Select(kvp => kvp.Key).ToArray();
     }

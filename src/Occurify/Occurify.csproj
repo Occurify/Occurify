@@ -15,6 +15,7 @@
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageTags>Occurify;Time;Instant;Instants;Period;Periodically;Periods;DateTime;Timeline;Time-Period;Time-Management;Recurring;Repeat;Repeating;Schedule;Scheduling;TimeZone;Cron;CronJob;Cronos;Filter;Transform;Extension;Methods;Fluent;Fluent-Interface;C#;.NET;Reactive;ReactiveX;Rx;Astronomy;Astronomical;Astro;Coordinate;Coordinates;Longitude;Latitude;Sunrise;Sunset;Sun-Phase;Sun;Solar;Noon;Night;Dawn;Dusk;Nautical;Golden-Hour;Celestial;Evening;Morning;Nadir;Year;Month;Week;Day;Hour;Minute;Annual;Annually;Monthly;Daily;Occurrence;Occur;UTC;Bidirectional;Geography;MIT</PackageTags>
 	<PackageIcon>icon.png</PackageIcon>
+	<PackageReleaseNotes>https://github.com/Occurify/Occurify/releases</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,6 +34,9 @@
   </ItemGroup>
   
   <ItemGroup>
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Occurify.Tests</_Parameter1>
+    </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>Occurify.Reactive.Tests</_Parameter1>
     </AssemblyAttribute>

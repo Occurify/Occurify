@@ -3,7 +3,7 @@
 A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling timelines.
 
 ## 📖 Table of Contents  
-- [Overview](#Overview)
+- [Overview](#overview)
 - [Installation](#installation)
 - [Usage](#usage)
     - [Defining Timelines](#defining-timelines)
@@ -33,8 +33,9 @@ A powerful and intuitive .NET library for defining, filtering, transforming, and
 - [Extension Methods](#extension-methods)
 - [Unit Tests](#unit-tests)
 - [Important Considerations](#important-considerations)
-- [Multi-Language Support](#multi-language-support)
 - [Versioning and Stability](#versioning-and-stability)
+- [Release Notes](#release-notes)
+- [Multi-Language Support](#multi-language-support)
 - [License](#license)
 
 ## Overview
@@ -933,6 +934,10 @@ This library follows Semantic Versioning (SemVer), using the format MAJOR.MINOR.
 ⚠️ Since this library is still in version 0.x, breaking changes may occur even in minor version updates (e.g., 0.2.0 → 0.3.0). Until we reach a stable 1.0.0, updates may require adjustments to your code.
 
 For ongoing discussions and future changes, check out [this GitHub discussion](https://github.com/Occurify/Occurify/discussions/4).
+
+## Release Notes
+
+See the latest changes in [GitHub Releases](https://github.com/Occurify/Occurify/releases).
 
 ## Multi-Language Support
 
