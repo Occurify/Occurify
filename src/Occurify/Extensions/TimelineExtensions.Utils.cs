@@ -61,18 +61,6 @@ public static partial class TimelineExtensions
     public static bool IsEmpty(this ITimeline timeline) => timeline.GetCurrentOrNextUtcInstant(DateTimeHelper.MinValueUtc) == null;
 
     /// <summary>
-    /// Takes a sample of <paramref name="source"/> at <paramref name="instant"/>.
-    /// </summary>
-    public static TimelineSample SampleAt(this ITimeline source, DateTime instant)
-    {
-        return new TimelineSample(
-            instant, 
-            source.IsInstant(instant), 
-            source.GetPreviousUtcInstant(instant),
-            source.GetNextUtcInstant(instant));
-    }
-
-    /// <summary>
     /// Synchronizes <paramref name="source"/> such that method calls cannot occur concurrently.
     /// </summary>
     public static ITimeline Synchronize(this ITimeline source)

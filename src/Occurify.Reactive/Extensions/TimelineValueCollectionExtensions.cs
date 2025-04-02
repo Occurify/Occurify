@@ -16,7 +16,7 @@ public static class TimelineValueCollectionExtensions
     /// </summary>
     public static IObservable<Unit> ToPulseObservable<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source,
         IScheduler scheduler, bool emitPulseUponSubscribe = true) =>
-        source.ToPulseObservable(DateTime.UtcNow, scheduler, emitPulseUponSubscribe);
+        source.ToInstantObservable(scheduler, emitPulseUponSubscribe).Select(_ => Unit.Default);
 
     /// <summary>
     /// Returns a <see cref="IObservable{Unit}"/> that emits a <see cref="Unit"/> every time an instant occurs on any of the timelines in <paramref name="source"/> using <paramref name="relativeTo"/> as a starting time.
@@ -33,7 +33,7 @@ public static class TimelineValueCollectionExtensions
     public static IObservable<DateTime> ToInstantObservable<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, IScheduler scheduler,
         bool emitInstantUponSubscribe = true) =>
-        source.ToInstantObservable(DateTime.UtcNow, scheduler, emitInstantUponSubscribe);
+        source.ToSampleObservable(scheduler, emitInstantUponSubscribe).Select(s => s.Key);
 
     /// <summary>
     /// Returns a <see cref="IObservable{DateTime}"/> that emits an instant as <see cref="DateTime"/> when it occurs on any of the timelines in <paramref name="source"/> using <paramref name="relativeTo"/> as a starting time.
@@ -42,22 +42,33 @@ public static class TimelineValueCollectionExtensions
     public static IObservable<DateTime> ToInstantObservable<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime relativeTo, IScheduler scheduler,
         bool emitInstantUponSubscribe = true) =>
-        source.ToSampleObservable(relativeTo, scheduler, emitInstantUponSubscribe).Select(s => s.UtcSampleInstant);
+        source.ToSampleObservable(relativeTo, scheduler, emitInstantUponSubscribe).Select(s => s.Key);
 
     /// <summary>
     /// Returns a <see cref="IObservable{TimelineSample}"/> that emits a sample every time an instant occurs on any of the timelines in <paramref name="source"/>.
     /// If <paramref name="emitSampleUponSubscribe"/> is true, a sample at the current time will be emitted immediately upon subscribing.
     /// </summary>
-    public static IObservable<TimelineValueCollectionSample<TValue>> ToSampleObservable<TValue>(
+    public static IObservable<KeyValuePair<DateTime, TValue[]>> ToSampleObservable<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, IScheduler scheduler,
-        bool emitSampleUponSubscribe = true) =>
-        source.ToSampleObservable(DateTime.UtcNow, scheduler, emitSampleUponSubscribe);
+        bool emitSampleUponSubscribe = true)
+    {
+        if (emitSampleUponSubscribe)
+        {
+            var utcNow = DateTime.UtcNow;
+            source = source.ToArray();
+            return Observable.Defer(() =>
+                source.ToSampleObservableInternal(utcNow, scheduler)
+                    .Prepend(new KeyValuePair<DateTime, TValue[]>(utcNow, source.GetValuesAtUtcInstant(utcNow))));
+        }
+
+        return source.ToSampleObservableInternal(DateTime.UtcNow, scheduler);
+    }
 
     /// <summary>
     /// Returns a <see cref="IObservable{TimelineSample}"/> that emits a sample every time an instant occurs on any of the timelines in <paramref name="source"/> using <paramref name="relativeTo"/> as a starting time.
     /// If <paramref name="emitSampleUponSubscribe"/> is true, the sample at <paramref name="relativeTo"/> will be emitted immediately upon subscribing.
     /// </summary>
-    public static IObservable<TimelineValueCollectionSample<TValue>> ToSampleObservable<TValue>(
+    public static IObservable<KeyValuePair<DateTime, TValue[]>> ToSampleObservable<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime relativeTo, IScheduler scheduler,
         bool emitSampleUponSubscribe = true)
     {
@@ -66,13 +77,13 @@ public static class TimelineValueCollectionExtensions
             source = source.ToArray();
             return Observable.Defer(() =>
                 source.ToSampleObservableInternal(relativeTo, scheduler)
-                    .Prepend(source.SampleAt(relativeTo)));
+                    .Prepend(new KeyValuePair<DateTime, TValue[]>(relativeTo, source.GetValuesAtUtcInstant(relativeTo))));
         }
 
         return source.ToSampleObservableInternal(relativeTo, scheduler);
     }
 
-    private static IObservable<TimelineValueCollectionSample<TValue>> ToSampleObservableInternal<TValue>(
+    private static IObservable<KeyValuePair<DateTime, TValue[]>> ToSampleObservableInternal<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime relativeTo, IScheduler scheduler)
     {
         source = source.ToArray();
@@ -80,7 +91,7 @@ public static class TimelineValueCollectionExtensions
             source.GetNextUtcInstant(relativeTo),
             sample => sample != null,
             sample => source.GetNextUtcInstant(sample!.Value),
-            sample => source.SampleAt(sample!.Value),
+            sample => new KeyValuePair<DateTime, TValue[]>(sample!.Value, source.GetValuesAtUtcInstant(sample.Value)),
             sample => sample!.Value, scheduler);
     }
 }

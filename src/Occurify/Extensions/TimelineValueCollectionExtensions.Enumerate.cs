@@ -7,69 +7,69 @@ public static partial class TimelineValueCollectionExtensions
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> from earliest to latest and returns the instant along with the timelines that include this instant and their corresponding value.
     /// </summary>
-    public static IEnumerable<TimelineValueCollectionEntry<TValue>> Enumerate<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source) =>
+    public static IEnumerable<KeyValuePair<DateTime, TValue[]>> Enumerate<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source) =>
         source.EnumerateFrom(DateTimeHelper.MinValueUtc);
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> from latest to earliest and returns the instant along with the timelines that include this instant and their corresponding value.
     /// </summary>
-    public static IEnumerable<TimelineValueCollectionEntry<TValue>> EnumerateBackwards<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source)
+    public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateBackwards<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source)
     {
         source = source.ToArray();
-        var current = source.GetTimelinesAtCurrentOrPreviousUtcInstant(DateTimeHelper.MaxValueUtc);
+        var current = source.GetValuesAtCurrentOrPreviousUtcInstant(DateTimeHelper.MaxValueUtc);
 
-        while (current.instant != null)
+        while (current.Key != null)
         {
-            yield return new TimelineValueCollectionEntry<TValue>(current.instant.Value, current.timelines);
-            current = source.GetTimelinesAtPreviousUtcInstant(current.instant.Value);
+            yield return new KeyValuePair<DateTime, TValue[]>(current.Key.Value, current.Value);
+            current = source.GetValuesAtPreviousUtcInstant(current.Key.Value);
         }
     }
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur on or after <paramref name="utcStart"/> from earliest to latest and returns the instant along with the timelines that include this instant and their corresponding value.
     /// </summary>
-    public static IEnumerable<TimelineValueCollectionEntry<TValue>> EnumerateFrom<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart)
+    public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateFrom<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart)
     {
         source = source.ToArray();
-        var current = source.GetTimelinesAtCurrentOrNextUtcInstant(utcStart);
-        while (current.instant != null)
+        var current = source.GetValuesAtCurrentOrNextUtcInstant(utcStart);
+        while (current.Key != null)
         {
-            yield return new TimelineValueCollectionEntry<TValue>(current.instant.Value, current.timelines);
-            current = source.GetTimelinesAtNextUtcInstant(current.instant.Value);
+            yield return new KeyValuePair<DateTime, TValue[]>(current.Key.Value, current.Value);
+            current = source.GetValuesAtNextUtcInstant(current.Key.Value);
         }
     }
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur on or after <paramref name="utcEnd"/> from latest to earliest and returns the instant along with the timelines that include this instant and their corresponding value.
     /// </summary>
-    public static IEnumerable<TimelineValueCollectionEntry<TValue>> EnumerateBackwardsTo<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcEnd) =>
-        source.EnumerateBackwards().TakeWhile(x => x.Instant >= utcEnd);
+    public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateBackwardsTo<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcEnd) =>
+        source.EnumerateBackwards().TakeWhile(x => x.Key >= utcEnd);
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur earlier than <paramref name="utcEnd"/> from earliest to latest and returns the instant along with the timelines that include this instant and their corresponding value.
     /// </summary>
-    public static IEnumerable<TimelineValueCollectionEntry<TValue>> EnumerateTo<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcEnd) =>
-        source.Enumerate().TakeWhile(x => x.Instant < utcEnd);
+    public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateTo<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcEnd) =>
+        source.Enumerate().TakeWhile(x => x.Key < utcEnd);
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur earlier than <paramref name="utcStart"/> from latest to earliest and returns the instant along with the timelines that include this instant and their corresponding value.
     /// </summary>
-    public static IEnumerable<TimelineValueCollectionEntry<TValue>> EnumerateBackwardsFrom<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart)
+    public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateBackwardsFrom<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart)
     {
         source = source.ToArray();
-        var current = source.GetTimelinesAtPreviousUtcInstant(utcStart);
+        var current = source.GetValuesAtPreviousUtcInstant(utcStart);
 
-        while (current.instant != null)
+        while (current.Key != null)
         {
-            yield return new TimelineValueCollectionEntry<TValue>(current.instant.Value, current.timelines);
-            current = source.GetTimelinesAtPreviousUtcInstant(current.instant.Value);
+            yield return new KeyValuePair<DateTime, TValue[]>(current.Key.Value, current.Value);
+            current = source.GetValuesAtPreviousUtcInstant(current.Key.Value);
         }
     }
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="utcStart"/> and <paramref name="utcEnd"/> from earliest to latest and returns the instant along with the timelines that include this instant and their corresponding value.
     /// </summary>
-    public static IEnumerable<TimelineValueCollectionEntry<TValue>> EnumerateRange<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart, DateTime utcEnd)
+    public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateRange<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart, DateTime utcEnd)
     {
         if (utcStart == utcEnd)
         {
@@ -82,18 +82,18 @@ public static partial class TimelineValueCollectionExtensions
         }
 
         source = source.ToArray();
-        var current = source.GetTimelinesAtCurrentOrNextUtcInstant(utcStart);
-        while (current.instant != null && current.instant.Value < utcEnd)
+        var current = source.GetValuesAtCurrentOrNextUtcInstant(utcStart);
+        while (current.Key != null && current.Key.Value < utcEnd)
         {
-            yield return new TimelineValueCollectionEntry<TValue>(current.instant.Value, current.timelines);
-            current = source.GetTimelinesAtNextUtcInstant(current.instant.Value);
+            yield return new KeyValuePair<DateTime, TValue[]>(current.Key.Value, current.Value);
+            current = source.GetValuesAtNextUtcInstant(current.Key.Value);
         }
     }
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="utcStart"/> and <paramref name="utcEnd"/> from latest to earliest and returns the instant along with the timelines that include this instant and their corresponding value.
     /// </summary>
-    public static IEnumerable<TimelineValueCollectionEntry<TValue>> EnumerateRangeBackwards<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart, DateTime utcEnd)
+    public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateRangeBackwards<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart, DateTime utcEnd)
     {
         if (utcStart == utcEnd)
         {
@@ -106,18 +106,18 @@ public static partial class TimelineValueCollectionExtensions
         }
 
         source = source.ToArray();
-        var current = source.GetTimelinesAtPreviousUtcInstant(utcEnd);
-        while (current.instant != null && current.instant.Value >= utcStart)
+        var current = source.GetValuesAtPreviousUtcInstant(utcEnd);
+        while (current.Key != null && current.Key.Value >= utcStart)
         {
-            yield return new TimelineValueCollectionEntry<TValue>(current.instant.Value, current.timelines);
-            current = source.GetTimelinesAtPreviousUtcInstant(current.instant.Value);
+            yield return new KeyValuePair<DateTime, TValue[]>(current.Key.Value, current.Value);
+            current = source.GetValuesAtPreviousUtcInstant(current.Key.Value);
         }
     }
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur in <paramref name="period"/> from earliest to latest and returns the instant along with the timelines that include this instant and their corresponding value.
     /// </summary>
-    public static IEnumerable<TimelineValueCollectionEntry<TValue>> EnumeratePeriod<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, Period period)
+    public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumeratePeriod<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, Period period)
     {
         if (period.Start != null && period.End != null)
         {
@@ -140,7 +140,7 @@ public static partial class TimelineValueCollectionExtensions
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur in <paramref name="period"/> from latest to earliest and returns the instant along with the timelines that include this instant and their corresponding value.
     /// </summary>
-    public static IEnumerable<TimelineValueCollectionEntry<TValue>> EnumeratePeriodBackwards<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, Period period)
+    public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumeratePeriodBackwards<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, Period period)
     {
         if (period.Start != null && period.End != null)
         {
