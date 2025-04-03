@@ -62,55 +62,141 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Returns the timelines on the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
+    /// Returns the values of timelines in <paramref name="source"/> that have an instant at <paramref name="instant"/>.
     /// </summary>
-    public static (DateTime? instant, IEnumerable<KeyValuePair<ITimeline, TValue>> timelines) GetTimelinesAtPreviousUtcInstant<TValue>(
+    public static TValue[] GetValuesAtUtcInstant<TValue>(
+        this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
+    {
+        return source.Where(kvp => kvp.Key.IsInstant(instant)).Select(kvp => kvp.Value).ToArray();
+    }
+
+    /// <summary>
+    /// Returns the values of timelines in <paramref name="source"/> that have an instant on the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
+    /// </summary>
+    public static KeyValuePair<DateTime?, TValue[]> GetValuesAtPreviousUtcInstant<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
     {
         source = source.ToArray();
         var previousInstant = source.GetPreviousUtcInstant(instant);
-        return (previousInstant,
-            source.Where(s => s.Key.GetPreviousUtcInstant(instant) == previousInstant)
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+        if (previousInstant == null)
+        {
+            return new KeyValuePair<DateTime?, TValue[]>(null, Array.Empty<TValue>());
+        }
+        return new KeyValuePair<DateTime?, TValue[]>(previousInstant, source.GetValuesAtUtcInstant(previousInstant.Value));
+    }
+
+    /// <summary>
+    /// Returns the values of timelines in <paramref name="source"/> that have an instant on the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
+    /// </summary>
+    public static KeyValuePair<DateTime?, TValue[]> GetValuesAtNextUtcInstant<TValue>(
+        this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
+    {
+        source = source.ToArray();
+        var nextInstant = source.GetNextUtcInstant(instant);
+        if (nextInstant == null)
+        {
+            return new KeyValuePair<DateTime?, TValue[]>(null, Array.Empty<TValue>());
+        }
+        return new KeyValuePair<DateTime?, TValue[]>(nextInstant, source.GetValuesAtUtcInstant(nextInstant.Value));
+    }
+
+    /// <summary>
+    /// Returns the values of timelines in <paramref name="source"/> that have an instant on <paramref name="instant"/> or the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
+    /// </summary>
+    public static KeyValuePair<DateTime?, TValue[]> GetValuesAtCurrentOrPreviousUtcInstant<TValue>(
+        this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
+    {
+        source = source.ToArray();
+        var previousInstant = source.GetCurrentOrPreviousUtcInstant(instant);
+        if (previousInstant == null)
+        {
+            return new KeyValuePair<DateTime?, TValue[]>(null, Array.Empty<TValue>());
+        }
+        return new KeyValuePair<DateTime?, TValue[]>(previousInstant, source.GetValuesAtUtcInstant(previousInstant.Value));
+    }
+
+    /// <summary>
+    /// Returns the values of timelines in <paramref name="source"/> that have an instant on <paramref name="instant"/> or the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
+    /// </summary>
+    public static KeyValuePair<DateTime?, TValue[]> GetValuesAtCurrentOrNextUtcInstant<TValue>(
+        this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
+    {
+        source = source.ToArray();
+        var nextInstant = source.GetCurrentOrNextUtcInstant(instant);
+        if (nextInstant == null)
+        {
+            return new KeyValuePair<DateTime?, TValue[]>(null, Array.Empty<TValue>());
+        }
+        return new KeyValuePair<DateTime?, TValue[]>(nextInstant, source.GetValuesAtUtcInstant(nextInstant.Value));
+    }
+
+    /// <summary>
+    /// Returns the timelines in <paramref name="source"/> that have an instant at <paramref name="instant"/>.
+    /// </summary>
+    public static KeyValuePair<ITimeline, TValue>[] GetTimelinesAtUtcInstant<TValue>(
+        this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
+    {
+        return source.Where(kvp => kvp.Key.IsInstant(instant)).ToArray();
+    }
+
+    /// <summary>
+    /// Returns the timelines on the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
+    /// </summary>
+    public static KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]> GetTimelinesAtPreviousUtcInstant<TValue>(
+        this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
+    {
+        source = source.ToArray();
+        var previousInstant = source.GetPreviousUtcInstant(instant);
+        if (previousInstant == null)
+        {
+            return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(null, Array.Empty<KeyValuePair<ITimeline, TValue>>());
+        }
+        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(previousInstant, source.GetTimelinesAtUtcInstant(previousInstant.Value));
     }
 
     /// <summary>
     /// Returns the timelines on the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
     /// </summary>
-    public static (DateTime? instant, IEnumerable<KeyValuePair<ITimeline, TValue>> timelines) GetTimelinesAtNextUtcInstant<TValue>(
+    public static KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]> GetTimelinesAtNextUtcInstant<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
     {
         source = source.ToArray();
         var nextInstant = source.GetNextUtcInstant(instant);
-        return (nextInstant,
-            source.Where(s => s.Key.GetNextUtcInstant(instant) == nextInstant)
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+        if (nextInstant == null)
+        {
+            return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(null, Array.Empty<KeyValuePair<ITimeline, TValue>>());
+        }
+        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(nextInstant, source.GetTimelinesAtUtcInstant(nextInstant.Value));
     }
 
     /// <summary>
     /// Returns the timelines on the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>, or the timelines on <paramref name="instant"/> itself if it is on any of <paramref name="source"/>.
     /// </summary>
-    public static (DateTime? instant, IEnumerable<KeyValuePair<ITimeline, TValue>> timelines) GetTimelinesAtCurrentOrPreviousUtcInstant<TValue>(
+    public static KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]> GetTimelinesAtCurrentOrPreviousUtcInstant<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
     {
         source = source.ToArray();
         var previousInstant = source.GetCurrentOrPreviousUtcInstant(instant);
-        return (previousInstant,
-            source.Where(s => s.Key.GetCurrentOrPreviousUtcInstant(instant) == previousInstant)
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+        if (previousInstant == null)
+        {
+            return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(null, Array.Empty<KeyValuePair<ITimeline, TValue>>());
+        }
+        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(previousInstant, source.GetTimelinesAtUtcInstant(previousInstant.Value));
     }
 
     /// <summary>
     /// Returns the timelines on the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>, or the timelines on <paramref name="instant"/> itself if it is on any of <paramref name="source"/>.
     /// </summary>
-    public static (DateTime? instant, IEnumerable<KeyValuePair<ITimeline, TValue>> timelines) GetTimelinesAtCurrentOrNextUtcInstant<TValue>(
+    public static KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]> GetTimelinesAtCurrentOrNextUtcInstant<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
     {
         source = source.ToArray();
         var nextInstant = source.GetCurrentOrNextUtcInstant(instant);
-        return (nextInstant,
-            source.Where(s => s.Key.GetCurrentOrNextUtcInstant(instant) == nextInstant)
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+        if (nextInstant == null)
+        {
+            return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(null, Array.Empty<KeyValuePair<ITimeline, TValue>>());
+        }
+        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(nextInstant, source.GetTimelinesAtUtcInstant(nextInstant.Value));
     }
 
     /// <summary>
@@ -130,21 +216,6 @@ public static partial class TimelineValueCollectionExtensions
     /// </summary>
     public static bool AreEmpty<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source) =>
         source.Select(kvp => kvp.Key).AreEmpty();
-
-    /// <summary>
-    /// Takes a sample of <paramref name="source"/> at <paramref name="instant"/>.
-    /// </summary>
-    public static TimelineValueCollectionSample<TValue> SampleAt<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
-    {
-        var sourceArray = source.ToArray();
-        return new TimelineValueCollectionSample<TValue>(sourceArray, sourceArray.Select(kvp => kvp.Key).SampleAt(instant));
-    }
-
-    /// <summary>
-    /// Returns all timelines from <paramref name="source"/> that have an instant at <paramref name="instant"/>.
-    /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> GetTimelinesAt<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant) =>
-        source.SampleAt(instant).TimelinesWithInstantOnSampleLocation;
 
     /// <summary>
     /// Synchronizes all <paramref name="source"/> using the same gate such that method calls cannot occur concurrently.

@@ -84,14 +84,6 @@ public static partial class TimelineCollectionExtensions
     public static bool AreEmpty(this IEnumerable<ITimeline> source) => source.All(s => s.IsEmpty());
 
     /// <summary>
-    /// Takes a sample of <paramref name="source"/> at <paramref name="instant"/>.
-    /// </summary>
-    public static TimelineCollectionSample SampleAt(this IEnumerable<ITimeline> source, DateTime instant)
-    {
-        return new TimelineCollectionSample(instant, source.ToDictionary(s => s, s => s.SampleAt(instant)));
-    }
-
-    /// <summary>
     /// Synchronizes all <paramref name="source"/> using the same gate such that method calls cannot occur concurrently.
     /// </summary>
     public static IEnumerable<ITimeline> Synchronize(this IEnumerable<ITimeline> source) => source.Synchronize(new());
