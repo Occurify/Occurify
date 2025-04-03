@@ -62,7 +62,7 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Returns the values on of timelines in <paramref name="source"/> that have an instant at <paramref name="instant"/>.
+    /// Returns the values of timelines in <paramref name="source"/> that have an instant at <paramref name="instant"/>.
     /// </summary>
     public static TValue[] GetValuesAtUtcInstant<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
@@ -71,7 +71,7 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Returns the values on of timelines in <paramref name="source"/> that have an instant on the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
+    /// Returns the values of timelines in <paramref name="source"/> that have an instant on the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
     /// </summary>
     public static KeyValuePair<DateTime?, TValue[]> GetValuesAtPreviousUtcInstant<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
@@ -86,7 +86,7 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Returns the values on of timelines in <paramref name="source"/> that have an instant on the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
+    /// Returns the values of timelines in <paramref name="source"/> that have an instant on the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
     /// </summary>
     public static KeyValuePair<DateTime?, TValue[]> GetValuesAtNextUtcInstant<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
@@ -101,7 +101,7 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Returns the values on of timelines in <paramref name="source"/> that have an instant on <paramref name="instant"/> or the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
+    /// Returns the values of timelines in <paramref name="source"/> that have an instant on <paramref name="instant"/> or the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
     /// </summary>
     public static KeyValuePair<DateTime?, TValue[]> GetValuesAtCurrentOrPreviousUtcInstant<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
@@ -116,7 +116,7 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Returns the values on of timelines in <paramref name="source"/> that have an instant on <paramref name="instant"/> or the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
+    /// Returns the values of timelines in <paramref name="source"/> that have an instant on <paramref name="instant"/> or the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
     /// </summary>
     public static KeyValuePair<DateTime?, TValue[]> GetValuesAtCurrentOrNextUtcInstant<TValue>(
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)

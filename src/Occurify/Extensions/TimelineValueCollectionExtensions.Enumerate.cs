@@ -5,13 +5,13 @@ namespace Occurify.Extensions;
 public static partial class TimelineValueCollectionExtensions
 {
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> from earliest to latest and returns the instant along with the timelines that include this instant and their corresponding value.
+    /// Enumerates all instants on <paramref name="source"/> from earliest to latest and returns the instant along with the values of the timelines that include this instant.
     /// </summary>
     public static IEnumerable<KeyValuePair<DateTime, TValue[]>> Enumerate<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source) =>
         source.EnumerateFrom(DateTimeHelper.MinValueUtc);
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> from latest to earliest and returns the instant along with the timelines that include this instant and their corresponding value.
+    /// Enumerates all instants on <paramref name="source"/> from latest to earliest and returns the instant along with the values of the timelines that include this instant.
     /// </summary>
     public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateBackwards<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source)
     {
@@ -26,7 +26,7 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur on or after <paramref name="utcStart"/> from earliest to latest and returns the instant along with the timelines that include this instant and their corresponding value.
+    /// Enumerates all instants on <paramref name="source"/> that occur on or after <paramref name="utcStart"/> from earliest to latest and returns the instant along with the values of the timelines that include this instant.
     /// </summary>
     public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateFrom<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart)
     {
@@ -40,19 +40,19 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur on or after <paramref name="utcEnd"/> from latest to earliest and returns the instant along with the timelines that include this instant and their corresponding value.
+    /// Enumerates all instants on <paramref name="source"/> that occur on or after <paramref name="utcEnd"/> from latest to earliest and returns the instant along with the values of the timelines that include this instant
     /// </summary>
     public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateBackwardsTo<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcEnd) =>
         source.EnumerateBackwards().TakeWhile(x => x.Key >= utcEnd);
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur earlier than <paramref name="utcEnd"/> from earliest to latest and returns the instant along with the timelines that include this instant and their corresponding value.
+    /// Enumerates all instants on <paramref name="source"/> that occur earlier than <paramref name="utcEnd"/> from earliest to latest and returns the instant along with the values of the timelines that include this instant
     /// </summary>
     public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateTo<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcEnd) =>
         source.Enumerate().TakeWhile(x => x.Key < utcEnd);
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur earlier than <paramref name="utcStart"/> from latest to earliest and returns the instant along with the timelines that include this instant and their corresponding value.
+    /// Enumerates all instants on <paramref name="source"/> that occur earlier than <paramref name="utcStart"/> from latest to earliest and returns the instant along with the values of the timelines that include this instant
     /// </summary>
     public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateBackwardsFrom<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart)
     {
@@ -67,7 +67,7 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="utcStart"/> and <paramref name="utcEnd"/> from earliest to latest and returns the instant along with the timelines that include this instant and their corresponding value.
+    /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="utcStart"/> and <paramref name="utcEnd"/> from earliest to latest and returns the instant along with the values of the timelines that include this instant
     /// </summary>
     public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateRange<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart, DateTime utcEnd)
     {
@@ -91,7 +91,7 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="utcStart"/> and <paramref name="utcEnd"/> from latest to earliest and returns the instant along with the timelines that include this instant and their corresponding value.
+    /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="utcStart"/> and <paramref name="utcEnd"/> from latest to earliest and returns the instant along with the values of the timelines that include this instant
     /// </summary>
     public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumerateRangeBackwards<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime utcStart, DateTime utcEnd)
     {
@@ -115,7 +115,7 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur in <paramref name="period"/> from earliest to latest and returns the instant along with the timelines that include this instant and their corresponding value.
+    /// Enumerates all instants on <paramref name="source"/> that occur in <paramref name="period"/> from earliest to latest and returns the instant along with the values of the timelines that include this instant
     /// </summary>
     public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumeratePeriod<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, Period period)
     {
@@ -138,7 +138,7 @@ public static partial class TimelineValueCollectionExtensions
     }
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur in <paramref name="period"/> from latest to earliest and returns the instant along with the timelines that include this instant and their corresponding value.
+    /// Enumerates all instants on <paramref name="source"/> that occur in <paramref name="period"/> from latest to earliest and returns the instant along with the values of the timelines that include this instant
     /// </summary>
     public static IEnumerable<KeyValuePair<DateTime, TValue[]>> EnumeratePeriodBackwards<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, Period period)
     {
