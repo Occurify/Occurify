@@ -1,5 +1,9 @@
 # Occurify
 
+[![GitHub license](https://img.shields.io/github/license/Occurify/Occurify?label=License)](https://github.com/Occurify/Occurify?tab=MIT-1-ov-file)
+[![GitHub release](https://img.shields.io/github/v/release/Occurify/Occurify?label=Release)](https://github.com/Occurify/Occurify/releases/latest)
+[![Build Status](https://github.com/Occurify/Occurify/actions/workflows/ci-build-and-test.yml/badge.svg)](https://github.com/Occurify/Occurify/actions/workflows/ci-build-and-test.yml)
+
 A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling timelines.
 
 ## 📖 Table of Contents  
