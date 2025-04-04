@@ -4,7 +4,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/Occurify/Occurify?label=Release)](https://github.com/Occurify/Occurify/releases/latest)
 [![Build Status](https://github.com/Occurify/Occurify/actions/workflows/ci-build-and-test.yml/badge.svg)](https://github.com/Occurify/Occurify/actions/workflows/ci-build-and-test.yml)
 
-A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling timelines.
+A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling instant and period timelines.
 
 ## 📖 Table of Contents  
 - [Overview](#overview)
@@ -46,7 +46,7 @@ A powerful and intuitive .NET library for defining, filtering, transforming, and
 
 ### [Occurify](https://www.nuget.org/packages/Occurify)
 
-A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling timelines.
+A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling instant and period timelines.
 
 - Supports instants, periods, timelines and period timelines.
 - Implements collection and periodic timelines.
@@ -88,7 +88,7 @@ Occurify is distributed as the following NuGet packages:
 
 Package | Description
 --- |---
-[Occurify](https://www.nuget.org/packages/Occurify) | A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling timelines.
+[Occurify](https://www.nuget.org/packages/Occurify) | A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling instant and period timelines.
 [Occurify.TimeZones](https://www.nuget.org/packages/Occurify.TimeZones) | Time zone and cron expression support for Occurify: Filter, manipulate, and schedule instants and periods across time zones.
 [Occurify.Astro](https://www.nuget.org/packages/Occurify.Astro) | Astronomical instants and periods for Occurify: Track sun states, perform calculations, and manage events.
 [Occurify.Reactive](https://www.nuget.org/packages/Occurify.Reactive) | Reactive Extensions for Occurify: Enabling seamless scheduling of instant and period-based timelines.
@@ -551,9 +551,26 @@ IPeriodTimeline periodTimeline5 = PeriodTimeline.Between(periodStartTimeline, pe
 
 ### Collections
 
-In Occurify, collections of `ITimeline` (and soon `IPeriodTimeline` as well) are treated as first-class citizens. This means that all extension methods available for `ITimeline` can also be used on `IEnumerable<ITimeline>` and `IEnumerable<KeyValuePair<ITimeline, TValue>>`.
+In Occurify, collections of `ITimeline` (and soon `IPeriodTimeline` as well) are treated as first-class citizens. This means that all extension methods available for `ITimeline` can also be used on `IEnumerable<ITimeline>`, `IEnumerable<KeyValuePair<TKey, ITimeline>>` and `IEnumerable<KeyValuePair<ITimeline, TValue>>`.
 
-The latter is particularly useful, as it enables assigning values to timelines while still being able to manipulate them.
+This is particularly powerful when you want to associate additional state or metadata (such as booleans, labels, or categories) with each timeline while still applying timeline operations across the collection.
+
+For example:
+
+```cs
+Dictionary<ITimeline, bool> sunStates = new Dictionary<ITimeline, bool>
+{
+    { AstroInstants.LocalSunrise, true },
+    { AstroInstants.LocalSunset, false }
+};
+foreach (KeyValuePair<DateTime, bool[]> state in sunStates.EnumeratePeriod(TimeZonePeriods.CurrentMonth()))
+{
+    bool sunIsRising = state.Value.First(); // Since we're combining multiple timelines, a single instant may correspond to multiple values. However, for this example, we assume sunrise and sunset don't occur simultaneously, so we just take the first value.
+    Console.WriteLine(sunIsRising ? 
+        $"It is currently {state.Key} and the sun is rising!" : 
+        $"It is currently {state.Key} and the sun is setting!");
+}
+```
 
 ## Coordinates
 
