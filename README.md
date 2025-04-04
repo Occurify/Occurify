@@ -4,7 +4,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/Occurify/Occurify?label=Release)](https://github.com/Occurify/Occurify/releases/latest)
 [![Build Status](https://github.com/Occurify/Occurify/actions/workflows/ci-build-and-test.yml/badge.svg)](https://github.com/Occurify/Occurify/actions/workflows/ci-build-and-test.yml)
 
-A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling timelines.
+A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling instant and period timelines.
 
 ## 📖 Table of Contents  
 - [Overview](#overview)
@@ -46,7 +46,7 @@ A powerful and intuitive .NET library for defining, filtering, transforming, and
 
 ### [Occurify](https://www.nuget.org/packages/Occurify)
 
-A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling timelines.
+A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling instant and period timelines.
 
 - Supports instants, periods, timelines and period timelines.
 - Implements collection and periodic timelines.
@@ -88,7 +88,7 @@ Occurify is distributed as the following NuGet packages:
 
 Package | Description
 --- |---
-[Occurify](https://www.nuget.org/packages/Occurify) | A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling timelines.
+[Occurify](https://www.nuget.org/packages/Occurify) | A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling instant and period timelines.
 [Occurify.TimeZones](https://www.nuget.org/packages/Occurify.TimeZones) | Time zone and cron expression support for Occurify: Filter, manipulate, and schedule instants and periods across time zones.
 [Occurify.Astro](https://www.nuget.org/packages/Occurify.Astro) | Astronomical instants and periods for Occurify: Track sun states, perform calculations, and manage events.
 [Occurify.Reactive](https://www.nuget.org/packages/Occurify.Reactive) | Reactive Extensions for Occurify: Enabling seamless scheduling of instant and period-based timelines.
