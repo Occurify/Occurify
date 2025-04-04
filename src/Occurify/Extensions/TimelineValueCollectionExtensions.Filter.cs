@@ -1,7 +1,7 @@
 ﻿
 namespace Occurify.Extensions;
 
-public static partial class TimelineExtensions
+public static partial class TimelineValueCollectionExtensions
 {
     /// <summary>
     /// Returns a timeline <see cref="IEnumerable{KeyValuePair}"/> in which the first <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/> are bypassed.
