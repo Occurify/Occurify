@@ -547,9 +547,26 @@ IPeriodTimeline periodTimeline5 = PeriodTimeline.Between(periodStartTimeline, pe
 
 ### Collections
 
-In Occurify, collections of `ITimeline` (and soon `IPeriodTimeline` as well) are treated as first-class citizens. This means that all extension methods available for `ITimeline` can also be used on `IEnumerable<ITimeline>` and `IEnumerable<KeyValuePair<ITimeline, TValue>>`.
+In Occurify, collections of `ITimeline` (and soon `IPeriodTimeline` as well) are treated as first-class citizens. This means that all extension methods available for `ITimeline` can also be used on `IEnumerable<ITimeline>`, `IEnumerable<KeyValuePair<TKey, ITimeline>>` and `IEnumerable<KeyValuePair<ITimeline, TValue>>`.
 
-The latter is particularly useful, as it enables assigning values to timelines while still being able to manipulate them.
+This is particularly powerful when you want to associate additional state or metadata (such as booleans, labels, or categories) with each timeline while still applying timeline operations across the collection.
+
+For example:
+
+```cs
+Dictionary<ITimeline, bool> sunStates = new Dictionary<ITimeline, bool>
+{
+    { AstroInstants.LocalSunrise, true },
+    { AstroInstants.LocalSunset, false }
+};
+foreach (KeyValuePair<DateTime, bool[]> state in sunStates.EnumeratePeriod(TimeZonePeriods.CurrentMonth()))
+{
+    bool sunIsRising = state.Value.First(); // Since we're combining multiple timelines, a single instant may correspond to multiple values. However, for this example, we assume sunrise and sunset don't occur simultaneously, so we just take the first value.
+    Console.WriteLine(sunIsRising ? 
+        $"It is currently {state.Key} and the sun is rising!" : 
+        $"It is currently {state.Key} and the sun is setting!");
+}
+```
 
 ## Coordinates
 
