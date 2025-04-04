@@ -179,7 +179,7 @@ You can easily enumerate future or past periods to check when the lights will go
 
 ```cs
 Console.WriteLine("The rest of the current month the lights will go on at:");
-foreach (Period period in lightOnPeriods.EnumerateRange(DateTime.UtcNow, TimeZoneInstants.CurrentMonth().End!.Value)){
+foreach (Period period in lightOnPeriods.EnumerateRange(DateTime.UtcNow, TimeZonePeriods.CurrentMonth().End!.Value)){
     Console.WriteLine(period.Start);
 }
 ```
@@ -222,7 +222,7 @@ The following example demonstrates how to turn on a light between **7 AM and 15 
 
 #### Defining the Period
 ```cs
-ITimeline fifteenMinAfterSunRise = AstroInstants.LocalSunRise + TimeSpan.FromMinutes(15);
+ITimeline fifteenMinAfterSunRise = AstroInstants.LocalSunrise + TimeSpan.FromMinutes(15);
 ITimeline sevenAm = TimeZoneInstants.DailyAt(hour: 7);
 IPeriodTimeline between7AndSunRise = sevenAm.To(fifteenMinAfterSunRise); // Creates timeline that represents periods starting at 7am and ending 15 minutes after sunrise.
 ```
@@ -277,7 +277,7 @@ Occurify allows us to define periods however we want. In this example we use `Ti
 
 ```cs
 IPeriodTimeline calendarYears = TimeZonePeriods.Years();
-IPeriodTimeline fiscalYears = TimeZoneInstants.StartOfMonth(10).AsConsecutivePeriodTimeline();
+IPeriodTimeline fiscalYears = TimeZoneInstants.StartOfMonths(10).AsConsecutivePeriodTimeline();
 
 Period currentCalendarYear = calendarYears.SampleAt(DateTime.UtcNow).Period!;
 Period currentFiscalYear = fiscalYears.SampleAt(DateTime.UtcNow).Period!;
@@ -348,7 +348,7 @@ Here's how we can achieve this using Occurify:
 int seed = 1337;
 
 // Determine start instants
-ITimeline tenMinAfterSunset = AstroInstants.LocalSunSet + TimeSpan.FromMinutes(10);
+ITimeline tenMinAfterSunset = AstroInstants.LocalSunset + TimeSpan.FromMinutes(10);
 ITimeline randomizedSunset = tenMinAfterSunset.Randomize(seed, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(10));
 // Ensure the light doesn't turn on before 5:15 PM
 ITimeline after515Pm = (randomizedSunset + TimeZoneInstants.DailyAt(hour: 17, minute: 15)).LastWithin(TimeZonePeriods.Days());
