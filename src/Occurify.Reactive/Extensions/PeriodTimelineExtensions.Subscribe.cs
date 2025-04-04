@@ -121,10 +121,10 @@ public static partial class PeriodTimelineExtensions
     }
 
     /// <summary>
-    /// Subscribes actions to be executed when a period on <paramref name="periodTimeline"/> starts or ends.
+    /// Subscribes an action to be executed when a period on <paramref name="periodTimeline"/> starts or ends.
     /// If <paramref name="includeCurrentSample"/> is true, the action will be executed immediately.
     /// </summary>
-    public static IDisposable SubscribeToSamples(this IPeriodTimeline periodTimeline, Action<PeriodTimelineSample> action, IScheduler scheduler, bool includeCurrentSample = true)
+    public static IDisposable Subscribe(this IPeriodTimeline periodTimeline, Action<PeriodTimelineSample> action, IScheduler scheduler, bool includeCurrentSample = true)
     {
         ArgumentNullException.ThrowIfNull(periodTimeline);
         ArgumentNullException.ThrowIfNull(action);
@@ -134,10 +134,10 @@ public static partial class PeriodTimelineExtensions
     }
 
     /// <summary>
-    /// Subscribes actions to be executed when a period on <paramref name="periodTimeline"/> starts or ends using <paramref name="relativeTo"/> as a starting time.
-    /// If <paramref name="includeCurrentSample"/> is true, the actions will be executed immediately.
+    /// Subscribes an action to be executed when a period on <paramref name="periodTimeline"/> starts or ends using <paramref name="relativeTo"/> as a starting time.
+    /// If <paramref name="includeCurrentSample"/> is true, the action will be executed immediately.
     /// </summary>
-    public static IDisposable SubscribeToSamples(this IPeriodTimeline periodTimeline, Action<PeriodTimelineSample> action, DateTime relativeTo, IScheduler scheduler, bool includeCurrentSample = true)
+    public static IDisposable Subscribe(this IPeriodTimeline periodTimeline, Action<PeriodTimelineSample> action, DateTime relativeTo, IScheduler scheduler, bool includeCurrentSample = true)
     {
         ArgumentNullException.ThrowIfNull(periodTimeline);
         ArgumentNullException.ThrowIfNull(action);
