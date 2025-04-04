@@ -43,14 +43,14 @@ public static partial class PeriodTimelineExtensions
         if (emitSampleUponSubscribe)
         {
             return Observable.Defer(() =>
-                periodTimeline.ToPeriodObservableInternal(relativeTo, scheduler)
+                periodTimeline.ToSampleObservableInternal(relativeTo, scheduler)
                     .Prepend(periodTimeline.SampleAt(relativeTo)));
         }
 
-        return periodTimeline.ToPeriodObservableInternal(relativeTo, scheduler);
+        return periodTimeline.ToSampleObservableInternal(relativeTo, scheduler);
     }
 
-    private static IObservable<PeriodTimelineSample> ToPeriodObservableInternal(this IPeriodTimeline periodTimeline,
+    private static IObservable<PeriodTimelineSample> ToSampleObservableInternal(this IPeriodTimeline periodTimeline,
         DateTime relativeTo, IScheduler scheduler)
     {
         return Observable.Generate(
