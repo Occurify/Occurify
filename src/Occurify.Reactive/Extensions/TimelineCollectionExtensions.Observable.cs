@@ -8,7 +8,7 @@ namespace Occurify.Reactive.Extensions;
 /// <summary>
 /// Provides reactive extension methods for working with <see cref="IEnumerable{ITimeline}"/>.
 /// </summary>
-public static class TimelineCollectionExtensions
+public static partial class TimelineCollectionExtensions
 {
     /// <summary>
     /// Returns a <see cref="IObservable{Unit}"/> that emits a <see cref="Unit"/> every time an instant occurs on any of the timelines in <paramref name="source"/>.
