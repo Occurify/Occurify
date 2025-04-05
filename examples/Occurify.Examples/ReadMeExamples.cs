@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reactive.Concurrency;
 using Occurify.Astro;
 using Occurify.Extensions;
 using Occurify.Reactive.Extensions;
@@ -60,6 +54,8 @@ public class ReadMeExamples
         lightOnPeriods.SubscribeStartEnd(
             () => Console.WriteLine("Turning the lights on!"), 
             () => Console.WriteLine("Turning the lights off!"), scheduler);
+
+        // Note: This demo now exits, to demonstrate the scheduling aspect, keep the thread alive for a while.
     }
 
     [TestMethod]
@@ -76,6 +72,8 @@ public class ReadMeExamples
         between7AndSunRiseInTheMorning.SubscribeStartEnd(
             () => Console.WriteLine("Turning the lights on!"),
             () => Console.WriteLine("Turning the lights off!"), scheduler);
+
+        // Note: This demo now exits, to demonstrate the scheduling aspect, keep the thread alive for a while.
     }
 
     [TestMethod]
@@ -134,7 +132,15 @@ public class ReadMeExamples
     [TestMethod]
     public void FindingAvailableReservations()
     {
-        // todo
+        var reservationsIn2025 = CreateRandomAppointments(TimeZonePeriods.Year(2025));
+        var availableFreePeriodsInAugust =
+            FindAvailableFreePeriods(TimeZonePeriods.Month(8, 2025), reservationsIn2025, TimeSpan.FromMinutes(90));
+
+        Console.WriteLine("Available free 90 min timeslots in august:");
+        foreach (var period in availableFreePeriodsInAugust)
+        {
+            Console.WriteLine(period.ToString(TimeZoneInfo.Local));
+        }
 
         Period[] FindAvailableFreePeriods(Period searchRange, Period[] reservations, TimeSpan minimumDuration)
         {
@@ -182,6 +188,8 @@ public class ReadMeExamples
         lightOnPeriods.SubscribeStartEnd(
             () => Console.WriteLine("Turning the lights on!"),
             () => Console.WriteLine("Turning the lights off!"), scheduler);
+
+        // Note: This demo now exits, to demonstrate the scheduling aspect, keep the thread alive for a while.
     }
 
     [TestMethod]
@@ -189,11 +197,11 @@ public class ReadMeExamples
     {
         IPeriodTimeline workingHours = TimeZonePeriods.Between(startHour: 8, endHour: 18) - TimeZonePeriods.Weekends();
 
-        List<Period[]> employeeAppointments = []; // Todo
+        List<Period[]> employeeAppointments = Enumerable.Range(0, 5).Select(_ => CreateRandomAppointments(TimeZonePeriods.Year(2025))).ToList();
         IPeriodTimeline[] appointmentTimelines = employeeAppointments.Select(p => p.AsPeriodTimeline()).ToArray();
         IPeriodTimeline[] invertedTimelines = appointmentTimelines.Select(tl => tl.Invert()).ToArray();
 
-        IPeriodTimeline availableSlotsTimelines = invertedTimelines.IntersectPeriods() | workingHours;
+        IPeriodTimeline availableSlotsTimelines = invertedTimelines.IntersectPeriods() & workingHours;
 
         Period august = TimeZonePeriods.Month(8, 2025);
         IEnumerable<Period> periodsEveryoneIsAvailable = availableSlotsTimelines
@@ -261,5 +269,53 @@ public class ReadMeExamples
         // Using static methods
         IPeriodTimeline periodTimeline4 = PeriodTimeline.FromPeriods(period, period + TimeSpan.FromHours(2), period + TimeSpan.FromHours(4));
         IPeriodTimeline periodTimeline5 = PeriodTimeline.Between(periodStartTimeline, periodEndTimeline);
+    }
+
+    /// <summary>
+    /// Will generate some random appointments for a given period.
+    /// Appointments can go from 6 AM to 9 PM.
+    /// </summary>
+    /// <param name="period"></param>
+    /// <returns></returns>
+    private Period[] CreateRandomAppointments(Period period)
+    {
+        var periods = new List<Period>();
+        var random = new Random();
+        var latestAppointment = new TimeOnly(21, 0);
+
+        for (var dayOfYear = period.Start!.Value; dayOfYear < period.End; dayOfYear = dayOfYear.AddDays(1))
+        {
+            // Note1: We start a little early, as the demo demonstrates filtering on working time.
+            // Note2: even though we don't convert this to UTC, this works as we add the time of day to the date which is in UTC (it's used relatively).
+            var timeOfDay = new TimeOnly(6, 0);
+            do
+            {
+                timeOfDay = timeOfDay.Add(TimeSpan.FromMinutes(15 * random.Next(0, 9)));
+                if (timeOfDay > latestAppointment)
+                {
+                    break;
+                }
+
+                if (random.NextDouble() < 0.8)
+                {
+                    continue; // 80% chance to skip this appointment
+                }
+
+                // Random duration between 15 min and 2 hours
+                var duration = TimeSpan.FromMinutes(15 * random.Next(1, 9));
+
+                if (timeOfDay.Add(duration) > latestAppointment)
+                {
+                    break;
+                }
+                // Create the period and add it to the list
+                periods.Add(Period.Create(dayOfYear + timeOfDay.ToTimeSpan(), duration));
+
+                timeOfDay = timeOfDay.Add(duration);
+            }
+            while (timeOfDay < latestAppointment);
+        }
+
+        return periods.ToArray();
     }
 }

@@ -22,7 +22,7 @@ A powerful and intuitive .NET library for defining, filtering, transforming, and
     - [Use Crons to Create Periods](#use-crons-to-create-periods)
     - [Working with Different Periods](#working-with-different-periods)
     - [Searching Dates](#searching-dates)
-    - [Finding Available Reservations](#finding-available-reservations)
+    - [Finding Available Periods Between Reservations](#finding-available-periods-between-reservations)
     - [Solar Phases](#solar-phases)
     - [Complicated Requirements](#complicated-requirements)
     - [Working with Multiple Periods](#working-with-multiple-periods)
@@ -306,7 +306,7 @@ foreach (var date in fridaysOfFebruary.EnumeratePeriod(twoYears))
 }
 ```
 
-### Finding Available Reservations
+### Finding Available Periods Between Reservations
 
 This example demonstrates how to efficiently identify gaps of a minimum duration within a set of reservations, constrained to a specific search range.
 ```cs
@@ -387,7 +387,7 @@ List<Period[]> employeeAppointments = CustomLogic.LoadAppointments();
 IPeriodTimeline[] appointmentTimelines = employeeAppointments.Select(p => p.AsPeriodTimeline()).ToArray();
 IPeriodTimeline[] invertedTimelines = appointmentTimelines.Select(tl => tl.Invert()).ToArray();
 
-IPeriodTimeline availableSlotsTimelines = invertedTimelines.IntersectPeriods() | workingHours;
+IPeriodTimeline availableSlotsTimelines = invertedTimelines.IntersectPeriods() & workingHours;
 ```
 
 #### Finding Common Availability
