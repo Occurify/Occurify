@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Occurify.Examples.Example1": {
+      "commandName": "Project",
+      "commandLineArgs": "example1"
+    }
+  }
+}
