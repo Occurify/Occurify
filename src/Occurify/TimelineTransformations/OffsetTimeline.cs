@@ -1,4 +1,5 @@
 ﻿using Occurify.Extensions;
+using Occurify.Helpers;
 
 namespace Occurify.TimelineTransformations;
 
@@ -21,13 +22,24 @@ internal class OffsetTimeline : Timeline
             throw new ArgumentException($"{nameof(utcRelativeTo)} should be UTC time.");
         }
 
-        var adjustedUtcRelativeTo = utcRelativeTo.AddOrNullOnOverflow(-_offset);
-        if (adjustedUtcRelativeTo == null)
+        if (_offset == TimeSpan.Zero)
         {
-            return null;
+            return _source.GetPreviousUtcInstant(utcRelativeTo);
         }
 
-        return _source.GetPreviousUtcInstant(adjustedUtcRelativeTo.Value)?.AddOrNullOnOverflow(_offset);
+        if (_offset > TimeSpan.Zero)
+        {
+            if (utcRelativeTo.Ticks < _offset.Ticks)
+            {
+                return null;
+            }
+        }
+        else if (DateTime.MaxValue.Ticks - utcRelativeTo.Ticks < (-_offset).Ticks)
+        {
+            return _source.GetCurrentOrPreviousUtcInstant(DateTimeHelper.MaxValueUtc)?.AddOrNullOnOverflow(_offset);
+        }
+
+        return _source.GetPreviousUtcInstant(utcRelativeTo - _offset)?.AddOrNullOnOverflow(_offset);
     }
 
     public override DateTime? GetNextUtcInstant(DateTime utcRelativeTo)
@@ -37,13 +49,24 @@ internal class OffsetTimeline : Timeline
             throw new ArgumentException($"{nameof(utcRelativeTo)} should be UTC time.");
         }
 
-        var adjustedUtcRelativeTo = utcRelativeTo.AddOrNullOnOverflow(-_offset);
-        if (adjustedUtcRelativeTo == null)
+        if (_offset == TimeSpan.Zero)
+        {
+            return _source.GetNextUtcInstant(utcRelativeTo);
+        }
+
+        if (_offset > TimeSpan.Zero)
+        {
+            if (utcRelativeTo.Ticks < _offset.Ticks)
+            {
+                return _source.GetCurrentOrNextUtcInstant(DateTimeHelper.MinValueUtc)?.AddOrNullOnOverflow(_offset);
+            }
+        }
+        else if (DateTime.MaxValue.Ticks - utcRelativeTo.Ticks < (-_offset).Ticks)
         {
             return null;
         }
 
-        return _source.GetNextUtcInstant(adjustedUtcRelativeTo.Value)?.AddOrNullOnOverflow(_offset);
+        return _source.GetNextUtcInstant(utcRelativeTo - _offset)?.AddOrNullOnOverflow(_offset);
     }
 
     public override bool IsInstant(DateTime utcDateTime)
@@ -53,12 +76,23 @@ internal class OffsetTimeline : Timeline
             throw new ArgumentException($"{nameof(utcDateTime)} should be UTC time.");
         }
 
-        var offsetResult = utcDateTime.AddOrNullOnOverflow(-_offset);
-        if (offsetResult == null)
+        if (_offset == TimeSpan.Zero)
+        {
+            return _source.IsInstant(utcDateTime);
+        }
+
+        if (_offset > TimeSpan.Zero)
+        {
+            if (utcDateTime.Ticks < _offset.Ticks)
+            {
+                return false;
+            }
+        }
+        else if (DateTime.MaxValue.Ticks - utcDateTime.Ticks < (-_offset).Ticks)
         {
             return false;
         }
 
-        return _source.IsInstant(offsetResult.Value);
+        return _source.IsInstant(utcDateTime - _offset);
     }
 }

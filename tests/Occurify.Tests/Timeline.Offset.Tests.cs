@@ -67,6 +67,23 @@ public class TimelineOffsetTests
     }
 
     [TestMethod]
+    public void Offset_PartOutOfRange_MinValue_EnumerationFromBothDirections()
+    {
+        // Arrange
+        var timeline = new[] { DateTimeHelper.MinValueUtc, DateTimeHelper.MinValueUtc + TimeSpan.FromTicks(1) }
+            .AsTimeline();
+
+        // Act
+        var result = timeline.OffsetTicks(-1);
+
+        // Assert
+        CollectionAssert.AreEqual(new[] { DateTimeHelper.MinValueUtc }, result.ToArray());
+        CollectionAssert.AreEqual(new[] { DateTimeHelper.MinValueUtc }, result.EnumerateBackwards().ToArray());
+        Assert.IsTrue(result.IsInstant(DateTimeHelper.MinValueUtc));
+        Assert.IsFalse(result.IsInstant(DateTimeHelper.MinValueUtc + TimeSpan.FromTicks(1)));
+    }
+
+    [TestMethod]
     public void Offset_OutOfRange_MaxValue()
     {
         // Arrange
@@ -79,6 +96,23 @@ public class TimelineOffsetTests
         Assert.IsNull(result.GetCurrentOrNextUtcInstant(DateTimeHelper.MinValueUtc));
         Assert.IsNull(result.GetCurrentOrPreviousUtcInstant(DateTimeHelper.MaxValueUtc));
         Assert.IsFalse(result.IsInstant(DateTimeHelper.MaxValueUtc));
+    }
+
+    [TestMethod]
+    public void Offset_PartOutOfRange_MaxValue_EnumerationFromBothDirections()
+    {
+        // Arrange
+        var timeline = new[] { DateTimeHelper.MaxValueUtc - TimeSpan.FromTicks(1), DateTimeHelper.MaxValueUtc }
+            .AsTimeline();
+
+        // Act
+        var result = timeline.OffsetTicks(1);
+
+        // Assert
+        CollectionAssert.AreEqual(new[] { DateTimeHelper.MaxValueUtc }, result.ToArray());
+        CollectionAssert.AreEqual(new[] { DateTimeHelper.MaxValueUtc }, result.EnumerateBackwards().ToArray());
+        Assert.IsFalse(result.IsInstant(DateTimeHelper.MaxValueUtc - TimeSpan.FromTicks(1)));
+        Assert.IsTrue(result.IsInstant(DateTimeHelper.MaxValueUtc));
     }
 
     private static IEnumerable<object[]> TestCaseSource()
