@@ -137,6 +137,49 @@ namespace Occurify.Tests
         }
 
         [TestMethod]
+        public void DayTimeline_GetPreviousUtcInstant_FromInstantOnTimeline()
+        {
+            // Arrange
+            var utcNow = DateTime.UtcNow;
+            var noon = utcNow.Date.AddHours(12);
+            var timeline = Timeline.Periodic(new DateTime(NoonOfFirstDay, DateTimeKind.Utc), TimeSpan.FromDays(1));
+
+            // Act
+            var result = timeline.GetPreviousUtcInstant(noon);
+
+            // Assert
+            Assert.AreEqual(noon - TimeSpan.FromDays(1), result);
+        }
+
+        [TestMethod]
+        public void GetPreviousUtcInstant_LessThanOnePeriodFromOrigin()
+        {
+            // Arrange
+            var utcNow = DateTime.UtcNow;
+            var timeline = Timeline.Periodic(utcNow, TimeSpan.FromSeconds(2));
+
+            // Act
+            var result = timeline.GetPreviousUtcInstant(utcNow - TimeSpan.FromSeconds(1));
+
+            // Assert
+            Assert.AreEqual(utcNow - TimeSpan.FromSeconds(2), result);
+        }
+
+        [TestMethod]
+        public void GetPreviousUtcInstant_LessThanNegativeOnePeriodFromOrigin()
+        {
+            // Arrange
+            var utcNow = DateTime.UtcNow;
+            var timeline = Timeline.Periodic(utcNow, TimeSpan.FromSeconds(2));
+
+            // Act
+            var result = timeline.GetPreviousUtcInstant(utcNow + TimeSpan.FromSeconds(1));
+
+            // Assert
+            Assert.AreEqual(utcNow, result);
+        }
+
+        [TestMethod]
         public void DayTimeline_GetNextUtcInstant_OriginZero()
         {
             // Arrange
@@ -183,6 +226,49 @@ namespace Occurify.Tests
 
             // Assert
             Assert.AreEqual(noon, result);
+        }
+
+        [TestMethod]
+        public void DayTimeline_GetNextUtcInstant_FromInstantOnTimeline()
+        {
+            // Arrange
+            var utcNow = DateTime.UtcNow;
+            var noon = utcNow.Date.AddHours(12);
+            var timeline = Timeline.Periodic(new DateTime(NoonOfFirstDay, DateTimeKind.Utc), TimeSpan.FromDays(1));
+
+            // Act
+            var result = timeline.GetNextUtcInstant(noon);
+
+            // Assert
+            Assert.AreEqual(noon + TimeSpan.FromDays(1), result);
+        }
+
+        [TestMethod]
+        public void GetNextUtcInstant_LessThanOnePeriodFromOrigin()
+        {
+            // Arrange
+            var utcNow = DateTime.UtcNow;
+            var timeline = Timeline.Periodic(utcNow, TimeSpan.FromSeconds(2));
+
+            // Act
+            var result = timeline.GetNextUtcInstant(utcNow + TimeSpan.FromSeconds(1));
+
+            // Assert
+            Assert.AreEqual(utcNow + TimeSpan.FromSeconds(2), result);
+        }
+
+        [TestMethod]
+        public void GetNextUtcInstant_LessThanNegativeOnePeriodFromOrigin()
+        {
+            // Arrange
+            var utcNow = DateTime.UtcNow;
+            var timeline = Timeline.Periodic(utcNow, TimeSpan.FromSeconds(2));
+
+            // Act
+            var result = timeline.GetNextUtcInstant(utcNow - TimeSpan.FromSeconds(1));
+
+            // Assert
+            Assert.AreEqual(utcNow, result);
         }
 
         [TestMethod]
