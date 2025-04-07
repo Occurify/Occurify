@@ -36,7 +36,7 @@ internal class PeriodicTimeline : Timeline
             return _utcOrigin.AddOrNullOnOverflow(TimeSpan.FromTicks(_period.Ticks * (periodsElapsedSincePeriod - 1)));
         }
 
-        if (periodsElapsedSincePeriod < 0)
+        if (timeDifference.Ticks < 0)
         {
             periodsElapsedSincePeriod--;
         }
@@ -59,7 +59,7 @@ internal class PeriodicTimeline : Timeline
             return _utcOrigin.AddOrNullOnOverflow(TimeSpan.FromTicks(_period.Ticks * (periodsElapsedSincePeriod + 1)));
         }
 
-        if (periodsElapsedSincePeriod > 0)
+        if (timeDifference.Ticks > 0)
         {
             periodsElapsedSincePeriod++;
         }
