@@ -1,13 +1,11 @@
 ﻿using System.Reactive.Concurrency;
-using Occurify.Extensions;
 using Occurify.Reactive.Extensions;
 
 namespace Occurify.Examples.Examples.Scheduling
 {
-    internal class SchedulingExample : IExample
+    internal class MultipleTimelinesExample : IExample
     {
-        public string Command => "example1";
-        public string Description => "Bla";
+        public string Command => "scheduling/multiple-timelines";
 
         public void Run()
         {

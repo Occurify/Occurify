@@ -1,8 +1,56 @@
 {
   "profiles": {
-    "Occurify.Examples.Example1": {
+    "Occurify.Examples.ReadMe.Usage": {
       "commandName": "Project",
-      "commandLineArgs": "example1"
+      "commandLineArgs": "readme/usage"
+    },
+    "Occurify.Examples.ReadMe.MorningLight": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/morning-light"
+    },
+    "Occurify.Examples.ReadMe.UseCronsToCreatePeriods": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/use-crons-to-create-periods"
+    },
+    "Occurify.Examples.ReadMe.FiscalYear": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/fiscal-year"
+    },
+    "Occurify.Examples.ReadMe.SearchingDates": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/searching-dates"
+    },
+    "Occurify.Examples.ReadMe.FindingAvailableReservations": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/finding-available-reservations"
+    },
+    "Occurify.Examples.ReadMe.SolarPhases": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/solar-phases"
+    },
+    "Occurify.Examples.ReadMe.ComplicatedRequirements": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/complicated-requirements"
+    },
+    "Occurify.Examples.ReadMe.MultiplePeriods": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/multiple-periods"
+    },
+    "Occurify.Examples.ReadMe.PeriodCreation": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/period-creation"
+    },
+    "Occurify.Examples.ReadMe.TimelineCreation": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/timeline-creation"
+    },
+    "Occurify.Examples.ReadMe.PeriodTimelineCreation": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/period-timeline-creation"
+    },
+    "Occurify.Examples.Scheduling.MultipleTimelines": {
+      "commandName": "Project",
+      "commandLineArgs": "scheduling/multiple-timelines"
     }
   }
 }
