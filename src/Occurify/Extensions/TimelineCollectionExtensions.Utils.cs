@@ -2,7 +2,7 @@
 namespace Occurify.Extensions;
 
 /// <summary>
-/// Provides extension methods for working with collections related to <see cref="IEnumerable{ITimeline}"/>.
+/// Provides extension methods for working with <see cref="IEnumerable{ITimeline}"/>.
 /// </summary>
 public static partial class TimelineCollectionExtensions
 {
@@ -91,8 +91,6 @@ public static partial class TimelineCollectionExtensions
     /// <summary>
     /// Synchronizes all <paramref name="source"/> using the same gate such that method calls cannot occur concurrently.
     /// </summary>
-    public static IEnumerable<ITimeline> Synchronize(this IEnumerable<ITimeline> source, object gate)
-    {
-        return source.Select(s => s.Synchronize(gate));
-    }
+    public static IEnumerable<ITimeline> Synchronize(this IEnumerable<ITimeline> source, object gate) => 
+        source.Select(s => s.Synchronize(gate));
 }
