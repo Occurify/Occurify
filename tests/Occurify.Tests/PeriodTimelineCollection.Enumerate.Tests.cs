@@ -21,16 +21,16 @@ namespace Occurify.Tests
             var period8 = Period.Create(utcNow.AddDays(6), TimeSpan.FromDays(1));
             var period9 = Period.Create(utcNow.AddDays(7), TimeSpan.FromDays(1));
 
-            var list1 = PeriodTimeline.FromPeriods(period2, period4, period6);
-            var list2 = PeriodTimeline.FromPeriods(period3, period5, period7);
-            var list3 = PeriodTimeline.FromPeriods(period1, period8, period9);
+            var periodTimeline1 = PeriodTimeline.FromPeriods(period2, period4, period6);
+            var periodTimeline2 = PeriodTimeline.FromPeriods(period3, period5, period7);
+            var periodTimeline3 = PeriodTimeline.FromPeriods(period1, period8, period9);
 
-            var sources = new [] { list1, list2, list3 };
+            var periodTimelines = new [] { periodTimeline1, periodTimeline2, periodTimeline3 };
 
             var expected = new List<Period> { period1, period2, period3, period4, period5, period7, period8, period9 };
 
             // Act
-            var result = sources.Enumerate().ToList();
+            var result = periodTimelines.Enumerate().ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, result);
@@ -52,16 +52,16 @@ namespace Occurify.Tests
             var period8 = Period.Create(utcNow.AddDays(6), TimeSpan.FromDays(1));
             var period9 = Period.Create(utcNow.AddDays(7), TimeSpan.FromDays(1));
 
-            var list1 = PeriodTimeline.FromPeriods(period2, period4, period6);
-            var list2 = PeriodTimeline.FromPeriods(period3, period5, period7);
-            var list3 = PeriodTimeline.FromPeriods(period1, period8, period9);
+            var periodTimeline1 = PeriodTimeline.FromPeriods(period2, period4, period6);
+            var periodTimeline2 = PeriodTimeline.FromPeriods(period3, period5, period7);
+            var periodTimeline3 = PeriodTimeline.FromPeriods(period1, period8, period9);
 
-            var sources = new[] { list1, list2, list3 };
+            var periodTimelines = new[] { periodTimeline1, periodTimeline2, periodTimeline3 };
 
             var expected = new List<Period> { period9, period8, period7, period5, period4, period3, period2, period1 };
 
             // Act
-            var result = sources.EnumerateBackwards().ToList();
+            var result = periodTimelines.EnumerateBackwards().ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, result);

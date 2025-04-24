@@ -1,8 +1,4 @@
-﻿using Occurify.PeriodTimelineFilters;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
-
-namespace Occurify.Extensions;
+﻿namespace Occurify.Extensions;
 
 public static partial class PeriodTimelineCollectionExtensions
 {

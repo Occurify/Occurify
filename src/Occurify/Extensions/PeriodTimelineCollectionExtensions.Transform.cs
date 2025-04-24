@@ -1,8 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Occurify.PeriodTimelineTransformations;
-using System.Reflection.Metadata;
-
-namespace Occurify.Extensions;
+﻿namespace Occurify.Extensions;
 
 public static partial class PeriodTimelineCollectionExtensions
 {
