@@ -15,7 +15,7 @@ namespace Occurify.Examples.Examples.ReadMe
 
             List<Period[]> employeeAppointments = Enumerable.Range(0, 5).Select(_ => ExamplePeriodHelper.CreateRandomAppointments(TimeZonePeriods.Year(2025))).ToList();
             IPeriodTimeline[] appointmentTimelines = employeeAppointments.Select(p => p.AsPeriodTimeline()).ToArray();
-            IPeriodTimeline[] invertedTimelines = appointmentTimelines.Select(tl => tl.Invert()).ToArray();
+            IPeriodTimeline[] invertedTimelines = appointmentTimelines.Invert().ToArray();
 
             IPeriodTimeline availableSlotsTimelines = invertedTimelines.IntersectPeriods() & workingHours;
 
@@ -30,7 +30,7 @@ namespace Occurify.Examples.Examples.ReadMe
             }
 
             DateTime timeOfInterest = new DateTime(2025, 3, 7).AsUtcInstant();
-            PeriodTimelineSample[] samples = appointmentTimelines.Select(tl => tl.SampleAt(timeOfInterest)).ToArray();
+            PeriodTimelineSample[] samples = appointmentTimelines.SampleAt(timeOfInterest).ToArray();
 
             int appointmentPeriods = samples.Count(s => s.IsPeriod);
             int freeTimePeriods = samples.Count(s => s.IsGap);

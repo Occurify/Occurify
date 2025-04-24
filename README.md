@@ -383,7 +383,7 @@ IPeriodTimeline workingHours = TimeZonePeriods.Between(startHour: 8, endHour: 18
 
 List<Period[]> employeeAppointments = CustomLogic.LoadAppointments();
 IPeriodTimeline[] appointmentTimelines = employeeAppointments.Select(p => p.AsPeriodTimeline()).ToArray();
-IPeriodTimeline[] invertedTimelines = appointmentTimelines.Select(tl => tl.Invert()).ToArray();
+IPeriodTimeline[] invertedTimelines = appointmentTimelines.Invert().ToArray();
 
 IPeriodTimeline availableSlotsTimelines = invertedTimelines.IntersectPeriods() & workingHours;
 ```
@@ -410,7 +410,7 @@ To see how many employees had a meeting at a specific time:
 
 ```cs
 DateTime timeOfInterest = new DateTime(2025, 3, 7).AsUtcInstant();
-PeriodTimelineSample[] samples = appointmentTimelines.Select(tl => tl.SampleAt(timeOfInterest)).ToArray();
+PeriodTimelineSample[] samples = appointmentTimelines.SampleAt(timeOfInterest).ToArray();
 
 int appointmentPeriods = samples.Count(s => s.IsPeriod);
 int freeTimePeriods = samples.Count(s => s.IsGap);
@@ -549,7 +549,7 @@ IPeriodTimeline periodTimeline5 = PeriodTimeline.Between(periodStartTimeline, pe
 
 ### Collections
 
-In Occurify, collections of `ITimeline` (and soon `IPeriodTimeline` as well) are treated as first-class citizens. This means that all extension methods available for `ITimeline` can also be used on `IEnumerable<ITimeline>`, `IEnumerable<KeyValuePair<TKey, ITimeline>>` and `IEnumerable<KeyValuePair<ITimeline, TValue>>`.
+In Occurify, collections of `ITimeline` and `IPeriodTimeline` are treated as first-class citizens. This means that all extension methods available for `ITimeline` can also be used on `IEnumerable<ITimeline>`, `IEnumerable<KeyValuePair<TKey, ITimeline>>` and `IEnumerable<KeyValuePair<ITimeline, TValue>>`.
 
 This is particularly powerful when you want to associate additional state or metadata (such as booleans, labels, or categories) with each timeline while still applying timeline operations across the collection.
 
