@@ -139,14 +139,6 @@ public static partial class PeriodTimelineExtensions
     }
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of all periods in <paramref name="source"/>.
-    /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IEnumerable<IPeriodTimeline> source)
-    {
-        return source.Aggregate((current, pp) => current.IntersectPeriods(pp));
-    }
-
-    /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> that is inverted of <paramref name="source"/>.
     /// </summary>
     public static IPeriodTimeline Invert(this IPeriodTimeline source)
@@ -213,14 +205,6 @@ public static partial class PeriodTimelineExtensions
     public static IPeriodTimeline Merge(this IPeriodTimeline source, params IPeriodTimeline[] periodsToMerge)
     {
         return periodsToMerge.Aggregate(source, (current, pp) => current.Merge(pp));
-    }
-
-    /// <summary>
-    /// Merges all periods in <paramref name="source"/>. Overlapping periods are combined.
-    /// </summary>
-    public static IPeriodTimeline Merge(this IEnumerable<IPeriodTimeline> source)
-    {
-        return source.Aggregate((current, pp) => current.Merge(pp));
     }
 
     /// <summary>
@@ -392,6 +376,4 @@ public static partial class PeriodTimelineExtensions
     {
         return subtrahends.Aggregate(source, (current, pp) => current.Subtract(pp));
     }
-
-    // Note: Subtract(this IEnumerable<IPeriodTimeline> periodTimelines) is not implemented on purpose as the signature doesn't feel logical.
 }

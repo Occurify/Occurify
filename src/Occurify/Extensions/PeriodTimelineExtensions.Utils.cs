@@ -17,14 +17,6 @@ public static partial class PeriodTimelineExtensions
     }
 
     /// <summary>
-    /// Determines whether <paramref name="instant"/> is on any of the periods in <paramref name="periodTimelines"/>.
-    /// </summary>
-    public static bool ContainsInstant(this IEnumerable<IPeriodTimeline> periodTimelines, DateTime instant)
-    {
-        return periodTimelines.Any(pp => pp.ContainsInstant(instant));
-    }
-
-    /// <summary>
     /// Determines whether <paramref name="period"/> is included in any of the periods in <paramref name="periodTimeline"/>.
     /// </summary>
     public static bool ContainsPeriod(this IPeriodTimeline periodTimeline, Period period)
@@ -56,12 +48,26 @@ public static partial class PeriodTimelineExtensions
     }
 
     /// <summary>
-    /// Determines whether <paramref name="period"/> is included in any of the periods in <paramref name="periodTimelines"/>.
+    /// Returns the first complete period on <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
+    /// <c>null</c> if no period is found.
     /// </summary>
-    public static bool ContainsPeriod(this IEnumerable<IPeriodTimeline> periodTimelines, Period period)
+    public static Period? GetPreviousCompletePeriod(this IPeriodTimeline source, DateTime instant)
     {
-        return periodTimelines.Any(pp => pp.ContainsPeriod(period));
+        var endOfPeriod = source.EndTimeline.GetCurrentOrPreviousUtcInstant(instant);
+        if (endOfPeriod == null)
+        {
+            return null;
+        }
+        var startOfPeriod = source.StartTimeline.GetPreviousUtcInstant(endOfPeriod.Value);
+        return Period.Create(startOfPeriod, endOfPeriod);
     }
+
+    /// <summary>
+    /// Returns the first complete period on <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
+    /// <c>null</c> if no period is found.
+    /// </summary>
+    public static Period? GetPreviousPeriodIncludingPartial(this IPeriodTimeline source, DateTime instant) =>
+        source.EnumerateBackwardsFromIncludingPartial(instant).FirstOrDefault();
 
     /// <summary>
     /// Returns the first complete period on <paramref name="source"/> starting on or later than <paramref name="instant"/>.
@@ -84,28 +90,6 @@ public static partial class PeriodTimelineExtensions
     /// </summary>
     public static Period? GetNextPeriodIncludingPartial(this IPeriodTimeline source, DateTime instant) =>
         source.EnumerateFromIncludingPartial(instant).FirstOrDefault();
-
-    /// <summary>
-    /// Returns the first complete period on <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
-    /// <c>null</c> if no period is found.
-    /// </summary>
-    public static Period? GetPreviousCompletePeriod(this IPeriodTimeline source, DateTime instant)
-    {
-        var endOfPeriod = source.EndTimeline.GetCurrentOrPreviousUtcInstant(instant);
-        if (endOfPeriod == null)
-        {
-            return null;
-        }
-        var startOfPeriod = source.StartTimeline.GetPreviousUtcInstant(endOfPeriod.Value);
-        return Period.Create(startOfPeriod, endOfPeriod);
-    }
-
-    /// <summary>
-    /// Returns the first complete period on <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
-    /// <c>null</c> if no period is found.
-    /// </summary>
-    public static Period? GetPreviousPeriodIncludingPartial(this IPeriodTimeline source, DateTime instant) =>
-        source.EnumerateBackwardsFromIncludingPartial(instant).FirstOrDefault();
 
     /// <summary>
     /// Returns whether <paramref name="source"/> is empty.
@@ -197,35 +181,6 @@ public static partial class PeriodTimelineExtensions
             // As this is far smaller than the range of a TimeSpan, we don't need to check for overflow here.
             return sum.Value + p.Duration.Value;
         });
-
-    /// <summary>
-    /// Calculates the total duration of <paramref name="source"/>.
-    /// If <paramref name="addIndividualTimelineDurations"/> is <c>true</c>, the total duration is calculated by summing the durations of all individual timelines. If <c>false</c>, the total duration of the merged timelines is calculated.
-    /// </summary>
-    public static TimeSpan? TotalDuration(this IEnumerable<IPeriodTimeline> source, bool addIndividualTimelineDurations = false)
-    {
-        if (addIndividualTimelineDurations)
-        {
-            return source.Aggregate((TimeSpan?)TimeSpan.Zero, (sum, p) =>
-            {
-                if (sum == null)
-                {
-                    return null;
-                }
-
-                var duration = p.TotalDuration();
-                if (duration == null)
-                {
-                    return null;
-                }
-
-                // Note: Even though unlikely due to the range of TimeSpan (which is the range of a long), given enough period timelines it is possible to overflow the range of TimeSpan.
-                // Therefor we need to check for overflow here.
-                return sum.Value.AddOrNullOnOverflow(duration.Value);
-            });
-        }
-        return source.Merge().TotalDuration();
-    }
 
     internal static bool ContainsEnd(this IPeriodTimeline periodTimeline, DateTime endOfPeriod)
     {
