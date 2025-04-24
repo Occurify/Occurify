@@ -1,4 +1,5 @@
-﻿using Occurify.Extensions;
+﻿using System.Collections;
+using Occurify.Extensions;
 
 namespace Occurify.Tests
 {
@@ -85,49 +86,36 @@ namespace Occurify.Tests
             enumerator.Dispose();
         }
 
-        private class TrackingEnumerable<T> : IEnumerable<T>
+        private class TrackingEnumerable<T>(IEnumerable<T> values) : IEnumerable<T>
         {
-            private readonly List<T> _values;
-            public int MoveNextCount { get; private set; } = 0;
-
-            public TrackingEnumerable(IEnumerable<T> values)
-            {
-                _values = values.ToList();
-            }
+            private readonly List<T> _values = values.ToList();
+            public int MoveNextCount { get; set; }
 
             public IEnumerator<T> GetEnumerator()
             {
                 return new TrackingEnumerator<T>(_values, this);
             }
 
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        }
 
-            private class TrackingEnumerator<T> : IEnumerator<T>
+        private class TrackingEnumerator<T>(List<T> values, TrackingEnumerable<T> parent) : IEnumerator<T>
+        {
+            private int _index = -1;
+
+            public T Current => values[_index];
+            object? IEnumerator.Current => Current;
+
+            public bool MoveNext()
             {
-                private readonly List<T> _values;
-                private readonly TrackingEnumerable<T> _parent;
-                private int _index = -1;
-
-                public TrackingEnumerator(List<T> values, TrackingEnumerable<T> parent)
-                {
-                    _values = values;
-                    _parent = parent;
-                }
-
-                public T Current => _values[_index];
-
-                object System.Collections.IEnumerator.Current => Current;
-
-                public bool MoveNext()
-                {
-                    _parent.MoveNextCount++;
-                    _index++;
-                    return _index < _values.Count;
-                }
-
-                public void Reset() => _index = -1;
-                public void Dispose() { }
+                parent.MoveNextCount++;
+                _index++;
+                return _index < values.Count;
             }
+
+            public void Reset() => _index = -1;
+            
+            public void Dispose() { }
         }
     }
 }
