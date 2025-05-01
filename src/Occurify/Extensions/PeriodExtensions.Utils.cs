@@ -15,6 +15,13 @@ public static partial class PeriodExtensions
         (period.End == null || instant < period.End);
 
     /// <summary>
+    /// Determines whether <paramref name="instant"/> is on <paramref name="period"/> including period end.
+    /// </summary>
+    internal static bool ContainsInstantInclusive(this Period period, DateTime instant) =>
+        (period.Start == null || instant >= period.Start) &&
+        (period.End == null || instant <= period.End);
+
+    /// <summary>
     /// Determines whether <paramref name="instant"/> is on any of the periods in <paramref name="periods"/>.
     /// </summary>
     public static bool ContainsInstant(this IEnumerable<Period> periods, DateTime instant) =>
