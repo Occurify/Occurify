@@ -22,6 +22,14 @@ public static partial class PeriodTimelineCollectionExtensions
     }
 
     /// <summary>
+    /// Determines whether any of the periods in the timelines in <paramref name="source"/> is exactly <paramref name="period"/>.
+    /// </summary>
+    public static bool ContainsExactPeriod(this IEnumerable<IPeriodTimeline> source, Period period)
+    {
+        return source.Any(pp => pp.ContainsExactPeriod(period));
+    }
+
+    /// <summary>
     /// Returns the first complete period on the timelines in <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
     /// <c>null</c> if no period is found.
     /// </summary>
@@ -52,6 +60,68 @@ public static partial class PeriodTimelineCollectionExtensions
     /// </summary>
     public static Period? GetNextPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, DateTime instant) =>
         source.EnumerateFromIncludingPartial(instant).FirstOrDefault();
+
+    /// <summary>
+    /// Returns the timelines in <paramref name="source"/> that contain a period that is exactly <paramref name="period"/>.
+    /// </summary>
+    public static IEnumerable<IPeriodTimeline> GetTimelinesAtExactPeriod(this IEnumerable<IPeriodTimeline> source, Period period) =>
+        source.Where(kvp => kvp.ContainsExactPeriod(period));
+
+    /// <summary>
+    /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
+    /// </summary>
+    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtPreviousCompletePeriod(this IEnumerable<IPeriodTimeline> source, DateTime instant)
+    {
+        source = source.ToArray();
+        var previousCompletePeriod = source.GetPreviousCompletePeriod(instant);
+        if (previousCompletePeriod == null)
+        {
+            return new KeyValuePair<Period?, IPeriodTimeline[]>(null, Array.Empty<IPeriodTimeline>());
+        }
+        return new KeyValuePair<Period?, IPeriodTimeline[]>(previousCompletePeriod, source.GetTimelinesAtExactPeriod(previousCompletePeriod).ToArray());
+    }
+
+    /// <summary>
+    /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
+    /// </summary>
+    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtPreviousPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, DateTime instant)
+    {
+        source = source.ToArray();
+        var previousPeriodIncludingPartial = source.GetPreviousPeriodIncludingPartial(instant);
+        if (previousPeriodIncludingPartial == null)
+        {
+            return new KeyValuePair<Period?, IPeriodTimeline[]>(null, Array.Empty<IPeriodTimeline>());
+        }
+        return new KeyValuePair<Period?, IPeriodTimeline[]>(previousPeriodIncludingPartial, source.GetTimelinesAtExactPeriod(previousPeriodIncludingPartial).ToArray());
+    }
+
+    /// <summary>
+    /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> starting on or later than <paramref name="instant"/>.
+    /// </summary>
+    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtNextCompletePeriod(this IEnumerable<IPeriodTimeline> source, DateTime instant)
+    {
+        source = source.ToArray();
+        var nextCompletePeriod = source.GetNextCompletePeriod(instant);
+        if (nextCompletePeriod == null)
+        {
+            return new KeyValuePair<Period?, IPeriodTimeline[]>(null, Array.Empty<IPeriodTimeline>());
+        }
+        return new KeyValuePair<Period?, IPeriodTimeline[]>(nextCompletePeriod, source.GetTimelinesAtExactPeriod(nextCompletePeriod).ToArray());
+    }
+
+    /// <summary>
+    /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> that includes or starts later than <paramref name="instant"/>.
+    /// </summary>
+    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtNextPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, DateTime instant)
+    {
+        source = source.ToArray();
+        var nextPeriodIncludingPartial = source.GetNextPeriodIncludingPartial(instant);
+        if (nextPeriodIncludingPartial == null)
+        {
+            return new KeyValuePair<Period?, IPeriodTimeline[]>(null, Array.Empty<IPeriodTimeline>());
+        }
+        return new KeyValuePair<Period?, IPeriodTimeline[]>(nextPeriodIncludingPartial, source.GetTimelinesAtExactPeriod(nextPeriodIncludingPartial).ToArray());
+    }
 
     /// <summary>
     /// Returns whether all the timelines in <paramref name="source"/> is empty.
