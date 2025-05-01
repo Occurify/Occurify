@@ -48,6 +48,30 @@ public static partial class PeriodTimelineExtensions
     }
 
     /// <summary>
+    /// Determines whether any of the periods in <paramref name="periodTimeline"/> is exactly the same as <paramref name="period"/>.
+    /// </summary>
+    public static bool ContainsExactPeriod(this IPeriodTimeline periodTimeline, Period period)
+    {
+        if (period.Start == null && period.End == null)
+        {
+            return false;
+        }
+
+        Period? foundPeriod;
+        if (period.Start != null)
+        {
+            return periodTimeline.TryGetPeriod(period.Start!.Value, out foundPeriod) && foundPeriod == period;
+        }
+
+        if (period.End!.Value == DateTime.MinValue)
+        {
+            return periodTimeline.EndTimeline.IsInstant(DateTimeHelper.MinValueUtc);
+        }
+
+        return periodTimeline.TryGetPeriod(period.End!.Value.AddTicks(-1), out foundPeriod) && foundPeriod == period;
+    }
+
+    /// <summary>
     /// Returns the first complete period on <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
     /// <c>null</c> if no period is found.
     /// </summary>
