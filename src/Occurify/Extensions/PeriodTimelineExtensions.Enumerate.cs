@@ -147,15 +147,6 @@ public static partial class PeriodTimelineExtensions
             {
                 yield return period;
             }
-            if (period != null)
-            {
-                if (period.End == null)
-                {
-                    yield break;
-                }
-
-                utcStart = period.End.Value;
-            }
         }
             
         var current = source.GetNextCompletePeriod(utcStart);
@@ -197,15 +188,6 @@ public static partial class PeriodTimelineExtensions
                  period.End > utcEnd))
             {
                 yield return period;
-            }
-            if (period != null)
-            {
-                if (period.Start == null)
-                {
-                    yield break;
-                }
-
-                utcEnd = period.Start.Value;
             }
         }
 
