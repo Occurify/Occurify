@@ -48,6 +48,10 @@
       "commandName": "Project",
       "commandLineArgs": "readme/period-timeline-creation"
     },
+    "Occurify.Examples.ReadMe.TimelineCollection": {
+      "commandName": "Project",
+      "commandLineArgs": "readme/timeline-collection"
+    },
     "Occurify.Examples.Scheduling.MultipleTimelines": {
       "commandName": "Project",
       "commandLineArgs": "scheduling/multiple-timelines"
