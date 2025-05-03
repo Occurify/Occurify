@@ -220,13 +220,13 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// <summary>
     /// Synchronizes all <paramref name="source"/> such that method calls cannot occur concurrently.
     /// </summary>
-    public static IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> Synchronize<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source) where TKey : notnull =>
+    public static Dictionary<TKey, IPeriodTimeline> Synchronize<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source) where TKey : notnull =>
         source.Synchronize(new());
 
     /// <summary>
     /// Synchronizes all <paramref name="source"/> such that method calls cannot occur concurrently.
     /// </summary>
-    public static IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> Synchronize<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, object gate) where TKey : notnull
+    public static Dictionary<TKey, IPeriodTimeline> Synchronize<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, object gate) where TKey : notnull
     {
         return source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Synchronize(gate));
     }

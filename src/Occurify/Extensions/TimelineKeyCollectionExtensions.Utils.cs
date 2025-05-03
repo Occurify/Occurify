@@ -218,13 +218,13 @@ public static partial class TimelineKeyCollectionExtensions
     /// <summary>
     /// Synchronizes all <paramref name="source"/> using the same gate such that method calls cannot occur concurrently.
     /// </summary>
-    public static IEnumerable<KeyValuePair<TKey, ITimeline>> Synchronize<TKey>(this IEnumerable<KeyValuePair<TKey, ITimeline>> source) where TKey : notnull => 
+    public static Dictionary<TKey, ITimeline> Synchronize<TKey>(this IEnumerable<KeyValuePair<TKey, ITimeline>> source) where TKey : notnull => 
         source.Synchronize(new());
 
     /// <summary>
     /// Synchronizes all <paramref name="source"/> using the same gate such that method calls cannot occur concurrently.
     /// </summary>
-    public static IEnumerable<KeyValuePair<TKey, ITimeline>> Synchronize<TKey>(this IEnumerable<KeyValuePair<TKey, ITimeline>> source, object gate) where TKey : notnull
+    public static Dictionary<TKey, ITimeline> Synchronize<TKey>(this IEnumerable<KeyValuePair<TKey, ITimeline>> source, object gate) where TKey : notnull
     {
         return source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Synchronize(gate));
     }
