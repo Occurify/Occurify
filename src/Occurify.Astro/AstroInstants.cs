@@ -9,22 +9,22 @@ namespace Occurify.Astro
         /// <summary>
         /// Returns a <see cref="ITimeline"/> with sunrises on <see cref="Coordinates.Local"/>.
         /// </summary>
-        public static ITimeline LocalSunrise => Sunrise(Coordinates.Local);
+        public static ITimeline LocalSunrises => Sunrises(Coordinates.Local);
 
         /// <summary>
         /// Returns a <see cref="ITimeline"/> with sunsets on <see cref="Coordinates.Local"/>.
         /// </summary>
-        public static ITimeline LocalSunset => Sunset(Coordinates.Local);
+        public static ITimeline LocalSunsets => Sunsets(Coordinates.Local);
 
         /// <summary>
         /// Returns a <see cref="ITimeline"/> with sunsets on <paramref name="coordinates"/>.
         /// </summary>
-        public static ITimeline Sunset(Coordinates coordinates) => SunPhases(coordinates, Astro.SunPhases.Sunset);
+        public static ITimeline Sunsets(Coordinates coordinates) => SunPhases(coordinates, Astro.SunPhases.Sunset);
 
         /// <summary>
         /// Returns a <see cref="ITimeline"/> with sunrises on <paramref name="coordinates"/>.
         /// </summary>
-        public static ITimeline Sunrise(Coordinates coordinates) => SunPhases(coordinates, Astro.SunPhases.Sunrise);
+        public static ITimeline Sunrises(Coordinates coordinates) => SunPhases(coordinates, Astro.SunPhases.Sunrise);
 
         /// <summary>
         /// Returns a <see cref="ITimeline"/> with the instants of sun phases <paramref name="phases"/> on <paramref name="coordinates"/>.
