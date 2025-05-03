@@ -15,7 +15,7 @@ namespace Occurify.Examples.Examples.ReadMe
             int seed = 1337;
 
             // Determine start instants
-            ITimeline tenMinAfterSunset = AstroInstants.LocalSunset + TimeSpan.FromMinutes(10);
+            ITimeline tenMinAfterSunset = AstroInstants.LocalSunsets + TimeSpan.FromMinutes(10);
             ITimeline randomizedSunset = tenMinAfterSunset.Randomize(seed, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(10));
             // Ensure the light doesn't turn on before 5:15 PM
             ITimeline after515Pm = (randomizedSunset + TimeZoneInstants.DailyAt(hour: 17, minute: 15)).LastWithin(TimeZonePeriods.Days());

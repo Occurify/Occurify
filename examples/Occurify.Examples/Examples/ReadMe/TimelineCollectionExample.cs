@@ -12,8 +12,8 @@ namespace Occurify.Examples.Examples.ReadMe
         {
             Dictionary<ITimeline, bool> sunStates = new Dictionary<ITimeline, bool>
             {
-                { AstroInstants.LocalSunrise, true },
-                { AstroInstants.LocalSunset, false }
+                { AstroInstants.LocalSunrises, true },
+                { AstroInstants.LocalSunsets, false }
             };
             foreach (KeyValuePair<DateTime, bool[]> state in sunStates.EnumeratePeriod(TimeZonePeriods.CurrentMonth()))
             {

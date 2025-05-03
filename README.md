@@ -116,7 +116,7 @@ As an example, let’s imagine we want to automate our lights to turn on in the 
 Instead of manually maintaining a list of sunset times, we can simply use:
 
 ```cs
-ITimeline sunsets = AstroInstants.LocalSunset;
+ITimeline sunsets = AstroInstants.LocalSunsets;
 ```
 
 This timeline now represents every sunset dynamically—no need for hardcoded schedules.
@@ -220,7 +220,7 @@ The following example demonstrates how to turn on a light between **7 AM and 15 
 
 #### Defining the Period
 ```cs
-ITimeline fifteenMinAfterSunRise = AstroInstants.LocalSunrise + TimeSpan.FromMinutes(15);
+ITimeline fifteenMinAfterSunRise = AstroInstants.LocalSunrises + TimeSpan.FromMinutes(15);
 ITimeline sevenAm = TimeZoneInstants.DailyAt(hour: 7);
 IPeriodTimeline between7AndSunRise = sevenAm.To(fifteenMinAfterSunRise); // Creates timeline that represents periods starting at 7am and ending 15 minutes after sunrise.
 ```
@@ -346,7 +346,7 @@ Here's how we can achieve this using Occurify:
 int seed = 1337;
 
 // Determine start instants
-ITimeline tenMinAfterSunset = AstroInstants.LocalSunset + TimeSpan.FromMinutes(10);
+ITimeline tenMinAfterSunset = AstroInstants.LocalSunsets + TimeSpan.FromMinutes(10);
 ITimeline randomizedSunset = tenMinAfterSunset.Randomize(seed, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(10));
 // Ensure the light doesn't turn on before 5:15 PM
 ITimeline after515Pm = (randomizedSunset + TimeZoneInstants.DailyAt(hour: 17, minute: 15)).LastWithin(TimeZonePeriods.Days());
@@ -564,8 +564,8 @@ Example for `ITimeline`:
 ```cs
 Dictionary<ITimeline, bool> sunStates = new Dictionary<ITimeline, bool>
 {
-    { AstroInstants.LocalSunrise, true },
-    { AstroInstants.LocalSunset, false }
+    { AstroInstants.LocalSunrises, true },
+    { AstroInstants.LocalSunsets, false }
 };
 foreach (KeyValuePair<DateTime, bool[]> state in sunStates.EnumeratePeriod(TimeZonePeriods.CurrentMonth()))
 {

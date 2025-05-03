@@ -12,7 +12,7 @@ namespace Occurify.Examples.Examples.ReadMe
 
         public void Run()
         {
-            ITimeline fifteenMinAfterSunRise = AstroInstants.LocalSunrise + TimeSpan.FromMinutes(15);
+            ITimeline fifteenMinAfterSunRise = AstroInstants.LocalSunrises + TimeSpan.FromMinutes(15);
             ITimeline sevenAm = TimeZoneInstants.DailyAt(hour: 7);
             IPeriodTimeline between7AndSunRise = sevenAm.To(fifteenMinAfterSunRise); // Creates timeline that represents periods starting at 7am and ending 15 minutes after sunrise.
 

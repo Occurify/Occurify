@@ -12,7 +12,7 @@ namespace Occurify.Examples.Examples.ReadMe
 
         public void Run()
         {
-            ITimeline sunsets = AstroInstants.LocalSunset;
+            ITimeline sunsets = AstroInstants.LocalSunsets;
 
             ITimeline twentyMinAfterSunset = sunsets + TimeSpan.FromMinutes(20);
 
