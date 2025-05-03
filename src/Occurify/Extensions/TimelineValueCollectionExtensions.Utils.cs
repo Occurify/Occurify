@@ -133,11 +133,8 @@ public static partial class TimelineValueCollectionExtensions
     /// <summary>
     /// Returns the timelines in <paramref name="source"/> that have an instant at <paramref name="instant"/>.
     /// </summary>
-    public static KeyValuePair<ITimeline, TValue>[] GetTimelinesAtUtcInstant<TValue>(
-        this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
-    {
-        return source.Where(kvp => kvp.Key.IsInstant(instant)).ToArray();
-    }
+    public static IEnumerable<KeyValuePair<ITimeline, TValue>> GetTimelinesAtUtcInstant<TValue>(
+        this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant) => source.Where(kvp => kvp.Key.IsInstant(instant));
 
     /// <summary>
     /// Returns the timelines on the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
@@ -151,22 +148,7 @@ public static partial class TimelineValueCollectionExtensions
         {
             return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(null, Array.Empty<KeyValuePair<ITimeline, TValue>>());
         }
-        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(previousInstant, source.GetTimelinesAtUtcInstant(previousInstant.Value));
-    }
-
-    /// <summary>
-    /// Returns the timelines on the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
-    /// </summary>
-    public static KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]> GetTimelinesAtNextUtcInstant<TValue>(
-        this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
-    {
-        source = source.ToArray();
-        var nextInstant = source.GetNextUtcInstant(instant);
-        if (nextInstant == null)
-        {
-            return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(null, Array.Empty<KeyValuePair<ITimeline, TValue>>());
-        }
-        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(nextInstant, source.GetTimelinesAtUtcInstant(nextInstant.Value));
+        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(previousInstant, source.GetTimelinesAtUtcInstant(previousInstant.Value).ToArray());
     }
 
     /// <summary>
@@ -181,7 +163,22 @@ public static partial class TimelineValueCollectionExtensions
         {
             return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(null, Array.Empty<KeyValuePair<ITimeline, TValue>>());
         }
-        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(previousInstant, source.GetTimelinesAtUtcInstant(previousInstant.Value));
+        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(previousInstant, source.GetTimelinesAtUtcInstant(previousInstant.Value).ToArray());
+    }
+
+    /// <summary>
+    /// Returns the timelines on the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
+    /// </summary>
+    public static KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]> GetTimelinesAtNextUtcInstant<TValue>(
+        this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime instant)
+    {
+        source = source.ToArray();
+        var nextInstant = source.GetNextUtcInstant(instant);
+        if (nextInstant == null)
+        {
+            return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(null, Array.Empty<KeyValuePair<ITimeline, TValue>>());
+        }
+        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(nextInstant, source.GetTimelinesAtUtcInstant(nextInstant.Value).ToArray());
     }
 
     /// <summary>
@@ -196,7 +193,7 @@ public static partial class TimelineValueCollectionExtensions
         {
             return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(null, Array.Empty<KeyValuePair<ITimeline, TValue>>());
         }
-        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(nextInstant, source.GetTimelinesAtUtcInstant(nextInstant.Value));
+        return new KeyValuePair<DateTime?, KeyValuePair<ITimeline, TValue>[]>(nextInstant, source.GetTimelinesAtUtcInstant(nextInstant.Value).ToArray());
     }
 
     /// <summary>

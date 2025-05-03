@@ -549,11 +549,17 @@ IPeriodTimeline periodTimeline5 = PeriodTimeline.Between(periodStartTimeline, pe
 
 ### Collections
 
-In Occurify, collections of `ITimeline` and `IPeriodTimeline` are treated as first-class citizens. This means that all extension methods available for `ITimeline` can also be used on `IEnumerable<ITimeline>`, `IEnumerable<KeyValuePair<TKey, ITimeline>>` and `IEnumerable<KeyValuePair<ITimeline, TValue>>`.
+In Occurify, collections of `ITimeline` and `IPeriodTimeline` are treated as first-class citizens. This means you can use all extension methods for `ITimeline` and `IPeriodTimeline` not only on single instances, but also on the following collection types:
+- `IEnumerable<ITimeline>`
+- `IEnumerable<KeyValuePair<TKey, ITimeline>>`
+- `IEnumerable<KeyValuePair<ITimeline, TValue>>`
+- `IEnumerable<IPeriodTimeline>`
+- `IEnumerable<KeyValuePair<TKey, IPeriodTimeline>>`
+- `IEnumerable<KeyValuePair<IPeriodTimeline, TValue>>`
 
 This is particularly powerful when you want to associate additional state or metadata (such as booleans, labels, or categories) with each timeline while still applying timeline operations across the collection.
 
-For example:
+Example for `ITimeline`:
 
 ```cs
 Dictionary<ITimeline, bool> sunStates = new Dictionary<ITimeline, bool>
