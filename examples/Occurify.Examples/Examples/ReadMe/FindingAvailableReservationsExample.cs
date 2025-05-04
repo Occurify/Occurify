@@ -15,10 +15,10 @@ namespace Occurify.Examples.Examples.ReadMe
             var availableFreePeriodsInAugust =
                 FindAvailableFreePeriods(TimeZonePeriods.Month(8, 2025), reservationsIn2025, TimeSpan.FromMinutes(90));
 
-            Console.WriteLine("Available free 90 min timeslots in august:");
+            Console.WriteLine("Available periods for 90 min timeslots in august:");
             foreach (var period in availableFreePeriodsInAugust)
             {
-                Console.WriteLine(period.ToString(TimeZoneInfo.Local));
+                Console.WriteLine(period.ToLocalTimeZoneString());
             }
         }
 

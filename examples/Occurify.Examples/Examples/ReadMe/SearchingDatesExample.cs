@@ -1,5 +1,6 @@
 ﻿using Occurify.Extensions;
 using Occurify.TimeZones;
+using Occurify.TimeZones.Extensions;
 
 namespace Occurify.Examples.Examples.ReadMe
 {
@@ -15,7 +16,7 @@ namespace Occurify.Examples.Examples.ReadMe
             Console.WriteLine("The years 1200 and 1201 have the following fridays in february:");
             foreach (var date in fridaysOfFebruary.EnumeratePeriod(twoYears))
             {
-                Console.WriteLine(date.Start!.Value.ToShortDateString());
+                Console.WriteLine(date.Start!.Value.ToLocalTimeZoneShortDateString());
             }
         }
     }
