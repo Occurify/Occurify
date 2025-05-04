@@ -34,13 +34,13 @@ namespace Occurify.Examples.Examples.ReadMe
             Console.WriteLine("The rest of the current month the lights will go on at:");
             foreach (Period period in lightOnPeriods.EnumerateRange(DateTime.UtcNow, TimeZonePeriods.CurrentMonth().End!.Value))
             {
-                Console.WriteLine(period.Start);
+                Console.WriteLine(period.Start!.Value.ToLocalTime());
             }
 
             Console.WriteLine("In February 2050 the lights will go on at:");
             foreach (Period period in lightOnPeriods.EnumeratePeriod(TimeZonePeriods.Month(2, 2050)))
             {
-                Console.WriteLine(period.Start);
+                Console.WriteLine(period.Start!.Value.ToLocalTime());
             }
 
             var scheduler = Scheduler.Default;

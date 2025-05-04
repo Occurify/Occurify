@@ -26,7 +26,7 @@ namespace Occurify.Examples.Examples.ReadMe
             Console.WriteLine("Everyone is available on:");
             foreach (Period period in periodsEveryoneIsAvailable)
             {
-                Console.WriteLine(period.ToString(TimeZoneInfo.Local));
+                Console.WriteLine(period.ToLocalTimeZoneString());
             }
 
             DateTime timeOfInterest = new DateTime(2025, 3, 7).AsUtcInstant();
@@ -35,8 +35,8 @@ namespace Occurify.Examples.Examples.ReadMe
             int appointmentPeriods = samples.Count(s => s.IsPeriod);
             int freeTimePeriods = samples.Count(s => s.IsGap);
 
-            Console.WriteLine($"{appointmentPeriods} people had an appointment on {timeOfInterest}.");
-            Console.WriteLine($"{freeTimePeriods} people had were free on {timeOfInterest}.");
+            Console.WriteLine($"{appointmentPeriods} people had an appointment on {timeOfInterest.ToLocalTimeZoneString()}.");
+            Console.WriteLine($"{freeTimePeriods} people had were free on {timeOfInterest.ToLocalTimeZoneString()}.");
         }
     }
 }
