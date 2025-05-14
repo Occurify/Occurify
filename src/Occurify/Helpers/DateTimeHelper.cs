@@ -18,6 +18,46 @@ internal static class DateTimeHelper
         return date1 > date2 ? date1 : date2;
     }
 
+    internal static DateTime? MinAssumingNullIsPlusInfinity(DateTime? dateTime1, DateTime? dateTime2)
+    {
+        if (dateTime1 == null && dateTime2 == null)
+        {
+            return null;
+        }
+
+        if (dateTime1 != null && dateTime2 == null)
+        {
+            return dateTime1;
+        }
+
+        if (dateTime1 == null && dateTime2 != null)
+        {
+            return dateTime2;
+        }
+
+        return dateTime1 < dateTime2 ? dateTime1 : dateTime2;
+    }
+
+    internal static DateTime? MaxAssumingNullIsMinInfinity(DateTime? dateTime1, DateTime? dateTime2)
+    {
+        if (dateTime1 == null && dateTime2 == null)
+        {
+            return null;
+        }
+
+        if (dateTime1 != null && dateTime2 == null)
+        {
+            return dateTime1;
+        }
+
+        if (dateTime1 == null && dateTime2 != null)
+        {
+            return dateTime2;
+        }
+
+        return dateTime1 < dateTime2 ? dateTime2 : dateTime1;
+    }
+
     /// <summary>
     /// Returns a date in between the provided start and end date based on the fraction.
     /// A fraction of 0 will return startDate and a fraction of 1 will return endDate.

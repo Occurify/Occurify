@@ -1,5 +1,6 @@
 ﻿
 using Occurify.Extensions;
+using Occurify.Helpers;
 
 namespace Occurify.PeriodTimelineCollectionTransformations
 {
@@ -25,50 +26,25 @@ namespace Occurify.PeriodTimelineCollectionTransformations
                 throw new ArgumentException($"{nameof(utcRelativeTo)} should be UTC time.");
             }
 
-            var currentlyInPeriod = _predicate(_source.Count(pt => pt.ContainsInstant(utcRelativeTo)));
+            var currentlyInPeriod = _predicate(_source.Count(pt => pt.ContainsInstant(utcRelativeTo - TimeSpan.FromTicks(1))));
             do
             {
+                // todo: edge case and think about the logic here
                 var previousStart = _sourceStartTimelines.GetPreviousUtcInstant(utcRelativeTo);
                 var previousEnd = _sourceEndTimelines.GetPreviousUtcInstant(utcRelativeTo);
-                if (previousStart == null && previousEnd == null)
+                var previous = DateTimeHelper.MaxAssumingNullIsMinInfinity(previousStart, previousEnd);
+                if (previous == null)
                 {
                     return null;
                 }
 
-                if (previousEnd != null && (previousStart == null || previousEnd > previousStart))
+                var inPeriodBeforePrevious = _predicate(_source.Count(pt => pt.ContainsInstant(previous.Value - TimeSpan.FromTicks(1))));
+                if (!currentlyInPeriod && inPeriodBeforePrevious)
                 {
-                    if (previousEnd == DateTime.MinValue)
-                    {
-                        return null;
-                    }
-                    var inPeriodBeforeEnd = _predicate(_source.Count(pt => pt.ContainsInstant(previousEnd.Value - TimeSpan.FromTicks(1))));
-                    if (inPeriodBeforeEnd != currentlyInPeriod)
-                    {
-                        if (!currentlyInPeriod)
-                        {
-                            return previousEnd;
-                        }
-
-                        currentlyInPeriod = false;
-                    }
-
-                    utcRelativeTo = previousEnd.Value;
+                    return previous;
                 }
-                else
-                {
-                    var inPeriodOnStart = _predicate(_source.Count(pt => pt.ContainsInstant(previousStart!.Value)));
-                    if (inPeriodOnStart != currentlyInPeriod)
-                    {
-                        if (!currentlyInPeriod)
-                        {
-                            return previousEnd;
-                        }
-
-                        currentlyInPeriod = false;
-                    }
-
-                    utcRelativeTo = previousStart!.Value;
-                }
+                currentlyInPeriod = inPeriodBeforePrevious;
+                utcRelativeTo = previous.Value;
             } while (true);
         }
 
@@ -84,41 +60,19 @@ namespace Occurify.PeriodTimelineCollectionTransformations
             {
                 var nextStart = _sourceStartTimelines.GetNextUtcInstant(utcRelativeTo);
                 var nextEnd = _sourceEndTimelines.GetNextUtcInstant(utcRelativeTo);
-                if (nextStart == null && nextEnd == null)
+                var next = DateTimeHelper.MinAssumingNullIsPlusInfinity(nextStart, nextEnd);
+                if (next == null)
                 {
                     return null;
                 }
 
-                if (nextEnd != null && (nextStart == null || nextEnd < nextStart))
+                var inPeriodOnNext = _predicate(_source.Count(pt => pt.ContainsInstant(next.Value)));
+                if (currentlyInPeriod && !inPeriodOnNext)
                 {
-                    var inPeriodBeforeEnd = _predicate(_source.Count(pt => pt.ContainsInstant(nextEnd.Value - TimeSpan.FromTicks(1))));
-                    if (inPeriodBeforeEnd != currentlyInPeriod)
-                    {
-                        if (!currentlyInPeriod)
-                        {
-                            return nextEnd;
-                        }
-
-                        currentlyInPeriod = false;
-                    }
-
-                    utcRelativeTo = nextEnd.Value;
+                    return next;
                 }
-                else
-                {
-                    var inPeriodOnStart = _predicate(_source.Count(pt => pt.ContainsInstant(nextStart!.Value)));
-                    if (inPeriodOnStart != currentlyInPeriod)
-                    {
-                        if (!currentlyInPeriod)
-                        {
-                            return nextEnd;
-                        }
-
-                        currentlyInPeriod = false;
-                    }
-
-                    utcRelativeTo = nextStart!.Value;
-                }
+                currentlyInPeriod = inPeriodOnNext;
+                utcRelativeTo = next.Value;
             } while (true);
         }
 
