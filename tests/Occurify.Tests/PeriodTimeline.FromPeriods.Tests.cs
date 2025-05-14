@@ -52,7 +52,11 @@ public class PeriodTimelineFromPeriodsTests
 
     private void ExecuteTest(TimelineMethods method, string[] periods, string expected)
     {
-        Console.WriteLine($"Periods:  {string.Join(", ", periods.Select(p => $"\"{p}\""))}");
+        Console.WriteLine($"Periods:  \"{periods.FirstOrDefault() ?? ""}\"");
+        foreach (var period in periods.Skip(1))
+        {
+            Console.WriteLine($"          \"{period}\"");
+        }
         Console.WriteLine($"Expected: \"{expected}\"");
 
         // Arrange
@@ -72,7 +76,11 @@ public class PeriodTimelineFromPeriodsTests
 
     private void Execute_MergingGivesSameResult(TimelineMethods method, string[] periods, string expected)
     {
-        Console.WriteLine($"Periods:  {string.Join(", ", periods.Select(p => $"\"{p}\""))}");
+        Console.WriteLine($"Periods:  \"{periods.FirstOrDefault() ?? ""}\"");
+        foreach (var period in periods.Skip(1))
+        {
+            Console.WriteLine($"          \"{period}\"");
+        }
         Console.WriteLine($"Expected: \"{expected}\"");
 
         // Arrange
