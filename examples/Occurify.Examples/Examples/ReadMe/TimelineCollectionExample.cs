@@ -12,15 +12,15 @@ namespace Occurify.Examples.Examples.ReadMe
         {
             Dictionary<ITimeline, bool> sunStates = new Dictionary<ITimeline, bool>
             {
-                { AstroInstants.LocalSunrise, true },
-                { AstroInstants.LocalSunset, false }
+                { AstroInstants.LocalSunrises, true },
+                { AstroInstants.LocalSunsets, false }
             };
             foreach (KeyValuePair<DateTime, bool[]> state in sunStates.EnumeratePeriod(TimeZonePeriods.CurrentMonth()))
             {
                 bool sunIsRising = state.Value.First(); // Since we're combining multiple timelines, a single instant may correspond to multiple values. However, for this example, we assume sunrise and sunset don't occur simultaneously, so we just take the first value.
                 Console.WriteLine(sunIsRising ?
-                    $"At {state.Key} the sun is rising!" :
-                    $"At {state.Key} the sun is setting!");
+                    $"At {state.Key.ToLocalTime()} the sun is rising!" :
+                    $"At {state.Key.ToLocalTime()} the sun is setting!");
             }
         }
     }

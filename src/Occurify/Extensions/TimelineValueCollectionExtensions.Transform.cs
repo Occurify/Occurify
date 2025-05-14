@@ -13,56 +13,56 @@ public static partial class TimelineValueCollectionExtensions
     /// <summary>
     /// Offsets the timelines in <paramref name="source"/> with <paramref name="offset"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> Offset<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, TimeSpan offset) =>
+    public static Dictionary<ITimeline, TValue> Offset<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, TimeSpan offset) =>
             source.ToDictionary(kvp => kvp.Key.Offset(offset), kvp => kvp.Value);
 
     /// <summary>
     /// Offsets the timelines in <paramref name="source"/> with <paramref name="ticks"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> OffsetTicks<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, long ticks) =>
+    public static Dictionary<ITimeline, TValue> OffsetTicks<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, long ticks) =>
         source.ToDictionary(kvp => kvp.Key.OffsetTicks(ticks), kvp => kvp.Value);
 
     /// <summary>
     /// Offsets the timelines in <paramref name="source"/> with <paramref name="microseconds"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> OffsetMicroseconds<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double microseconds) =>
+    public static Dictionary<ITimeline, TValue> OffsetMicroseconds<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double microseconds) =>
         source.ToDictionary(kvp => kvp.Key.OffsetMicroseconds(microseconds), kvp => kvp.Value);
 
     /// <summary>
     /// Offsets the timelines in <paramref name="source"/> with <paramref name="milliseconds"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> OffsetMilliseconds<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double milliseconds) =>
+    public static Dictionary<ITimeline, TValue> OffsetMilliseconds<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double milliseconds) =>
         source.ToDictionary(kvp => kvp.Key.OffsetMilliseconds(milliseconds), kvp => kvp.Value);
 
     /// <summary>
     /// Offsets the timelines in <paramref name="source"/> with <paramref name="seconds"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> OffsetSeconds<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double seconds) =>
+    public static Dictionary<ITimeline, TValue> OffsetSeconds<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double seconds) =>
         source.ToDictionary(kvp => kvp.Key.OffsetSeconds(seconds), kvp => kvp.Value);
 
     /// <summary>
     /// Offsets the timelines in <paramref name="source"/> with <paramref name="minutes"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> OffsetMinutes<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double minutes) =>
+    public static Dictionary<ITimeline, TValue> OffsetMinutes<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double minutes) =>
         source.ToDictionary(kvp => kvp.Key.OffsetMinutes(minutes), kvp => kvp.Value);
 
     /// <summary>
     /// Offsets the timelines in <paramref name="source"/> with <paramref name="hours"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> OffsetHours<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double hours) =>
+    public static Dictionary<ITimeline, TValue> OffsetHours<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double hours) =>
         source.ToDictionary(kvp => kvp.Key.OffsetHours(hours), kvp => kvp.Value);
 
     /// <summary>
     /// Offsets the timelines in <paramref name="source"/> with <paramref name="days"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> OffsetDays<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double days) =>
+    public static Dictionary<ITimeline, TValue> OffsetDays<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, double days) =>
         source.ToDictionary(kvp => kvp.Key.OffsetDays(days), kvp => kvp.Value);
 
     /// <summary>
     /// Randomizes the timelines in <paramref name="source"/> with <paramref name="maxDeviation"/> in both directions on the timeline.
     /// This method will never result in a change of instant count or in overlapping instants in each timeline.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> Randomize<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, TimeSpan maxDeviation) =>
+    public static Dictionary<ITimeline, TValue> Randomize<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, TimeSpan maxDeviation) =>
         source.ToDictionary(kvp => kvp.Key.Randomize(maxDeviation), kvp => kvp.Value);
 
     /// <summary>
@@ -70,14 +70,14 @@ public static partial class TimelineValueCollectionExtensions
     /// This method will never result in a change of instant count or in overlapping instants in each timeline.
     /// Identical inputs with the same seed, will result in the same output.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> Randomize<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, int seed, TimeSpan maxDeviation) =>
+    public static Dictionary<ITimeline, TValue> Randomize<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, int seed, TimeSpan maxDeviation) =>
         source.ToDictionary(kvp => kvp.Key.Randomize(seed, maxDeviation), kvp => kvp.Value);
 
     /// <summary>
     /// Randomizes the timelines in <paramref name="source"/> with <paramref name="maxDeviationBefore"/> towards the left and <paramref name="maxDeviationAfter"/> towards the right on the timeline.
     /// This method will never result in a change of instant count or in overlapping instants in each timeline.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> Randomize<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, TimeSpan maxDeviationBefore, TimeSpan maxDeviationAfter) =>
+    public static Dictionary<ITimeline, TValue> Randomize<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, TimeSpan maxDeviationBefore, TimeSpan maxDeviationAfter) =>
         source.ToDictionary(kvp => kvp.Key.Randomize(maxDeviationBefore, maxDeviationAfter), kvp => kvp.Value);
 
     /// <summary>
@@ -85,7 +85,7 @@ public static partial class TimelineValueCollectionExtensions
     /// This method will never result in a change of instant count or in overlapping instants in each timeline.
     /// Identical inputs with the same <paramref name="seed"/>, will result in the same output.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> Randomize<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, int seed, TimeSpan maxDeviationBefore, TimeSpan maxDeviationAfter) =>
+    public static Dictionary<ITimeline, TValue> Randomize<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, int seed, TimeSpan maxDeviationBefore, TimeSpan maxDeviationAfter) =>
         source.ToDictionary(kvp => kvp.Key.Randomize(seed, maxDeviationBefore, maxDeviationAfter), kvp => kvp.Value);
 
     /// <summary>
@@ -94,7 +94,7 @@ public static partial class TimelineValueCollectionExtensions
     /// This method will never result in a change of instant count or in overlapping instants in each timeline.
     /// Identical inputs with the same <paramref name="seed"/>, will result in the same output.
     /// </summary>
-    public static IEnumerable<KeyValuePair<ITimeline, TValue>> Randomize<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, int seed, TimeSpan maxDeviationBefore,
+    public static Dictionary<ITimeline, TValue> Randomize<TValue>(this IEnumerable<KeyValuePair<ITimeline, TValue>> source, int seed, TimeSpan maxDeviationBefore,
         TimeSpan maxDeviationAfter, Func<int, double> randomFunc) =>
         source.ToDictionary(kvp => kvp.Key.Randomize(seed, maxDeviationBefore, maxDeviationAfter, randomFunc), kvp => kvp.Value);
 

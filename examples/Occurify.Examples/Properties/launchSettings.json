@@ -55,6 +55,10 @@
     "Occurify.Examples.Scheduling.MultipleTimelines": {
       "commandName": "Project",
       "commandLineArgs": "scheduling/multiple-timelines"
+    },
+    "Occurify.Examples.TimeZone.PeriodToString": {
+      "commandName": "Project",
+      "commandLineArgs": "timezone/period-to-string"
     }
   }
 }

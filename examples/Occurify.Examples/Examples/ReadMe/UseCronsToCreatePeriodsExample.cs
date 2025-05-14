@@ -26,7 +26,7 @@ namespace Occurify.Examples.Examples.ReadMe
             Console.WriteLine("Work days this year:");
             foreach (Period period in workingDaysWithoutHolidays.EnumeratePeriod(TimeZonePeriods.CurrentYear()))
             {
-                Console.WriteLine(period.ToString(TimeZoneInfo.Local));
+                Console.WriteLine(period.Start!.Value.ToLocalTimeZoneShortDateString());
             }
         }
     }

@@ -31,7 +31,7 @@ A powerful and intuitive .NET library for defining, filtering, transforming, and
     - [Period](#period)
     - [Instant Timeline](#instant-timeline)
     - [Period Timeline](#period-timeline)
-    - [Collections](#collections)
+    - [Collections and Dictionaries](#collections-and-dictionaries)
 - [Coordinates](#coordinates)
 - [ASCII Representation of Timelines](#ascii-representation-of-timelines)
 - [Extension Methods](#extension-methods)
@@ -48,8 +48,9 @@ A powerful and intuitive .NET library for defining, filtering, transforming, and
 
 A powerful and intuitive .NET library for defining, filtering, transforming, and scheduling instant and period timelines.
 
-- Supports instants, periods, timelines and period timelines.
-- Implements collection and periodic timelines.
+- Supports instants and periods.
+- Supports instant and period timelines.
+- Supports (period)timeline collections and dictionaries.
 - Supports an extensive set of fluent extension methods to filter and transform instants, periods, timelines and period timelines.
 - Includes 4500+ unit tests to ensure reliability.
 
@@ -60,11 +61,12 @@ Time zone and cron expression support for Occurify: Filter, manipulate, and sche
 - Supports time zone based instants and periods (e.g. time of day, day, week, etc).
 - Supports both forwards and backwards iteration through Cron instants and periods.
 - Uses the *Cronos* library to enable Cron functionality that:
-- Supports standard Cron format with optional seconds.
-- Supports time zones, and performs all the date/time conversions for you.
-- Does not skip occurrences, when the clock jumps forward to daylight saving time (known as Summer time).
-- Does not skip interval-based occurrences, when the clock jumps backward from Summer time.
-- Does not retry non-interval based occurrences, when the clock jumps backward from Summer time.
+    - Supports standard Cron format with optional seconds.
+    - Supports time zones, and performs all the date/time conversions for you.
+    - Does not skip occurrences, when the clock jumps forward to daylight saving time (known as Summer time).
+    - Does not skip interval-based occurrences, when the clock jumps backward from Summer time.
+    - Does not retry non-interval based occurrences, when the clock jumps backward from Summer time.
+- Supports time zone `ToString` method implementations for both `Period` and `DateTime`
 
 ### [Occurify.Astro](https://www.nuget.org/packages/Occurify.Astro)
 
@@ -116,7 +118,7 @@ As an example, let’s imagine we want to automate our lights to turn on in the 
 Instead of manually maintaining a list of sunset times, we can simply use:
 
 ```cs
-ITimeline sunsets = AstroInstants.LocalSunset;
+ITimeline sunsets = AstroInstants.LocalSunsets;
 ```
 
 This timeline now represents every sunset dynamically—no need for hardcoded schedules.
@@ -178,7 +180,7 @@ You can easily enumerate future or past periods to check when the lights will go
 ```cs
 Console.WriteLine("The rest of the current month the lights will go on at:");
 foreach (Period period in lightOnPeriods.EnumerateRange(DateTime.UtcNow, TimeZonePeriods.CurrentMonth().End!.Value)){
-    Console.WriteLine(period.Start);
+    Console.WriteLine(period.Start!.Value.ToLocalTime());
 }
 ```
 
@@ -187,7 +189,7 @@ But due to the dynamic nature of timelines we can just as easily see when the li
 ```cs
 Console.WriteLine("In February 2050 the lights will go on at:");
 foreach (Period period in lightOnPeriods.EnumeratePeriod(TimeZonePeriods.Month(2, 2050))){
-    Console.WriteLine(period.Start);
+    Console.WriteLine(period.Start!.Value.ToLocalTime());
 }
 ```
 > Note that the period timeline **only resolves the necessary periods when enumerated**, ensuring efficiency.
@@ -220,7 +222,7 @@ The following example demonstrates how to turn on a light between **7 AM and 15 
 
 #### Defining the Period
 ```cs
-ITimeline fifteenMinAfterSunRise = AstroInstants.LocalSunrise + TimeSpan.FromMinutes(15);
+ITimeline fifteenMinAfterSunRise = AstroInstants.LocalSunrises + TimeSpan.FromMinutes(15);
 ITimeline sevenAm = TimeZoneInstants.DailyAt(hour: 7);
 IPeriodTimeline between7AndSunRise = sevenAm.To(fifteenMinAfterSunRise); // Creates timeline that represents periods starting at 7am and ending 15 minutes after sunrise.
 ```
@@ -265,7 +267,7 @@ IPeriodTimeline workingDaysWithoutHolidays = workingDays - holidays;
 Console.WriteLine("Work days this year:");
 foreach (Period period in workingDaysWithoutHolidays.EnumeratePeriod(TimeZonePeriods.CurrentYear()))
 {
-    Console.WriteLine(period.ToString(TimeZoneInfo.Local));
+    Console.WriteLine(period.Start!.Value.ToLocalTimeZoneShortDateString());
 }
 ```
 
@@ -300,7 +302,7 @@ Period twoYears = TimeZoneInstants.StartOfYear(1200, TimeZoneInfo.Utc).To(TimeZo
 Console.WriteLine("The years 1200 and 1201 have the following fridays in february:");
 foreach (var date in fridaysOfFebruary.EnumeratePeriod(twoYears))
 {
-    Console.WriteLine(date.Start!.Value.ToShortDateString());
+    Console.WriteLine(date.Start!.Value.ToLocalTimeZoneShortDateString());
 }
 ```
 
@@ -346,7 +348,7 @@ Here's how we can achieve this using Occurify:
 int seed = 1337;
 
 // Determine start instants
-ITimeline tenMinAfterSunset = AstroInstants.LocalSunset + TimeSpan.FromMinutes(10);
+ITimeline tenMinAfterSunset = AstroInstants.LocalSunsets + TimeSpan.FromMinutes(10);
 ITimeline randomizedSunset = tenMinAfterSunset.Randomize(seed, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(10));
 // Ensure the light doesn't turn on before 5:15 PM
 ITimeline after515Pm = (randomizedSunset + TimeZoneInstants.DailyAt(hour: 17, minute: 15)).LastWithin(TimeZonePeriods.Days());
@@ -400,7 +402,7 @@ IEnumerable<Period> periodsEveryoneIsAvailable = availableSlotsTimelines
 Console.WriteLine("Everyone is available on:");
 foreach (Period period in periodsEveryoneIsAvailable)
 {
-    Console.WriteLine(period.ToString(TimeZoneInfo.Local));
+    Console.WriteLine(period.ToLocalTimeZoneString());
 }
 ```
 
@@ -415,8 +417,8 @@ PeriodTimelineSample[] samples = appointmentTimelines.SampleAt(timeOfInterest).T
 int appointmentPeriods = samples.Count(s => s.IsPeriod);
 int freeTimePeriods = samples.Count(s => s.IsGap);
 
-Console.WriteLine($"{appointmentPeriods} people had an appointment on {timeOfInterest}.");
-Console.WriteLine($"{freeTimePeriods} people had were free on {timeOfInterest}.");
+Console.WriteLine($"{appointmentPeriods} people had an appointment on {timeOfInterest.ToLocalTimeZoneString()}.");
+Console.WriteLine($"{freeTimePeriods} people had were free on {timeOfInterest.ToLocalTimeZoneString()}.");
 ```
 
 ## Design
@@ -547,7 +549,7 @@ IPeriodTimeline periodTimeline4 = PeriodTimeline.FromPeriods(period, period + Ti
 IPeriodTimeline periodTimeline5 = PeriodTimeline.Between(periodStartTimeline, periodEndTimeline);
 ```
 
-### Collections
+### Collections and Dictionaries
 
 In Occurify, collections of `ITimeline` and `IPeriodTimeline` are treated as first-class citizens. This means you can use all extension methods for `ITimeline` and `IPeriodTimeline` not only on single instances, but also on the following collection types:
 - `IEnumerable<ITimeline>`
@@ -564,15 +566,15 @@ Example for `ITimeline`:
 ```cs
 Dictionary<ITimeline, bool> sunStates = new Dictionary<ITimeline, bool>
 {
-    { AstroInstants.LocalSunrise, true },
-    { AstroInstants.LocalSunset, false }
+    { AstroInstants.LocalSunrises, true },
+    { AstroInstants.LocalSunsets, false }
 };
 foreach (KeyValuePair<DateTime, bool[]> state in sunStates.EnumeratePeriod(TimeZonePeriods.CurrentMonth()))
 {
     bool sunIsRising = state.Value.First(); // Since we're combining multiple timelines, a single instant may correspond to multiple values. However, for this example, we assume sunrise and sunset don't occur simultaneously, so we just take the first value.
-    Console.WriteLine(sunIsRising ? 
-        $"It is currently {state.Key} and the sun is rising!" : 
-        $"It is currently {state.Key} and the sun is setting!");
+    Console.WriteLine(sunIsRising ?
+        $"At {state.Key.ToLocalTime()} the sun is rising!" :
+        $"At {state.Key.ToLocalTime()} the sun is setting!");
 }
 ```
 
