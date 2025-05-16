@@ -26,18 +26,27 @@ namespace Occurify.PeriodTimelineCollectionTransformations
                 throw new ArgumentException($"{nameof(utcRelativeTo)} should be UTC time.");
             }
 
+            if (utcRelativeTo == DateTime.MinValue)
+            {
+                return null;
+            }
+
             // To determine an end in the overlap count, we have to look at the previous instant - 1 and compare it to the previous instant. If previous instant - 1 is true while previous is not, previous marks an end instant.
             // As we do not look for an end on the original utcRelativeTo, we also start 1 tick before it.
             var currentlyInPeriod = _predicate(_source.Count(pt => pt.ContainsInstant(utcRelativeTo - TimeSpan.FromTicks(1))));
             do
             {
-                // todo: edge case
                 var previousStart = _sourceStartTimelines.GetPreviousUtcInstant(utcRelativeTo);
                 var previousEnd = _sourceEndTimelines.GetPreviousUtcInstant(utcRelativeTo);
                 var previous = DateTimeHelper.MaxAssumingNullIsMinInfinity(previousStart, previousEnd);
                 if (previous == null)
                 {
                     return null;
+                }
+
+                if (previous == DateTime.MinValue)
+                {
+                    return IsInstant(previous.Value) ? DateTimeHelper.MinValueUtc : null;
                 }
 
                 var inPeriodBeforePrevious = _predicate(_source.Count(pt => pt.ContainsInstant(previous.Value - TimeSpan.FromTicks(1))));
@@ -47,6 +56,10 @@ namespace Occurify.PeriodTimelineCollectionTransformations
                 }
                 currentlyInPeriod = inPeriodBeforePrevious;
                 utcRelativeTo = previous.Value;
+                if (utcRelativeTo == DateTime.MinValue)
+                {
+                    return null;
+                }
             } while (true);
         }
 
@@ -80,15 +93,25 @@ namespace Occurify.PeriodTimelineCollectionTransformations
 
         public override bool IsInstant(DateTime utcDateTime)
         {
-            if (utcDateTime == DateTime.MinValue)
-            {
-                return false;
-            }
             var hasStart = _sourceStartTimelines.IsInstant(utcDateTime);
             var hasEnd = _sourceEndTimelines.IsInstant(utcDateTime);
             if (!hasStart && !hasEnd)
             {
                 return false;
+            }
+            if (utcDateTime == DateTime.MinValue)
+            {
+                // In case of utcDateTime being DateTime.MinValue, we have to check whether the overlap period just ended or was never started.
+                var currentOverlapCount = _source.Count(pt => pt.ContainsInstant(utcDateTime));
+                var inPeriod = _predicate(currentOverlapCount);
+                if (inPeriod)
+                {
+                    return false;
+                }
+                var startCount = _sourceStartTimelines.Count(st => st.IsInstant(DateTimeHelper.MinValueUtc));
+                var endCount = _sourceEndTimelines.Count(et => et.IsInstant(DateTimeHelper.MinValueUtc));
+                var overlapCountBeforeMinValue = currentOverlapCount - startCount + endCount;
+                return _predicate(overlapCountBeforeMinValue);
             }
             return _predicate(_source.Count(pt => pt.ContainsInstant(utcDateTime - TimeSpan.FromTicks(1)))) &&
                    !_predicate(_source.Count(pt => pt.ContainsInstant(utcDateTime)));
