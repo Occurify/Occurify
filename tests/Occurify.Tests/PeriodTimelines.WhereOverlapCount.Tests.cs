@@ -6,7 +6,7 @@ using Occurify.Tests.TestCases.Poco;
 namespace Occurify.Tests;
 
 [TestClass]
-public class PeriodTimelinesWhereOverlapCountEvenTests
+public class PeriodTimelinesWhereOverlapCountTests
 {
     [DataTestMethod]
     [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
@@ -27,6 +27,27 @@ public class PeriodTimelinesWhereOverlapCountEvenTests
     public void WhereOverlapCountEven_IsInstant(string[] periods, string expected)
     {
         ExecuteTest(TimelineMethods.IsInstant, periods, expected);
+    }
+
+    [DataTestMethod]
+    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    public void WhereOverlapCountEvenSameAsInvertedUneven_GetPreviousUtcInstant(string[] source, string _)
+    {
+        Execute_InvertedIsTheSameAsUneven(TimelineMethods.GetPreviousUtcInstant, source);
+    }
+
+    [DataTestMethod]
+    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    public void WhereOverlapCountEvenSameAsInvertedUneven_GetNextUtcInstant(string[] source, string _)
+    {
+        Execute_InvertedIsTheSameAsUneven(TimelineMethods.GetNextUtcInstant, source);
+    }
+
+    [DataTestMethod]
+    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    public void WhereOverlapCountEvenSameAsInvertedUneven_IsInstant(string[] periods, string _)
+    {
+        Execute_InvertedIsTheSameAsUneven(TimelineMethods.IsInstant, periods);
     }
 
     private void ExecuteTest(TimelineMethods method, string[] source, string expected)
@@ -53,6 +74,36 @@ public class PeriodTimelinesWhereOverlapCountEvenTests
         Assert.AreEqual(expected, actualPeriodTimeline);
     }
 
+    private void Execute_InvertedIsTheSameAsUneven(TimelineMethods method, string[] source)
+    {
+        if (!source.Any())
+        {
+            return;
+        }
+        Console.WriteLine($"Source:   \"{source.FirstOrDefault() ?? ""}\"");
+        foreach (var period in source.Skip(1))
+        {
+            Console.WriteLine($"          \"{period}\"");
+        }
+
+        // Arrange
+        var helper = new StringTimelineHelper();
+
+        var periodTimelines = source.Select(p => helper.CreatePeriodTimeline(p)).ToArray();
+
+        // Act
+        var invertedResult = periodTimelines.WhereOverlapCount(i => i > 0 && i % 2 == 0).Invert();
+        var overlapResult = periodTimelines.WhereOverlapCount(i => i <= 0 || i % 2 != 0);
+
+        // Assert
+        var invertedPeriodTimeline = helper.PeriodTimelineToString(invertedResult, source.First().Length, method);
+        var overlapPeriodTimeline = helper.PeriodTimelineToString(overlapResult, source.First().Length, method);
+
+        Console.WriteLine($"Inverted: \"{invertedPeriodTimeline}\"");
+        Console.WriteLine($"Overlap:  \"{overlapPeriodTimeline}\"");
+        Assert.AreEqual(invertedPeriodTimeline, overlapPeriodTimeline);
+    }
+
     private static IEnumerable<object[]> TestCaseSource()
     {
         using var r = new StreamReader("TestCases/PeriodTimelines.WhereOverlapCount.Even.json");
@@ -62,9 +113,9 @@ public class PeriodTimelinesWhereOverlapCountEvenTests
             cases.Select(tc => new object[]
             {
                 tc.Source ?? throw new InvalidOperationException(
-                    $"{nameof(tc.Source)} of null is not supported in {nameof(PeriodTimelinesWhereOverlapCountEvenTests)}."),
+                    $"{nameof(tc.Source)} of null is not supported in {nameof(PeriodTimelinesWhereOverlapCountTests)}."),
                 tc.Expected ?? throw new InvalidOperationException(
-                    $"{nameof(tc.Expected)} of null is not supported in {nameof(PeriodTimelinesWhereOverlapCountEvenTests)}.")
+                    $"{nameof(tc.Expected)} of null is not supported in {nameof(PeriodTimelinesWhereOverlapCountTests)}.")
             })).ToArray();
     }
 }

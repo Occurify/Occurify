@@ -11,6 +11,9 @@ namespace Occurify.PeriodTimelineCollectionTransformations
         private readonly ITimeline[] _sourceEndTimelines;
         private readonly Func<int, bool> _predicate;
 
+        // Note: If the result is a completely overlapping period, we have to place a single start at DateTime.MinValue.
+        private bool? _isOverlapOnly;
+
         public WhereOverlapCountStartTimeline(IPeriodTimeline[] source, Func<int, bool> predicate)
         {
             _source = source;
@@ -24,6 +27,11 @@ namespace Occurify.PeriodTimelineCollectionTransformations
             if (utcRelativeTo.Kind != DateTimeKind.Utc)
             {
                 throw new ArgumentException($"{nameof(utcRelativeTo)} should be UTC time.");
+            }
+
+            if (IsOverlapOnly())
+            {
+                return utcRelativeTo == DateTime.MinValue ? null : DateTimeHelper.MinValueUtc;
             }
 
             // To determine an end in the overlap count, we have to look at the previous instant - 1 and compare it to the previous instant. If previous instant - 1 is false while previous is true, previous marks a start instant.
@@ -57,6 +65,11 @@ namespace Occurify.PeriodTimelineCollectionTransformations
                 throw new ArgumentException($"{nameof(utcRelativeTo)} should be UTC time.");
             }
 
+            if (IsOverlapOnly())
+            {
+                return null;
+            }
+
             var currentlyInPeriod = _predicate(_source.Count(pt => pt.ContainsInstant(utcRelativeTo)));
             do
             {
@@ -80,6 +93,11 @@ namespace Occurify.PeriodTimelineCollectionTransformations
 
         public override bool IsInstant(DateTime utcDateTime)
         {
+            if (IsOverlapOnly())
+            {
+                return utcDateTime == DateTime.MinValue;
+            }
+
             var hasStart = _sourceStartTimelines.IsInstant(utcDateTime);
             var hasEnd = _sourceEndTimelines.IsInstant(utcDateTime);
             if (!hasStart && !hasEnd)
@@ -92,6 +110,41 @@ namespace Occurify.PeriodTimelineCollectionTransformations
             }
             return !_predicate(_source.Count(pt => pt.ContainsInstant(utcDateTime - TimeSpan.FromTicks(1)))) &&
                    _predicate(_source.Count(pt => pt.ContainsInstant(utcDateTime)));
+        }
+
+        private bool IsOverlapOnly()
+        {
+            if (_isOverlapOnly != null)
+            {
+                return _isOverlapOnly.Value;
+            }
+
+            var instant = DateTimeHelper.MinValueUtc;
+            var currentlyInPeriod = _predicate(_source.Count(pt => pt.ContainsInstant(instant)));
+            if (!currentlyInPeriod)
+            {
+                _isOverlapOnly = false;
+                return false;
+            }
+            
+            do
+            {
+                var nextStart = _sourceStartTimelines.GetNextUtcInstant(instant);
+                var nextEnd = _sourceEndTimelines.GetNextUtcInstant(instant);
+                var next = DateTimeHelper.MinAssumingNullIsPlusInfinity(nextStart, nextEnd);
+                if (next == null)
+                {
+                    _isOverlapOnly = true;
+                    return true;
+                }
+                var inPeriodOnNext = _predicate(_source.Count(pt => pt.ContainsInstant(next.Value)));
+                if (!inPeriodOnNext)
+                {
+                    _isOverlapOnly = false;
+                    return false;
+                }
+                instant = next.Value;
+            } while (true);
         }
     }
 }
