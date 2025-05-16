@@ -1,0 +1,93 @@
+﻿[
+  [
+    {
+      "source": [],
+      "expected": " "
+    },
+    {
+      "source": [
+        " "
+      ],
+      "expected": " "
+    },
+    {
+      "source": [
+        "<"
+      ],
+      "expected": " "
+    },
+    {
+      "source": [
+        ">"
+      ],
+      "expected": " "
+    },
+    {
+      "source": [
+        "<>"
+      ],
+      "expected": "  "
+    },
+    {
+      "source": [
+        "<  ",
+        " <>"
+      ],
+      "expected": " <>"
+    },
+    {
+      "source": [
+        "<> ",
+        "  >"
+      ],
+      "expected": "<> "
+    },
+    {
+      "source": [
+        "<> ",
+        " <>"
+      ],
+      "expected": "   "
+    },
+    {
+      "source": [
+        " >",
+        "< "
+      ],
+      "expected": "<>"
+    },
+    {
+      "source": [
+        "< >",
+        "<> "
+      ],
+      "expected": "<> "
+    },
+    {
+      "source": [
+        "<    ",
+        " < > ",
+        "  <  "
+      ],
+      "expected": " <>< "
+    },
+    {
+      "source": [
+        "<    ",
+        " <  >",
+        "  <> "
+      ],
+      "expected": " <><>"
+    },
+    {
+      "source": [
+        "    <>   ",
+        "< >      ",
+        "       <>",
+        " <>      ",
+        "   <   > "
+      ],
+      "expected": " <> <>   "
+    }
+  ]
+]

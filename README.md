@@ -432,6 +432,8 @@ Concept | Represented by | Description
 [Instant timeline](#instant-timeline) | `ITimeline` | A timeline containing instants.
 [Period timeline](#period-timeline) | `IPeriodTimeline` | A timeline containing periods.
 
+> Note that in Occurify, collections of `ITimeline` and `IPeriodTimeline` are also treated as first-class citizens. More on that [here](#collections-and-dictionaries).
+
 ### Instant
 
 An instant is represented using a `DateTime` with `Kind` set to `DateTimeKind.Utc`.
@@ -906,6 +908,47 @@ Offsets the source with a given timespan.
 Randomizes the source periods.
 This method will never result in a change of period count or in overlapping periods.
 Identical inputs with the same seed, will result in the same output.
+
+### Transform Multiple IPeriodTimeline
+
+#### WhereOverlapCount
+
+Returns a `IPeriodTimeline` with periods that start and end as the amount of overlapping periods from the provided periods trigger the predicate to become true or false.
+
+```
+"source   ": "    <>     "
+             "< >        "
+             "       <   "
+             " <>      < "
+             "<         >"
+"predicate": n => n >= 3
+"result   ": " <>      <>"
+```
+
+```
+"source   ": "    <>     "
+             "< >        "
+             "       <   "
+             " <>      < "
+             "   <   >   "
+"predicate": n => n > 0 && n % 2 == 0
+"result   ": " <> <>   < "
+```
+
+#### ToOverlapTimelines
+
+Returns a Dictionary with the amount of overlapping periods in the provided periods.
+
+```
+"source":     "<         >"
+              "   <     > "
+              "     <   > "
+              " <>    <>  "
+"result": [1, "<><>     <>"]
+          [2, " <>< >     "]
+          [3, "     < ><> "]
+          [4, "       <>  "]
+```
 
 ## Important Considerations
 

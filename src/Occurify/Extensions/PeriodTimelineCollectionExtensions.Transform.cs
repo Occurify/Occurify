@@ -1,4 +1,6 @@
-﻿namespace Occurify.Extensions;
+﻿using Occurify.PeriodTimelineCollectionTransformations;
+
+namespace Occurify.Extensions;
 
 public static partial class PeriodTimelineCollectionExtensions
 {
@@ -268,4 +270,37 @@ public static partial class PeriodTimelineCollectionExtensions
         source.Select(t => t.Subtract(subtrahends));
 
     // Note: Subtract(this IEnumerable<IPeriodTimeline> periodTimelines) is not implemented on purpose as the signature doesn't feel logical.
+
+    /// <summary>
+    /// Returns a <see cref="IPeriodTimeline"/> with periods that start and end as the amount of overlapping periods in <paramref name="source"/> is at least <paramref name="minOverlapping"/> .
+    /// </summary>
+    public static IPeriodTimeline WhereOverlapCountAtLeast(this IEnumerable<IPeriodTimeline> source, int minOverlapping) =>
+        source.WhereOverlapCount(c => c >= minOverlapping);
+
+    /// <summary>
+    /// Returns a <see cref="IPeriodTimeline"/> with periods that start and end as the amount of overlapping periods in <paramref name="source"/> is at most <paramref name="maxOverlapping"/> .
+    /// </summary>
+    public static IPeriodTimeline WhereOverlapCountAtMost(this IEnumerable<IPeriodTimeline> source, int maxOverlapping) =>
+        source.WhereOverlapCount(c => c >= maxOverlapping);
+
+    /// <summary>
+    /// Returns a <see cref="IPeriodTimeline"/> with periods that start and end as the amount of overlapping periods in <paramref name="source"/> trigger <paramref name="predicate"/> to become true or false.
+    /// </summary>
+    public static IPeriodTimeline WhereOverlapCount(this IEnumerable<IPeriodTimeline> source, Func<int, bool> predicate)
+    {
+        var sourceArray = source.ToArray();
+        return new PeriodTimeline(
+            new WhereOverlapCountStartTimeline(sourceArray, predicate),
+            new WhereOverlapCountEndTimeline(sourceArray, predicate));
+    }
+
+    /// <summary>
+    /// Returns a Dictionary with the amount of overlapping periods in <paramref name="source"/>.
+    /// </summary>
+    public static IDictionary<int, IPeriodTimeline> ToOverlapTimelines(this IEnumerable<IPeriodTimeline> source)
+    {
+        source = source.ToArray();
+        return source.Select((_, index) => index + 1)
+            .ToDictionary(overlapCount => overlapCount, overlapCount => source.WhereOverlapCount(c => c == overlapCount));
+    }
 }

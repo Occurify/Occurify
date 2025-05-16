@@ -37,6 +37,9 @@
     <None Update="TestCases\Period.Contains.Period.StartPartialAllowed.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestCases\PeriodTimelines.WhereOverlapCount.Even.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestCases\PeriodTimeline.Containing.Instants.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
