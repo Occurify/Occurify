@@ -26,10 +26,12 @@ namespace Occurify.PeriodTimelineCollectionTransformations
                 throw new ArgumentException($"{nameof(utcRelativeTo)} should be UTC time.");
             }
 
+            // To determine an end in the overlap count, we have to look at the previous instant - 1 and compare it to the previous instant. If previous instant - 1 is false while previous is true, previous marks a start instant.
+            // As we do not look for a start on the original utcRelativeTo, we also start 1 tick before it.
             var currentlyInPeriod = _predicate(_source.Count(pt => pt.ContainsInstant(utcRelativeTo - TimeSpan.FromTicks(1))));
             do
             {
-                // todo: edge case and think about the logic here
+                // todo: edge case
                 var previousStart = _sourceStartTimelines.GetPreviousUtcInstant(utcRelativeTo);
                 var previousEnd = _sourceEndTimelines.GetPreviousUtcInstant(utcRelativeTo);
                 var previous = DateTimeHelper.MaxAssumingNullIsMinInfinity(previousStart, previousEnd);
@@ -79,7 +81,7 @@ namespace Occurify.PeriodTimelineCollectionTransformations
         public override bool IsInstant(DateTime utcDateTime)
         {
             var hasStart = _sourceStartTimelines.IsInstant(utcDateTime);
-            var hasEnd = _sourceStartTimelines.IsInstant(utcDateTime);
+            var hasEnd = _sourceEndTimelines.IsInstant(utcDateTime);
             if (!hasStart && !hasEnd)
             {
                 return false;
