@@ -279,6 +279,166 @@ public class PeriodTimelinesWhereOverlapCountTests
         Assert.IsNull(overlap.EndTimeline.GetPreviousUtcInstant(DateTimeHelper.MinValueUtc + TimeSpan.FromTicks(1)));
     }
 
+    [TestMethod]
+    public void StartTimeline_IsInstant_StartsAtDateTimeMaxValue_True()
+    {
+        // Arrange
+        var startsAtMaxValue = DateTimeHelper.MaxValueUtc.To(null).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { startsAtMaxValue }.WhereOverlapCount(n => n > 0);
+
+        // Assert
+        Assert.IsTrue(overlap.StartTimeline.IsInstant(DateTimeHelper.MaxValueUtc));
+    }
+
+    [TestMethod]
+    public void StartTimeline_IsInstant_SinglePeriod_AlreadyStartedAtDateTimeMaxValue_False()
+    {
+        // Arrange
+        var alreadyStarted = Period.Create(DateTime.UtcNow, null).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { alreadyStarted }.WhereOverlapCount(n => n > 0);
+
+        // Assert
+        Assert.IsFalse(overlap.StartTimeline.IsInstant(DateTimeHelper.MaxValueUtc));
+    }
+
+    [TestMethod]
+    public void StartTimeline_IsInstant_MultiplePeriods_AlreadyStartedAtDateTimeMaxValue_False()
+    {
+        // Arrange
+        var startsAtMaxValue = DateTimeHelper.MaxValueUtc.To(null).AsPeriodTimeline();
+        var endsAtMaxValue = Period.Create(null, DateTimeHelper.MaxValueUtc).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { startsAtMaxValue, endsAtMaxValue }.WhereOverlapCount(n => n > 0);
+
+        // Assert
+        Assert.IsFalse(overlap.StartTimeline.IsInstant(DateTimeHelper.MaxValueUtc));
+    }
+
+    [TestMethod]
+    public void StartTimeline_GetNextUtcInstant_StartsAtDateTimeMaxValue()
+    {
+        // Arrange
+        var startsAtMaxValue = DateTimeHelper.MaxValueUtc.To(null).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { startsAtMaxValue }.WhereOverlapCount(n => n > 0);
+
+        // Assert
+        Assert.AreEqual(DateTime.MaxValue, overlap.StartTimeline.GetNextUtcInstant(DateTimeHelper.MaxValueUtc - TimeSpan.FromTicks(1)));
+    }
+
+    [TestMethod]
+    public void StartTimeline_GetNextUtcInstant_SinglePeriod_AlreadyStartedAtDateTimeMaxValue_Null()
+    {
+        // Arrange
+        var alreadyStarted = Period.Create(DateTime.UtcNow, null).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { alreadyStarted }.WhereOverlapCount(n => n > 0);
+
+        // Assert
+        Assert.IsNull(overlap.StartTimeline.GetNextUtcInstant(DateTimeHelper.MaxValueUtc - TimeSpan.FromTicks(1)));
+    }
+
+    [TestMethod]
+    public void StartTimeline_GetNextUtcInstant_MultiplePeriods_AlreadyStartedAtDateTimeMaxValue_Null()
+    {
+        // Arrange
+        var startsAtMaxValue = DateTimeHelper.MaxValueUtc.To(null).AsPeriodTimeline();
+        var endsAtMaxValue = Period.Create(null, DateTimeHelper.MaxValueUtc).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { startsAtMaxValue, endsAtMaxValue }.WhereOverlapCount(n => n > 0);
+
+        // Assert
+        Assert.IsNull(overlap.StartTimeline.GetNextUtcInstant(DateTimeHelper.MaxValueUtc - TimeSpan.FromTicks(1)));
+    }
+
+    [TestMethod]
+    public void EndTimeline_IsInstant_EndsAtDateTimeMaxValue_True()
+    {
+        // Arrange
+        var startsAtMaxValue = DateTimeHelper.MaxValueUtc.To(null).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { startsAtMaxValue }.WhereOverlapCount(n => n == 0);
+
+        // Assert
+        Assert.IsTrue(overlap.EndTimeline.IsInstant(DateTimeHelper.MaxValueUtc));
+    }
+
+    [TestMethod]
+    public void EndTimeline_IsInstant_SinglePeriod_AlreadyEndedAtDateTimeMaxValue_False()
+    {
+        // Arrange
+        var alreadyStarted = Period.Create(DateTime.UtcNow, null).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { alreadyStarted }.WhereOverlapCount(n => n == 0);
+
+        // Assert
+        Assert.IsFalse(overlap.EndTimeline.IsInstant(DateTimeHelper.MaxValueUtc));
+    }
+
+    [TestMethod]
+    public void EndTimeline_IsInstant_MultiplePeriods_AlreadyEndedAtDateTimeMaxValue_False()
+    {
+        // Arrange
+        var startsAtMaxValue = DateTimeHelper.MaxValueUtc.To(null).AsPeriodTimeline();
+        var endsAtMaxValue = Period.Create(null, DateTimeHelper.MaxValueUtc).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { startsAtMaxValue, endsAtMaxValue }.WhereOverlapCount(n => n == 0);
+
+        // Assert
+        Assert.IsFalse(overlap.EndTimeline.IsInstant(DateTimeHelper.MaxValueUtc));
+    }
+
+    [TestMethod]
+    public void EndTimeline_GetNextUtcInstant_EndsAtDateTimeMaxValue()
+    {
+        // Arrange
+        var startsAtMaxValue = DateTimeHelper.MaxValueUtc.To(null).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { startsAtMaxValue }.WhereOverlapCount(n => n == 0);
+
+        // Assert
+        Assert.AreEqual(DateTime.MaxValue, overlap.EndTimeline.GetNextUtcInstant(DateTimeHelper.MaxValueUtc - TimeSpan.FromTicks(1)));
+    }
+
+    [TestMethod]
+    public void EndTimeline_GetNextUtcInstant_SinglePeriod_AlreadyEndedAtDateTimeMaxValue_Null()
+    {
+        // Arrange
+        var alreadyStarted = Period.Create(DateTime.UtcNow, null).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { alreadyStarted }.WhereOverlapCount(n => n == 0);
+
+        // Assert
+        Assert.IsNull(overlap.EndTimeline.GetNextUtcInstant(DateTimeHelper.MaxValueUtc - TimeSpan.FromTicks(1)));
+    }
+
+    [TestMethod]
+    public void EndTimeline_GetNextUtcInstant_MultiplePeriods_AlreadyEndedAtDateTimeMaxValue_Null()
+    {
+        // Arrange
+        var startsAtMaxValue = DateTimeHelper.MaxValueUtc.To(null).AsPeriodTimeline();
+        var endsAtMaxValue = Period.Create(null, DateTimeHelper.MaxValueUtc).AsPeriodTimeline();
+
+        // Act
+        var overlap = new[] { startsAtMaxValue, endsAtMaxValue }.WhereOverlapCount(n => n == 0);
+
+        // Assert
+        Assert.IsNull(overlap.EndTimeline.GetNextUtcInstant(DateTimeHelper.MaxValueUtc - TimeSpan.FromTicks(1)));
+    }
+
     private static IEnumerable<object[]> TestCaseSource()
     {
         using var r = new StreamReader("TestCases/PeriodTimelines.WhereOverlapCount.Even.json");
