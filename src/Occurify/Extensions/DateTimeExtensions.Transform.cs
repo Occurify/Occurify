@@ -42,18 +42,6 @@ public static partial class DateTimeExtensions
     public static Period To(this DateTime? start, DateTime? end) => Period.Create(start, end);
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with periods starting at <paramref name="startInstants"/> and ending with <paramref name="periodEndInstants"/>.
-    /// </summary>
-    public static IPeriodTimeline To(this IEnumerable<DateTime> startInstants, IEnumerable<DateTime> periodEndInstants) =>
-        startInstants.AsTimeline().To(periodEndInstants.AsTimeline());
-
-    /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with periods starting at <paramref name="startInstants"/> and ending with <paramref name="periodEndTimeline"/>.
-    /// </summary>
-    public static IPeriodTimeline To(this IEnumerable<DateTime> startInstants, ITimeline periodEndTimeline) =>
-        startInstants.AsTimeline().To(periodEndTimeline);
-
-    /// <summary>
     /// Returns a <c>Period</c> starting at <paramref name="start"/> with duration <paramref name="duration"/>.
     /// If <paramref name="start"/> + <paramref name="duration"/> overflows <c>DateTime.MaxValue</c>, period end will be set to <c>null</c>, meaning the period never ends.
     /// </summary>
@@ -71,19 +59,9 @@ public static partial class DateTimeExtensions
     public static ITimeline AsTimeline(this DateTime? instant) => Timeline.FromInstant(instant);
 
     /// <summary>
-    /// Returns a <see cref="ITimeline"/> with all instants in <paramref name="source"/>.
-    /// </summary>
-    public static ITimeline AsTimeline(this IEnumerable<DateTime> source) => Timeline.FromInstants(source);
-
-    /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with two periods: One from <c>null</c> to <paramref name="source"/> and one from <paramref name="source"/> to <c>null</c>.
     /// </summary>
     public static IPeriodTimeline AsConsecutivePeriodTimeline(this DateTime source) => PeriodTimeline.FromInstantAsConsecutive(source);
-
-    /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with consecutive periods starting and ending with instants in <paramref name="source"/>.
-    /// </summary>
-    public static IPeriodTimeline AsConsecutivePeriodTimeline(this IEnumerable<DateTime> source) => PeriodTimeline.FromInstantsAsConsecutive(source);
 
     /// <summary>
     /// Attempts to add <paramref name="timeSpanToAdd"/> to <paramref name="dateTime"/>. If <c>DateTime</c> overflows in either direction, <c>null</c> is returned.
