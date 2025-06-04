@@ -1,6 +1,4 @@
-﻿using Occurify.Helpers;
-
-namespace Occurify.Extensions;
+﻿namespace Occurify.Extensions;
 
 /// <summary>
 /// Provides extension methods for working with <see cref="IEnumerable{Period}"/>.
