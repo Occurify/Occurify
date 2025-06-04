@@ -29,10 +29,10 @@ jobs:
 
       - name: 🎁 Pack
         run: |
-          dotnet pack .\src\Occurify\ --configuration Release -p:PackageVersion=${{ steps.version.outputs.version }} -p:Version=${{ steps.version.outputs.version }}
-          dotnet pack .\src\Occurify.Astro\ --configuration Release -p:PackageVersion=${{ steps.version.outputs.version }} -p:Version=${{ steps.version.outputs.version }}
-          dotnet pack .\src\Occurify.Reactive\ --configuration Release -p:PackageVersion=${{ steps.version.outputs.version }} -p:Version=${{ steps.version.outputs.version }}
-          dotnet pack .\src\Occurify.TimeZones\ --configuration Release -p:PackageVersion=${{ steps.version.outputs.version }} -p:Version=${{ steps.version.outputs.version }}
+          dotnet pack ./src/Occurify/ --configuration Release -p:PackageVersion=${{ steps.version.outputs.version }} -p:Version=${{ steps.version.outputs.version }}
+          dotnet pack ./src/Occurify.Astro/ --configuration Release -p:PackageVersion=${{ steps.version.outputs.version }} -p:Version=${{ steps.version.outputs.version }}
+          dotnet pack ./src/Occurify.Reactive/ --configuration Release -p:PackageVersion=${{ steps.version.outputs.version }} -p:Version=${{ steps.version.outputs.version }}
+          dotnet pack ./src/Occurify.TimeZones/ --configuration Release -p:PackageVersion=${{ steps.version.outputs.version }} -p:Version=${{ steps.version.outputs.version }}
         
       - name: 📨 Push to NuGet
         run: dotnet nuget push **/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
