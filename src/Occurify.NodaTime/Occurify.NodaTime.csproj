@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>Occurify.NodaTime</Title>
+    <Authors>Jasper Lammers</Authors>
+    <Company>DevJasper</Company>
+    <Description>NodaTime compatibility for Occurify. Allowing a comprehensive and intuitive way for defining, filtering, transforming, and scheduling time periods using NodaTime.</Description>
+    <PackageProjectUrl>occurify.dev</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Occurify/Occurify</RepositoryUrl>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageTags>Occurify;NodaTime;Calendar;Time;Instant;Instants;Period;Periodically;Periods;DateTime;Timeline;Time-Period;Time-Management;Recurring;Repeat;Repeating;Schedule;Scheduling;Reactive;ReactiveX;Rx;Filter;Transform;Extension;Methods;Algorithms;Fluent;Fluent-Interface;C#;.NET;Occurrence;Occur;UTC;Bidirectional;Geography;MIT</PackageTags>
+	<PackageIcon>icon.png</PackageIcon>
+	<PackageReleaseNotes>https://github.com/Occurify/Occurify/releases</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodaTime" Version="3.2.2" />
+  </ItemGroup>
+
+</Project>

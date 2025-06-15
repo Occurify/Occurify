@@ -10,7 +10,7 @@
     <Company>DevJasper</Company>
     <Description>Reactive Extensions for Occurify: Enabling seamless scheduling of instant and period-based timelines.</Description>
     <PackageProjectUrl>occurify.dev</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Occurify/Occurify.Reactive</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Occurify/Occurify</RepositoryUrl>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageTags>Occurify;Time;Instant;Instants;Period;Periodically;Periods;DateTime;Timeline;Time-Period;Time-Management;Recurring;Repeat;Repeating;Schedule;Scheduling;Reactive;ReactiveX;Rx;Filter;Transform;Extension;Methods;Fluent;Fluent-Interface;C#;.NET;Occurrence;Occur;UTC;Bidirectional;MIT</PackageTags>

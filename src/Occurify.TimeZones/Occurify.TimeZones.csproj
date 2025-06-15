@@ -10,7 +10,7 @@
     <Company>DevJasper</Company>
     <Description>Time zone and cron expression support for Occurify: Filter, manipulate, and schedule instants and periods across time zones.</Description>
     <PackageProjectUrl>occurify.dev</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Occurify/Occurify.TimeZones</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Occurify/Occurify</RepositoryUrl>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageTags>Occurify;Time;Instant;Instants;Period;Periodically;Periods;DateTime;Timeline;Time-Period;Time-Management;Recurring;Repeat;Repeating;Schedule;Scheduling;TimeZone;Year;Month;Week;Day;Hour;Minute;Annual;Annually;Monthly;Daily;Cron;CronJob;Cronos;Filter;Transform;Extension;Methods;Fluent;Fluent-Interface;C#;.NET;Reactive;ReactiveX;Rx;Occurrence;Occur;UTC;Bidirectional;Geography;MIT</PackageTags>
