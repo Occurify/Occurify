@@ -5,9 +5,9 @@ using Occurify.Extensions;
 namespace Occurify.NodaTime.Extensions;
 
 /// <summary>
-/// Provides extension methods for working with <see cref="IEnumerable{DateTime}"/>.
+/// Provides extension methods for working with <see cref="IEnumerable{Instant}"/>.
 /// </summary>
-public static partial class DateTimeCollectionExtensions
+public static partial class InstantCollectionExtensions
 {
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with periods starting at <paramref name="startInstants"/> and ending with <paramref name="periodEndInstants"/>.
