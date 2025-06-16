@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using NodaTime;
 using Occurify.Helpers;
 
 namespace Occurify.Extensions;
@@ -11,7 +12,7 @@ public static partial class PeriodTimelineExtensions
     /// <summary>
     /// Determines whether <paramref name="instant"/> is on any of the periods in <paramref name="periodTimeline"/>.
     /// </summary>
-    public static bool ContainsInstant(this IPeriodTimeline periodTimeline, DateTime instant)
+    public static bool ContainsInstant(this IPeriodTimeline periodTimeline, Instant instant)
     {
         return periodTimeline.TryGetPeriod(instant, out var period) && period.ContainsInstant(instant);
     }
@@ -32,7 +33,7 @@ public static partial class PeriodTimelineExtensions
             return periodTimeline.TryGetPeriod(period.Start!.Value, out mask) && mask.ContainsPeriod(period);
         }
 
-        if (period.End!.Value == DateTime.MinValue)
+        if (period.End!.Value == Instant.MinValue)
         {
             var firstStart = periodTimeline.StartTimeline.GetCurrentOrNextUtcInstant(DateTimeHelper.MinValueUtc);
             var firstEnd = periodTimeline.EndTimeline.GetCurrentOrNextUtcInstant(DateTimeHelper.MinValueUtc);
@@ -63,7 +64,7 @@ public static partial class PeriodTimelineExtensions
             return periodTimeline.TryGetPeriod(period.Start!.Value, out foundPeriod) && foundPeriod == period;
         }
 
-        if (period.End!.Value == DateTime.MinValue)
+        if (period.End!.Value == Instant.MinValue)
         {
             return periodTimeline.EndTimeline.IsInstant(DateTimeHelper.MinValueUtc);
         }
@@ -75,7 +76,7 @@ public static partial class PeriodTimelineExtensions
     /// Returns the first complete period on <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
     /// <c>null</c> if no period is found.
     /// </summary>
-    public static Period? GetPreviousCompletePeriod(this IPeriodTimeline source, DateTime instant)
+    public static Period? GetPreviousCompletePeriod(this IPeriodTimeline source, Instant instant)
     {
         var endOfPeriod = source.EndTimeline.GetCurrentOrPreviousUtcInstant(instant);
         if (endOfPeriod == null)
@@ -90,14 +91,14 @@ public static partial class PeriodTimelineExtensions
     /// Returns the first complete period on <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
     /// <c>null</c> if no period is found.
     /// </summary>
-    public static Period? GetPreviousPeriodIncludingPartial(this IPeriodTimeline source, DateTime instant) =>
+    public static Period? GetPreviousPeriodIncludingPartial(this IPeriodTimeline source, Instant instant) =>
         source.EnumerateBackwardsFromIncludingPartial(instant).FirstOrDefault();
 
     /// <summary>
     /// Returns the first complete period on <paramref name="source"/> starting on or later than <paramref name="instant"/>.
     /// <c>null</c> if no period is found.
     /// </summary>
-    public static Period? GetNextCompletePeriod(this IPeriodTimeline source, DateTime instant)
+    public static Period? GetNextCompletePeriod(this IPeriodTimeline source, Instant instant)
     {
         var startOfPeriod = source.StartTimeline.GetCurrentOrNextUtcInstant(instant);
         if (startOfPeriod == null)
@@ -112,7 +113,7 @@ public static partial class PeriodTimelineExtensions
     /// Returns the first complete period on <paramref name="source"/> that includes or starts later than <paramref name="instant"/>.
     /// <c>null</c> if no period is found.
     /// </summary>
-    public static Period? GetNextPeriodIncludingPartial(this IPeriodTimeline source, DateTime instant) =>
+    public static Period? GetNextPeriodIncludingPartial(this IPeriodTimeline source, Instant instant) =>
         source.EnumerateFromIncludingPartial(instant).FirstOrDefault();
 
     /// <summary>
@@ -123,16 +124,16 @@ public static partial class PeriodTimelineExtensions
         source.EndTimeline.IsEmpty();
 
     /// <summary>
-    /// Returns whether <c>DateTime.UtcNow</c> is inside a period on <paramref name="source"/>.
+    /// Returns whether <c>Instant.UtcNow</c> is inside a period on <paramref name="source"/>.
     /// </summary>
-    public static bool IsNow(this IPeriodTimeline source) => source.ContainsInstant(DateTime.UtcNow);
+    public static bool IsNow(this IPeriodTimeline source) => source.ContainsInstant(Instant.UtcNow);
 
     /// <summary>
     /// Takes a sample of <paramref name="source"/> at <paramref name="instant"/>.
     /// </summary>
-    public static PeriodTimelineSample SampleAt(this IPeriodTimeline source, DateTime instant)
+    public static PeriodTimelineSample SampleAt(this IPeriodTimeline source, Instant instant)
     {
-        DateTime? nextStart, nextEnd;
+        Instant? nextStart, nextEnd;
         var previousStart = source.StartTimeline.GetCurrentOrPreviousUtcInstant(instant);
         var previousEnd = source.EndTimeline.GetCurrentOrPreviousUtcInstant(instant);
             
@@ -165,7 +166,7 @@ public static partial class PeriodTimelineExtensions
     /// <summary>
     /// Gets the period at <paramref name="instant"/>. If no period is at <paramref name="instant"/>, false is returned and <paramref name="period"/> is <c>null</c>.
     /// </summary>
-    public static bool TryGetPeriod(this IPeriodTimeline source, DateTime instant, [NotNullWhen(true)] out Period? period)
+    public static bool TryGetPeriod(this IPeriodTimeline source, Instant instant, [NotNullWhen(true)] out Period? period)
     {
         var sample = source.SampleAt(instant);
         if (sample.IsGap)
@@ -194,24 +195,24 @@ public static partial class PeriodTimelineExtensions
     /// <summary>
     /// Calculates the total duration of <paramref name="source"/>.
     /// </summary>
-    public static TimeSpan? TotalDuration(this IPeriodTimeline source) =>
-        source.Aggregate((TimeSpan?)TimeSpan.Zero, (sum, p) =>
+    public static Duration? TotalDuration(this IPeriodTimeline source) =>
+        source.Aggregate((Duration?)Duration.Zero, (sum, p) =>
         {
             if (sum == null || p.Duration == null)
             {
                 return null;
             }
-            // Note: As a period timeline doesn't contain any overlapping periods, the total duration will never exceed the range of a DateTime if no infinite periods are present.
-            // As this is far smaller than the range of a TimeSpan, we don't need to check for overflow here.
+            // Note: As a period timeline doesn't contain any overlapping periods, the total duration will never exceed the range of a Instant if no infinite periods are present.
+            // As this is far smaller than the range of a Duration, we don't need to check for overflow here.
             return sum.Value + p.Duration.Value;
         });
 
-    internal static bool ContainsEnd(this IPeriodTimeline periodTimeline, DateTime endOfPeriod)
+    internal static bool ContainsEnd(this IPeriodTimeline periodTimeline, Instant endOfPeriod)
     {
         Period? period;
-        if (endOfPeriod == DateTime.MinValue)
+        if (endOfPeriod == Instant.MinValue)
         {
-            return periodTimeline.EndTimeline.IsInstant(DateTime.MinValue) ||
+            return periodTimeline.EndTimeline.IsInstant(Instant.MinValue) ||
                    (periodTimeline.TryGetPeriod(endOfPeriod, out period) && period.ContainsEnd(endOfPeriod));
         }
         return periodTimeline.TryGetPeriod(endOfPeriod.AddTicks(-1), out period) && period.ContainsEnd(endOfPeriod);

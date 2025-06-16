@@ -1,4 +1,5 @@
-﻿using Occurify.PeriodTimelineCollectionTransformations;
+﻿using NodaTime;
+using Occurify.PeriodTimelineCollectionTransformations;
 
 namespace Occurify.Extensions;
 
@@ -7,19 +8,19 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <summary>
     /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> in which periods in the timelines in <paramref name="source"/> are cut at <paramref name="instant"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Cut(this IEnumerable<IPeriodTimeline> source, DateTime instant) =>
+    public static IEnumerable<IPeriodTimeline> Cut(this IEnumerable<IPeriodTimeline> source, Instant instant) =>
         source.Select(t => t.Cut(instant));
 
     /// <summary>
     /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> in which periods in the timelines in <paramref name="source"/> are cut at <paramref name="instants"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Cut(this IEnumerable<IPeriodTimeline> source, IEnumerable<DateTime> instants) =>
+    public static IEnumerable<IPeriodTimeline> Cut(this IEnumerable<IPeriodTimeline> source, IEnumerable<Instant> instants) =>
         source.Select(t => t.Cut(instants));
 
     /// <summary>
     /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> in which periods in the timelines in <paramref name="source"/> are cut at <paramref name="instants"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Cut(this IEnumerable<IPeriodTimeline> source, params DateTime[] instants) =>
+    public static IEnumerable<IPeriodTimeline> Cut(this IEnumerable<IPeriodTimeline> source, params Instant[] instants) =>
         source.Select(t => t.Cut(instants));
 
     /// <summary>
@@ -147,49 +148,49 @@ public static partial class PeriodTimelineCollectionExtensions
         source.Select(t => t.Normalize());
 
     /// <summary>
-    /// Offsets the timelines in <paramref name="source"/> with <paramref name="offset"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
+    /// Offsets the timelines in <paramref name="source"/> with <paramref name="offset"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Offset(this IEnumerable<IPeriodTimeline> source, TimeSpan offset) =>
+    public static IEnumerable<IPeriodTimeline> Offset(this IEnumerable<IPeriodTimeline> source, Duration offset) =>
         source.Select(t => t.Offset(offset));
 
     /// <summary>
-    /// Offsets the timelines in <paramref name="source"/> with <paramref name="ticks"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
+    /// Offsets the timelines in <paramref name="source"/> with <paramref name="ticks"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
     /// </summary>
     public static IEnumerable<IPeriodTimeline> OffsetTicks(this IEnumerable<IPeriodTimeline> source, long ticks) =>
         source.Select(t => t.OffsetTicks(ticks));
 
     /// <summary>
-    /// Offsets the timelines in <paramref name="source"/> with <paramref name="microseconds"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
+    /// Offsets the timelines in <paramref name="source"/> with <paramref name="microseconds"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
     /// </summary>
     public static IEnumerable<IPeriodTimeline> OffsetMicroseconds(this IEnumerable<IPeriodTimeline> source, double microseconds) =>
         source.Select(t => t.OffsetMicroseconds(microseconds));
 
     /// <summary>
-    /// Offsets the timelines in <paramref name="source"/> with <paramref name="milliseconds"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
+    /// Offsets the timelines in <paramref name="source"/> with <paramref name="milliseconds"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
     /// </summary>
     public static IEnumerable<IPeriodTimeline> OffsetMilliseconds(this IEnumerable<IPeriodTimeline> source, double milliseconds) =>
         source.Select(t => t.OffsetMilliseconds(milliseconds));
 
     /// <summary>
-    /// Offsets the timelines in <paramref name="source"/> with <paramref name="seconds"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
+    /// Offsets the timelines in <paramref name="source"/> with <paramref name="seconds"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
     /// </summary>
     public static IEnumerable<IPeriodTimeline> OffsetSeconds(this IEnumerable<IPeriodTimeline> source, double seconds) =>
         source.Select(t => t.OffsetSeconds(seconds));
 
     /// <summary>
-    /// Offsets the timelines in <paramref name="source"/> with <paramref name="minutes"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
+    /// Offsets the timelines in <paramref name="source"/> with <paramref name="minutes"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
     /// </summary>
     public static IEnumerable<IPeriodTimeline> OffsetMinutes(this IEnumerable<IPeriodTimeline> source, double minutes) =>
         source.Select(t => t.OffsetMinutes(minutes));
 
     /// <summary>
-    /// Offsets the timelines in <paramref name="source"/> with <paramref name="hours"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
+    /// Offsets the timelines in <paramref name="source"/> with <paramref name="hours"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
     /// </summary>
     public static IEnumerable<IPeriodTimeline> OffsetHours(this IEnumerable<IPeriodTimeline> source, double hours) =>
         source.Select(t => t.OffsetHours(hours));
 
     /// <summary>
-    /// Offsets the timelines in <paramref name="source"/> with <paramref name="days"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
+    /// Offsets the timelines in <paramref name="source"/> with <paramref name="days"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
     /// </summary>
     public static IEnumerable<IPeriodTimeline> OffsetDays(this IEnumerable<IPeriodTimeline> source, double days) =>
         source.Select(t => t.OffsetDays(days));
@@ -198,7 +199,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Randomizes the timelines in <paramref name="source"/> with <paramref name="maxDeviation"/> in both directions on the timeline.
     /// This method will never result in a change of period count or in overlapping periods.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Randomize(this IEnumerable<IPeriodTimeline> source, TimeSpan maxDeviation) =>
+    public static IEnumerable<IPeriodTimeline> Randomize(this IEnumerable<IPeriodTimeline> source, Duration maxDeviation) =>
         source.Select(t => t.Randomize(maxDeviation));
 
     /// <summary>
@@ -206,14 +207,14 @@ public static partial class PeriodTimelineCollectionExtensions
     /// This method will never result in a change of period count or in overlapping periods.
     /// Identical inputs with the same seed, will result in the same output.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Randomize(this IEnumerable<IPeriodTimeline> source, int seed, TimeSpan maxDeviation) =>
+    public static IEnumerable<IPeriodTimeline> Randomize(this IEnumerable<IPeriodTimeline> source, int seed, Duration maxDeviation) =>
         source.Select(t => t.Randomize(seed, maxDeviation));
 
     /// <summary>
     /// Randomizes the timelines in <paramref name="source"/> with <paramref name="maxDeviationBefore"/> towards the left and <paramref name="maxDeviationAfter"/> towards the right on the timeline.
     /// This method will never result in a change of period count or in overlapping periods.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Randomize(this IEnumerable<IPeriodTimeline> source, TimeSpan maxDeviationBefore, TimeSpan maxDeviationAfter) =>
+    public static IEnumerable<IPeriodTimeline> Randomize(this IEnumerable<IPeriodTimeline> source, Duration maxDeviationBefore, Duration maxDeviationAfter) =>
         source.Select(t => t.Randomize(maxDeviationBefore, maxDeviationAfter));
 
     /// <summary>
@@ -221,7 +222,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// This method will never result in a change of period count or in overlapping periods.
     /// Identical inputs with the same <paramref name="seed"/>, will result in the same output.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Randomize(this IEnumerable<IPeriodTimeline> source, int seed, TimeSpan maxDeviationBefore, TimeSpan maxDeviationAfter) =>
+    public static IEnumerable<IPeriodTimeline> Randomize(this IEnumerable<IPeriodTimeline> source, int seed, Duration maxDeviationBefore, Duration maxDeviationAfter) =>
         source.Select(t => t.Randomize(seed, maxDeviationBefore, maxDeviationAfter));
 
     /// <summary>
@@ -230,7 +231,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// This method will never result in a change of period count or in overlapping periods.
     /// Identical inputs with the same <paramref name="seed"/>, will result in the same output.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Randomize(this IEnumerable<IPeriodTimeline> source, int seed, TimeSpan maxDeviationBefore, TimeSpan maxDeviationAfter, Func<int, double> randomFunc) =>
+    public static IEnumerable<IPeriodTimeline> Randomize(this IEnumerable<IPeriodTimeline> source, int seed, Duration maxDeviationBefore, Duration maxDeviationAfter, Func<int, double> randomFunc) =>
         source.Select(t => t.Randomize(seed, maxDeviationBefore, maxDeviationAfter, randomFunc));
 
     /// <summary>

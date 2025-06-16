@@ -11,11 +11,11 @@ public static partial class IntervalExtensions
     /// <summary>
     /// Converts a NodaTime <see cref="Interval"/> to an Occurify <see cref="Interval"/>.
     /// </summary>
-    public static Interval ToPeriod(this Interval interval)
+    public static Period ToPeriod(this Interval interval)
     {
         DateTime? start = interval.HasStart ? interval.Start.ToDateTimeUtc() : null;
         DateTime? end = interval.HasEnd ? interval.End.ToDateTimeUtc() : null;
-        return new Interval(start, end);
+        return new Period(start, end);
     }
 
     /// <summary>

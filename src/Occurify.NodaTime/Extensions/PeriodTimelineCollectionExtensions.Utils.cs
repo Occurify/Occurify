@@ -1,4 +1,6 @@
-﻿namespace Occurify.Extensions;
+﻿using NodaTime;
+
+namespace Occurify.Extensions;
 
 /// <summary>
 /// Provides extension methods for working with <see cref="IEnumerable{IPeriodTimeline}"/>.
@@ -8,7 +10,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <summary>
     /// Determines whether <paramref name="instant"/> is on any of the periods in the timelines in <paramref name="source"/>.
     /// </summary>
-    public static bool ContainsInstant(this IEnumerable<IPeriodTimeline> source, DateTime instant)
+    public static bool ContainsInstant(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
         return source.Any(pp => pp.ContainsInstant(instant));
     }
@@ -33,7 +35,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Returns the first complete period on the timelines in <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
     /// <c>null</c> if no period is found.
     /// </summary>
-    public static Period? GetPreviousCompletePeriod(this IEnumerable<IPeriodTimeline> source, DateTime instant)
+    public static Period? GetPreviousCompletePeriod(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
         return source.Max(tl => tl.GetPreviousCompletePeriod(instant));
     }
@@ -42,14 +44,14 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Returns the first complete period on the timelines in <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
     /// <c>null</c> if no period is found.
     /// </summary>
-    public static Period? GetPreviousPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, DateTime instant) =>
+    public static Period? GetPreviousPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, Instant instant) =>
         source.EnumerateBackwardsFromIncludingPartial(instant).FirstOrDefault();
 
     /// <summary>
     /// Returns the first complete period on the timelines in <paramref name="source"/> starting on or later than <paramref name="instant"/>.
     /// <c>null</c> if no period is found.
     /// </summary>
-    public static Period? GetNextCompletePeriod(this IEnumerable<IPeriodTimeline> source, DateTime instant)
+    public static Period? GetNextCompletePeriod(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
         return source.Min(tl => tl.GetNextCompletePeriod(instant));
     }
@@ -58,7 +60,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Returns the first complete period on the timelines in <paramref name="source"/> that includes or starts later than <paramref name="instant"/>.
     /// <c>null</c> if no period is found.
     /// </summary>
-    public static Period? GetNextPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, DateTime instant) =>
+    public static Period? GetNextPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, Instant instant) =>
         source.EnumerateFromIncludingPartial(instant).FirstOrDefault();
 
     /// <summary>
@@ -70,7 +72,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <summary>
     /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
     /// </summary>
-    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtPreviousCompletePeriod(this IEnumerable<IPeriodTimeline> source, DateTime instant)
+    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtPreviousCompletePeriod(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
         source = source.ToArray();
         var previousCompletePeriod = source.GetPreviousCompletePeriod(instant);
@@ -84,7 +86,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <summary>
     /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
     /// </summary>
-    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtPreviousPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, DateTime instant)
+    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtPreviousPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
         source = source.ToArray();
         var previousPeriodIncludingPartial = source.GetPreviousPeriodIncludingPartial(instant);
@@ -98,7 +100,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <summary>
     /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> starting on or later than <paramref name="instant"/>.
     /// </summary>
-    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtNextCompletePeriod(this IEnumerable<IPeriodTimeline> source, DateTime instant)
+    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtNextCompletePeriod(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
         source = source.ToArray();
         var nextCompletePeriod = source.GetNextCompletePeriod(instant);
@@ -112,7 +114,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <summary>
     /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> that includes or starts later than <paramref name="instant"/>.
     /// </summary>
-    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtNextPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, DateTime instant)
+    public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtNextPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
         source = source.ToArray();
         var nextPeriodIncludingPartial = source.GetNextPeriodIncludingPartial(instant);
@@ -129,14 +131,14 @@ public static partial class PeriodTimelineCollectionExtensions
     public static bool AreEmpty(this IEnumerable<IPeriodTimeline> source) => source.All(s => s.IsEmpty());
 
     /// <summary>
-    /// Returns whether <c>DateTime.UtcNow</c> is inside any period on the timelines in <paramref name="source"/>.
+    /// Returns whether <c>Instant.UtcNow</c> is inside any period on the timelines in <paramref name="source"/>.
     /// </summary>
-    public static bool IsNow(this IEnumerable<IPeriodTimeline> source) => source.ContainsInstant(DateTime.UtcNow);
+    public static bool IsNow(this IEnumerable<IPeriodTimeline> source) => source.ContainsInstant(Instant.UtcNow);
 
     /// <summary>
     /// Takes a sample of the timelines in <paramref name="source"/> at <paramref name="instant"/>.
     /// </summary>
-    public static IEnumerable<PeriodTimelineSample> SampleAt(this IEnumerable<IPeriodTimeline> source, DateTime instant) =>
+    public static IEnumerable<PeriodTimelineSample> SampleAt(this IEnumerable<IPeriodTimeline> source, Instant instant) =>
             source.Select(tl => tl.SampleAt(instant));
 
     /// <summary>
@@ -154,11 +156,11 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Calculates the total duration of the timelines in <paramref name="source"/>.
     /// If <paramref name="addIndividualTimelineDurations"/> is <c>true</c>, the total duration is calculated by summing the durations of all individual timelines. If <c>false</c>, the total duration of the merged timelines is calculated.
     /// </summary>
-    public static TimeSpan? TotalDuration(this IEnumerable<IPeriodTimeline> source, bool addIndividualTimelineDurations = false)
+    public static Duration? TotalDuration(this IEnumerable<IPeriodTimeline> source, bool addIndividualTimelineDurations = false)
     {
         if (addIndividualTimelineDurations)
         {
-            return source.Aggregate((TimeSpan?)TimeSpan.Zero, (sum, p) =>
+            return source.Aggregate((Duration?)Duration.Zero, (sum, p) =>
             {
                 if (sum == null)
                 {
@@ -171,7 +173,7 @@ public static partial class PeriodTimelineCollectionExtensions
                     return null;
                 }
 
-                // Note: Even though unlikely due to the range of TimeSpan (which is the range of a long), given enough period timelines it is possible to overflow the range of TimeSpan.
+                // Note: Even though unlikely due to the range of Duration (which is the range of a long), given enough period timelines it is possible to overflow the range of Duration.
                 // Therefor we need to check for overflow here.
                 return sum.Value.AddOrNullOnOverflow(duration.Value);
             });

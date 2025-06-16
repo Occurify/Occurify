@@ -66,13 +66,13 @@ public static partial class InstantExtensions
     /// Determines whether <paramref name="source"/> is outside all the intervals in <paramref name="mask"/>.
     /// </summary>
     public static bool IsOutside(this Instant source, IEnumerable<Interval> mask) =>
-        mask.All(p => !p.ContainsInstant(source));
+        mask.All(p => !p.Contains(source));
 
     /// <summary>
     /// Determines whether <paramref name="source"/> is outside all the intervals in <paramref name="mask"/>.
     /// </summary>
     public static bool IsOutside(this Instant source, params Interval[] mask) =>
-        mask.All(p => !p.ContainsInstant(source));
+        mask.All(p => !p.Contains(source));
 
     /// <summary>
     /// Determines whether <paramref name="source"/> is outside all the periods in <paramref name="mask"/>.

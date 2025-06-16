@@ -35,34 +35,34 @@ public static partial class InstantExtensions
     /// Returns a <c>Period</c> starting at <paramref name="start"/> and ending with <paramref name="end"/>.
     /// <c>null</c> as <paramref name="end"/> means the period never ends.
     /// </summary>
-    public static Period To(this Instant start, Instant? end) => Period.Create(start, end);
+    public static Period To(this Instant start, Instant? end) => Period.Create(start.ToDateTimeUtc(), end?.ToDateTimeUtc());
 
     /// <summary>
     /// Returns a <c>Period</c> starting at <paramref name="start"/> and ending with <paramref name="end"/>.
     /// <c>null</c> as <paramref name="start"/> means the period has always started.
     /// <c>null</c> as <paramref name="end"/> means the period never ends.
     /// </summary>
-    public static Period To(this Instant? start, Instant? end) => Period.Create(start, end);
+    public static Period To(this Instant? start, Instant? end) => Period.Create(start?.ToDateTimeUtc(), end?.ToDateTimeUtc());
 
     /// <summary>
     /// Returns a <c>Period</c> starting at <paramref name="start"/> with duration <paramref name="duration"/>.
     /// If <paramref name="start"/> + <paramref name="duration"/> overflows <c>Instant.MaxValue</c>, period end will be set to <c>null</c>, meaning the period never ends.
     /// </summary>
-    public static Period ToPeriodWithDuration(this Instant start, Duration duration) => Period.Create(start, duration);
+    public static Period ToPeriodWithDuration(this Instant start, Duration duration) => Period.Create(start.ToDateTimeUtc(), duration.ToTimeSpan());
 
     /// <summary>
     /// Returns a <see cref="ITimeline"/> with a single instant <paramref name="instant"/>.
     /// </summary>
-    public static ITimeline AsTimeline(this Instant instant) => Timeline.FromInstant(instant);
+    public static ITimeline AsTimeline(this Instant instant) => Timeline.FromInstant(instant.ToDateTimeUtc());
 
     /// <summary>
     /// Returns a <see cref="ITimeline"/> with a single instant <paramref name="instant"/>.
     /// If <paramref name="instant"/> is <c>null</c>, an empty timeline is returned.
     /// </summary>
-    public static ITimeline AsTimeline(this Instant? instant) => Timeline.FromInstant(instant);
+    public static ITimeline AsTimeline(this Instant? instant) => Timeline.FromInstant(instant?.ToDateTimeUtc());
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with two periods: One from <c>null</c> to <paramref name="source"/> and one from <paramref name="source"/> to <c>null</c>.
     /// </summary>
-    public static IPeriodTimeline AsConsecutivePeriodTimeline(this Instant source) => PeriodTimeline.FromInstantAsConsecutive(source);
+    public static IPeriodTimeline AsConsecutivePeriodTimeline(this Instant source) => PeriodTimeline.FromInstantAsConsecutive(source.ToDateTimeUtc());
 }

@@ -1,11 +1,13 @@
-﻿namespace Occurify.Extensions;
+﻿using NodaTime;
+
+namespace Occurify.Extensions;
 
 public static partial class PeriodTimelineCollectionExtensions
 {
     /// <summary>
     /// Filters the timelines in <paramref name="source"/> based on which periods are inside <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Within(this IEnumerable<IPeriodTimeline> source, Period mask) =>
+    public static IEnumerable<IPeriodTimeline> Within(this IEnumerable<IPeriodTimeline> source, Interval mask) =>
         source.Select(t => t.Within(mask));
 
     /// <summary>
@@ -77,19 +79,19 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <summary>
     /// Filters the timelines in <paramref name="source"/> based on which periods contain <paramref name="instantToContain"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Containing(this IEnumerable<IPeriodTimeline> source, DateTime instantToContain) =>
+    public static IEnumerable<IPeriodTimeline> Containing(this IEnumerable<IPeriodTimeline> source, Instant instantToContain) =>
         source.Select(t => t.Containing(instantToContain));
 
     /// <summary>
     /// Filters the timelines in <paramref name="source"/> based on which periods contain any of the instants in <paramref name="instantsToContain"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Containing(this IEnumerable<IPeriodTimeline> source, IEnumerable<DateTime> instantsToContain) =>
+    public static IEnumerable<IPeriodTimeline> Containing(this IEnumerable<IPeriodTimeline> source, IEnumerable<Instant> instantsToContain) =>
         source.Select(t => t.Containing(instantsToContain));
 
     /// <summary>
     /// Filters the timelines in <paramref name="source"/> based on which periods contain any of the instants in <paramref name="instantsToContain"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Containing(this IEnumerable<IPeriodTimeline> source, params DateTime[] instantsToContain) =>
+    public static IEnumerable<IPeriodTimeline> Containing(this IEnumerable<IPeriodTimeline> source, params Instant[] instantsToContain) =>
         source.Select(t => t.Containing(instantsToContain));
 
     /// <summary>
