@@ -234,10 +234,10 @@ public static partial class PeriodTimelineValueCollectionExtensions
         source.ToDictionary(kvp => kvp.Key.Subtract(subtrahend), kvp => kvp.Value);
 
     /// <summary>
-    /// Subtracts all periods in <paramref name="subtrahend"/> from all periods in the timelines in <paramref name="source"/>.
+    /// Subtracts all periods in <paramref name="subtrahends"/> from all periods in the timelines in <paramref name="source"/>.
     /// </summary>
-    public static Dictionary<IPeriodTimeline, TValue> Subtract<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, IEnumerable<Period> subtrahend) =>
-        source.ToDictionary(kvp => kvp.Key.Subtract(subtrahend), kvp => kvp.Value);
+    public static Dictionary<IPeriodTimeline, TValue> Subtract<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, IEnumerable<Period> subtrahends) =>
+        source.ToDictionary(kvp => kvp.Key.Subtract(subtrahends), kvp => kvp.Value);
 
     /// <summary>
     /// Subtracts all periods in <paramref name="subtrahends"/> from all periods in the timelines in <paramref name="source"/>.

@@ -240,10 +240,10 @@ public static partial class PeriodTimelineCollectionExtensions
         source.Select(t => t.Subtract(subtrahend));
 
     /// <summary>
-    /// Subtracts all periods in <paramref name="subtrahend"/> from all periods in the timelines in <paramref name="source"/>.
+    /// Subtracts all periods in <paramref name="subtrahends"/> from all periods in the timelines in <paramref name="source"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> Subtract(this IEnumerable<IPeriodTimeline> source, IEnumerable<Period> subtrahend) =>
-        source.Select(t => t.Subtract(subtrahend));
+    public static IEnumerable<IPeriodTimeline> Subtract(this IEnumerable<IPeriodTimeline> source, IEnumerable<Period> subtrahends) =>
+        source.Select(t => t.Subtract(subtrahends));
 
     /// <summary>
     /// Subtracts all periods in <paramref name="subtrahends"/> from all periods in the timelines in <paramref name="source"/>.

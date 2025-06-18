@@ -18,7 +18,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <summary>
     /// Determines whether <paramref name="interval"/> is included in any of the intervals in the timelines in <paramref name="source"/>.
     /// </summary>
-    public static bool ContainsPeriod(this IEnumerable<IPeriodTimeline> source, Interval interval)
+    public static bool ContainsInterval(this IEnumerable<IPeriodTimeline> source, Interval interval)
     {
         return source.Any(pp => pp.ContainsInterval(interval));
     }
@@ -26,7 +26,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <summary>
     /// Determines whether any of the intervals in the timelines in <paramref name="source"/> is exactly <paramref name="interval"/>.
     /// </summary>
-    public static bool ContainsExactPeriod(this IEnumerable<IPeriodTimeline> source, Interval interval)
+    public static bool ContainsExactInterval(this IEnumerable<IPeriodTimeline> source, Interval interval)
     {
         return source.Any(pp => pp.ContainsExactInterval(interval));
     }

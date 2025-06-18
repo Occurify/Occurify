@@ -26,19 +26,19 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <summary>
     /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalToIntersect"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> IntersectPeriod(this IEnumerable<IPeriodTimeline> source, Interval intervalToIntersect) =>
+    public static IEnumerable<IPeriodTimeline> IntersectInterval(this IEnumerable<IPeriodTimeline> source, Interval intervalToIntersect) =>
         source.Select(t => t.IntersectInterval(intervalToIntersect));
 
     /// <summary>
     /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> IntersectPeriods(this IEnumerable<IPeriodTimeline> source, IEnumerable<Interval> intervalsToIntersect) =>
+    public static IEnumerable<IPeriodTimeline> IntersectIntervals(this IEnumerable<IPeriodTimeline> source, IEnumerable<Interval> intervalsToIntersect) =>
         source.Select(t => t.IntersectIntervals(intervalsToIntersect));
 
     /// <summary>
     /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> IntersectPeriods(this IEnumerable<IPeriodTimeline> source, params Interval[] intervalsToIntersect) =>
+    public static IEnumerable<IPeriodTimeline> IntersectIntervals(this IEnumerable<IPeriodTimeline> source, params Interval[] intervalsToIntersect) =>
         source.Select(t => t.IntersectIntervals(intervalsToIntersect));
 
     /// <summary>
