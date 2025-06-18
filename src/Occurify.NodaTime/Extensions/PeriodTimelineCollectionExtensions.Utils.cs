@@ -8,7 +8,7 @@ namespace Occurify.Extensions;
 public static partial class PeriodTimelineCollectionExtensions
 {
     /// <summary>
-    /// Determines whether <paramref name="instant"/> is on any of the periods in the timelines in <paramref name="source"/>.
+    /// Determines whether <paramref name="instant"/> is on any of the intervals in the timelines in <paramref name="source"/>.
     /// </summary>
     public static bool ContainsInstant(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
@@ -16,24 +16,24 @@ public static partial class PeriodTimelineCollectionExtensions
     }
 
     /// <summary>
-    /// Determines whether <paramref name="period"/> is included in any of the periods in the timelines in <paramref name="source"/>.
+    /// Determines whether <paramref name="interval"/> is included in any of the intervals in the timelines in <paramref name="source"/>.
     /// </summary>
-    public static bool ContainsPeriod(this IEnumerable<IPeriodTimeline> source, Period period)
+    public static bool ContainsPeriod(this IEnumerable<IPeriodTimeline> source, Interval interval)
     {
-        return source.Any(pp => pp.ContainsPeriod(period));
+        return source.Any(pp => pp.ContainsInterval(interval));
     }
 
     /// <summary>
-    /// Determines whether any of the periods in the timelines in <paramref name="source"/> is exactly <paramref name="period"/>.
+    /// Determines whether any of the intervals in the timelines in <paramref name="source"/> is exactly <paramref name="interval"/>.
     /// </summary>
-    public static bool ContainsExactPeriod(this IEnumerable<IPeriodTimeline> source, Period period)
+    public static bool ContainsExactPeriod(this IEnumerable<IPeriodTimeline> source, Interval interval)
     {
-        return source.Any(pp => pp.ContainsExactPeriod(period));
+        return source.Any(pp => pp.ContainsExactInterval(interval));
     }
 
     /// <summary>
-    /// Returns the first complete period on the timelines in <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
-    /// <c>null</c> if no period is found.
+    /// Returns the first complete interval on the timelines in <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
+    /// <c>null</c> if no interval is found.
     /// </summary>
     public static Period? GetPreviousCompletePeriod(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
@@ -41,15 +41,15 @@ public static partial class PeriodTimelineCollectionExtensions
     }
 
     /// <summary>
-    /// Returns the first complete period on the timelines in <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
-    /// <c>null</c> if no period is found.
+    /// Returns the first complete interval on the timelines in <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
+    /// <c>null</c> if no interval is found.
     /// </summary>
     public static Period? GetPreviousPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, Instant instant) =>
         source.EnumerateBackwardsFromIncludingPartial(instant).FirstOrDefault();
 
     /// <summary>
-    /// Returns the first complete period on the timelines in <paramref name="source"/> starting on or later than <paramref name="instant"/>.
-    /// <c>null</c> if no period is found.
+    /// Returns the first complete interval on the timelines in <paramref name="source"/> starting on or later than <paramref name="instant"/>.
+    /// <c>null</c> if no interval is found.
     /// </summary>
     public static Period? GetNextCompletePeriod(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
@@ -57,20 +57,20 @@ public static partial class PeriodTimelineCollectionExtensions
     }
 
     /// <summary>
-    /// Returns the first complete period on the timelines in <paramref name="source"/> that includes or starts later than <paramref name="instant"/>.
-    /// <c>null</c> if no period is found.
+    /// Returns the first complete interval on the timelines in <paramref name="source"/> that includes or starts later than <paramref name="instant"/>.
+    /// <c>null</c> if no interval is found.
     /// </summary>
     public static Period? GetNextPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, Instant instant) =>
         source.EnumerateFromIncludingPartial(instant).FirstOrDefault();
 
     /// <summary>
-    /// Returns the timelines in <paramref name="source"/> that contain a period that is exactly <paramref name="period"/>.
+    /// Returns the timelines in <paramref name="source"/> that contain a interval that is exactly <paramref name="interval"/>.
     /// </summary>
-    public static IEnumerable<IPeriodTimeline> GetTimelinesAtExactPeriod(this IEnumerable<IPeriodTimeline> source, Period period) =>
-        source.Where(kvp => kvp.ContainsExactPeriod(period));
+    public static IEnumerable<IPeriodTimeline> GetTimelinesAtExactPeriod(this IEnumerable<IPeriodTimeline> source, Interval interval) =>
+        source.Where(kvp => kvp.ContainsExactInterval(interval));
 
     /// <summary>
-    /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
+    /// Returns the timelines on the first complete interval on the timelines in <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
     /// </summary>
     public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtPreviousCompletePeriod(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
@@ -84,7 +84,7 @@ public static partial class PeriodTimelineCollectionExtensions
     }
 
     /// <summary>
-    /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
+    /// Returns the timelines on the first complete interval on the timelines in <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
     /// </summary>
     public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtPreviousPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
@@ -98,7 +98,7 @@ public static partial class PeriodTimelineCollectionExtensions
     }
 
     /// <summary>
-    /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> starting on or later than <paramref name="instant"/>.
+    /// Returns the timelines on the first complete interval on the timelines in <paramref name="source"/> starting on or later than <paramref name="instant"/>.
     /// </summary>
     public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtNextCompletePeriod(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
@@ -112,7 +112,7 @@ public static partial class PeriodTimelineCollectionExtensions
     }
 
     /// <summary>
-    /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> that includes or starts later than <paramref name="instant"/>.
+    /// Returns the timelines on the first complete interval on the timelines in <paramref name="source"/> that includes or starts later than <paramref name="instant"/>.
     /// </summary>
     public static KeyValuePair<Period?, IPeriodTimeline[]> GetTimelinesAtNextPeriodIncludingPartial(this IEnumerable<IPeriodTimeline> source, Instant instant)
     {
@@ -126,58 +126,8 @@ public static partial class PeriodTimelineCollectionExtensions
     }
 
     /// <summary>
-    /// Returns whether all the timelines in <paramref name="source"/> is empty.
-    /// </summary>
-    public static bool AreEmpty(this IEnumerable<IPeriodTimeline> source) => source.All(s => s.IsEmpty());
-
-    /// <summary>
-    /// Returns whether <c>Instant.UtcNow</c> is inside any period on the timelines in <paramref name="source"/>.
-    /// </summary>
-    public static bool IsNow(this IEnumerable<IPeriodTimeline> source) => source.ContainsInstant(Instant.UtcNow);
-
-    /// <summary>
     /// Takes a sample of the timelines in <paramref name="source"/> at <paramref name="instant"/>.
     /// </summary>
     public static IEnumerable<PeriodTimelineSample> SampleAt(this IEnumerable<IPeriodTimeline> source, Instant instant) =>
             source.Select(tl => tl.SampleAt(instant));
-
-    /// <summary>
-    /// Synchronizes all <paramref name="source"/> such that method calls cannot occur concurrently.
-    /// </summary>
-    public static IEnumerable<IPeriodTimeline> Synchronize(this IEnumerable<IPeriodTimeline> source) => source.Synchronize(new());
-
-    /// <summary>
-    /// Synchronizes all <paramref name="source"/> such that method calls cannot occur concurrently.
-    /// </summary>
-    public static IEnumerable<IPeriodTimeline> Synchronize(this IEnumerable<IPeriodTimeline> source, object gate) =>
-        source.Select(s => s.Synchronize(gate));
-
-    /// <summary>
-    /// Calculates the total duration of the timelines in <paramref name="source"/>.
-    /// If <paramref name="addIndividualTimelineDurations"/> is <c>true</c>, the total duration is calculated by summing the durations of all individual timelines. If <c>false</c>, the total duration of the merged timelines is calculated.
-    /// </summary>
-    public static Duration? TotalDuration(this IEnumerable<IPeriodTimeline> source, bool addIndividualTimelineDurations = false)
-    {
-        if (addIndividualTimelineDurations)
-        {
-            return source.Aggregate((Duration?)Duration.Zero, (sum, p) =>
-            {
-                if (sum == null)
-                {
-                    return null;
-                }
-
-                var duration = p.TotalDuration();
-                if (duration == null)
-                {
-                    return null;
-                }
-
-                // Note: Even though unlikely due to the range of Duration (which is the range of a long), given enough period timelines it is possible to overflow the range of Duration.
-                // Therefor we need to check for overflow here.
-                return sum.Value.AddOrNullOnOverflow(duration.Value);
-            });
-        }
-        return source.Merge().TotalDuration();
-    }
 }
