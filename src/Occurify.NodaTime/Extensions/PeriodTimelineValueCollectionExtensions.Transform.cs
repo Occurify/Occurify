@@ -5,37 +5,37 @@ namespace Occurify.Extensions;
 public static partial class PeriodTimelineValueCollectionExtensions
 {
     /// <summary>
-    /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> in which intervals in the timelines in <paramref name="source"/> are cut at <paramref name="instant"/>.
+    /// Returns a Dictionary&lt;IPeriodTimeline, TValue&gt; in which intervals in the timelines in <paramref name="source"/> are cut at <paramref name="instant"/>.
     /// </summary>
     public static Dictionary<IPeriodTimeline, TValue> Cut<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, Instant instant) =>
         source.ToDictionary(kvp => kvp.Key.Cut(instant), kvp => kvp.Value);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> in which intervals in the timelines in <paramref name="source"/> are cut at <paramref name="instants"/>.
+    /// Returns a Dictionary&lt;IPeriodTimeline, TValue&gt; in which intervals in the timelines in <paramref name="source"/> are cut at <paramref name="instants"/>.
     /// </summary>
     public static Dictionary<IPeriodTimeline, TValue> Cut<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, IEnumerable<Instant> instants) =>
         source.ToDictionary(kvp => kvp.Key.Cut(instants), kvp => kvp.Value);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> in which intervals in the timelines in <paramref name="source"/> are cut at <paramref name="instants"/>.
+    /// Returns a Dictionary&lt;IPeriodTimeline, TValue&gt; in which intervals in the timelines in <paramref name="source"/> are cut at <paramref name="instants"/>.
     /// </summary>
     public static Dictionary<IPeriodTimeline, TValue> Cut<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, params Instant[] instants) =>
         source.ToDictionary(kvp => kvp.Key.Cut(instants), kvp => kvp.Value);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalToIntersect"/>.
+    /// Returns a Dictionary&lt;IPeriodTimeline, TValue&gt; with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalToIntersect"/>.
     /// </summary>
     public static Dictionary<IPeriodTimeline, TValue> IntersectInterval<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, Interval intervalToIntersect) =>
         source.ToDictionary(kvp => kvp.Key.IntersectInterval(intervalToIntersect), kvp => kvp.Value);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
+    /// Returns a Dictionary&lt;IPeriodTimeline, TValue&gt; with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
     public static Dictionary<IPeriodTimeline, TValue> IntersectIntervals<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, IEnumerable<Interval> intervalsToIntersect) =>
         source.ToDictionary(kvp => kvp.Key.IntersectIntervals(intervalsToIntersect), kvp => kvp.Value);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{IPeriodTimeline}"/> with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
+    /// Returns a Dictionary&lt;IPeriodTimeline, TValue&gt; with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
     public static Dictionary<IPeriodTimeline, TValue> IntersectIntervals<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, params Interval[] intervalsToIntersect) =>
         source.ToDictionary(kvp => kvp.Key.IntersectIntervals(intervalsToIntersect), kvp => kvp.Value);
