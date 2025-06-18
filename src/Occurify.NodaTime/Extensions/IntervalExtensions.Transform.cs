@@ -6,6 +6,16 @@ namespace Occurify.Extensions;
 public static partial class IntervalExtensions
 {
     /// <summary>
+    /// Converts a NodaTime <see cref="Interval"/> to an Occurify <see cref="Interval"/>.
+    /// </summary>
+    public static Period ToPeriod(this Interval interval)
+    {
+        DateTime? start = interval.HasStart ? interval.Start.ToDateTimeUtc() : null;
+        DateTime? end = interval.HasEnd ? interval.End.ToDateTimeUtc() : null;
+        return new Period(start, end);
+    }
+
+    /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> in which <paramref name="source"/> is cut at <paramref name="instant"/>.
     /// </summary>
     public static IPeriodTimeline Cut(this Interval source, Instant instant) => source.AsPeriodTimeline().Cut(instant);

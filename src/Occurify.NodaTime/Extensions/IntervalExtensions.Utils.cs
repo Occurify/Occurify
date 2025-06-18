@@ -9,16 +9,6 @@ namespace Occurify.Extensions;
 public static partial class IntervalExtensions
 {
     /// <summary>
-    /// Converts a NodaTime <see cref="Interval"/> to an Occurify <see cref="Interval"/>.
-    /// </summary>
-    public static Period ToPeriod(this Interval interval)
-    {
-        DateTime? start = interval.HasStart ? interval.Start.ToDateTimeUtc() : null;
-        DateTime? end = interval.HasEnd ? interval.End.ToDateTimeUtc() : null;
-        return new Period(start, end);
-    }
-
-    /// <summary>
     /// Determines whether any instant on <paramref name="timeline"/> is on <paramref name="interval"/>.
     /// </summary>
     public static bool ContainsAnyInstant(this Interval interval, ITimeline timeline)

@@ -1,10 +1,19 @@
 ﻿
 using NodaTime;
+using Occurify.NodaTime.Extensions;
 
 namespace Occurify.Extensions;
 
 public static partial class PeriodExtensions
 {
+    /// <summary>
+    /// Converts an Occurify <see cref="Interval"/> to a NodaTime <see cref="Interval"/>.
+    /// </summary>
+    public static Interval ToInterval(this Period period)
+    {
+        return new Interval(period.Start.ToInstant(), period.End.ToInstant());
+    }
+
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> in which <paramref name="source"/> is cut at <paramref name="instant"/>.
     /// </summary>
