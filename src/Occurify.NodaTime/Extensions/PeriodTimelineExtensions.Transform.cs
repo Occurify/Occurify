@@ -1,381 +1,126 @@
 ﻿using NodaTime;
 using Occurify.NodaTime.Extensions;
 using Occurify.PeriodTimelineTransformations;
+using System.Reflection.Metadata;
 
 namespace Occurify.Extensions;
 
 public static partial class PeriodTimelineExtensions
 {
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> in which periods in <paramref name="source"/> are cut at <paramref name="instant"/>.
+    /// Returns a <see cref="IPeriodTimeline"/> in which intervals in <paramref name="source"/> are cut at <paramref name="instant"/>.
     /// </summary>
-    public static IPeriodTimeline Cut(this IPeriodTimeline source, Instant instant)
-    {
-        var cutTimeline = instant.AsTimeline();
-        return new PeriodTimeline(
-            new CutStartTimeline(source, cutTimeline),
-            new CutEndTimeline(source, cutTimeline));
-    }
+    public static IPeriodTimeline Cut(this IPeriodTimeline source, Instant instant) =>
+        source.Cut(instant.ToDateTimeUtc());
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> in which periods in <paramref name="source"/> are cut at <paramref name="instants"/>.
+    /// Returns a <see cref="IPeriodTimeline"/> in which intervals in <paramref name="source"/> are cut at <paramref name="instants"/>.
     /// </summary>
-    public static IPeriodTimeline Cut(this IPeriodTimeline source, IEnumerable<Instant> instants)
-    {
-        var cutTimeline = instants.AsTimeline();
-        return new PeriodTimeline(
-            new CutStartTimeline(source, cutTimeline),
-            new CutEndTimeline(source, cutTimeline));
-    }
+    public static IPeriodTimeline Cut(this IPeriodTimeline source, IEnumerable<Instant> instants) =>
+        source.Cut(instants.Select(i => i.ToDateTimeUtc()));
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> in which periods in <paramref name="source"/> are cut at <paramref name="instants"/>.
+    /// Returns a <see cref="IPeriodTimeline"/> in which intervals in <paramref name="source"/> are cut at <paramref name="instants"/>.
     /// </summary>
-    public static IPeriodTimeline Cut(this IPeriodTimeline source, params Instant[] instants)
-    {
-        var cutTimeline = instants.AsTimeline();
-        return new PeriodTimeline(
-            new CutStartTimeline(source, cutTimeline),
-            new CutEndTimeline(source, cutTimeline));
-    }
+    public static IPeriodTimeline Cut(this IPeriodTimeline source, params Instant[] instants) =>
+        source.Cut(instants.Select(i => i.ToDateTimeUtc()));
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> in which periods in <paramref name="source"/> are cut at <paramref name="instants"/>.
+    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="intervalToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline Cut(this IPeriodTimeline source, ITimeline instants)
-    {
-        return new PeriodTimeline(
-            new CutStartTimeline(source, instants),
-            new CutEndTimeline(source, instants));
-    }
+    public static IPeriodTimeline IntersectInterval(this IPeriodTimeline source, Interval intervalToIntersect) =>
+        source.IntersectPeriod(intervalToIntersect.ToPeriod());
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> in which periods in <paramref name="source"/> are cut at <paramref name="instants"/>.
+    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline Cut(this IPeriodTimeline source, IEnumerable<ITimeline> instants)
-    {
-        var cutTimeline = instants.Combine();
-        return new PeriodTimeline(
-            new CutStartTimeline(source, cutTimeline),
-            new CutEndTimeline(source, cutTimeline));
-    }
+    public static IPeriodTimeline IntersectIntervals(this IPeriodTimeline source, IEnumerable<Interval> intervalsToIntersect) =>
+        source.IntersectPeriods(intervalsToIntersect.Select(i => i.ToPeriod()));
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> in which periods in <paramref name="source"/> are cut at <paramref name="instants"/>.
+    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline Cut(this IPeriodTimeline source, params ITimeline[] instants)
-    {
-        var cutTimeline = instants.Combine();
-        return new PeriodTimeline(
-            new CutStartTimeline(source, cutTimeline),
-            new CutEndTimeline(source, cutTimeline));
-    }
+    public static IPeriodTimeline IntersectIntervals(this IPeriodTimeline source, params Interval[] intervalsToIntersect) =>
+        source.IntersectPeriods(intervalsToIntersect.Select(i => i.ToPeriod()));
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> in which all periods in <paramref name="source"/> with equal end and start instants are combined into a single period.
+    /// Merges all intervals in <paramref name="source"/> with <paramref name="intervalToMerge"/>. Overlapping intervals are combined.
     /// </summary>
-    public static IPeriodTimeline Stitch(this IPeriodTimeline source)
-    {
-        return new PeriodTimeline(
-            new StitchedStartTimeline(source),
-            new StitchedEndTimeline(source));
-    }
+    public static IPeriodTimeline Merge(this IPeriodTimeline source, Interval intervalToMerge) =>
+        source.Merge(intervalToMerge.ToPeriod());
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodToIntersect"/>.
+    /// Merges all intervals in <paramref name="source"/> with all intervals in <paramref name="intervalsToMerge"/>. Overlapping intervals are combined.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriod(this IPeriodTimeline source, Period periodToIntersect)
-    {
-        var periodsToIntersectTimeline = periodToIntersect.AsPeriodTimeline();
-        return new PeriodTimeline(
-            new IntersectStartTimeline(source, periodsToIntersectTimeline),
-            new IntersectEndTimeline(source, periodsToIntersectTimeline));
-    }
+    public static IPeriodTimeline Merge(this IPeriodTimeline source, IEnumerable<Interval> intervalsToMerge) =>
+        source.Merge(intervalsToMerge.Select(i => i.ToPeriod()));
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
+    /// Merges all intervals in <paramref name="source"/> with all intervals in <paramref name="intervalsToMerge"/>. Overlapping intervals are combined.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IPeriodTimeline source, IEnumerable<Period> periodsToIntersect)
-    {
-        var periodsToIntersectTimeline = periodsToIntersect.AsPeriodTimeline();
-        return new PeriodTimeline(
-            new IntersectStartTimeline(source, periodsToIntersectTimeline),
-            new IntersectEndTimeline(source, periodsToIntersectTimeline));
-    }
-
-    /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
-    /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IPeriodTimeline source, params Period[] periodsToIntersect)
-    {
-        var periodsToIntersectTimeline = periodsToIntersect.AsPeriodTimeline();
-        return new PeriodTimeline(
-            new IntersectStartTimeline(source, periodsToIntersectTimeline),
-            new IntersectEndTimeline(source, periodsToIntersectTimeline));
-    }
-
-    /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
-    /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IPeriodTimeline source, IPeriodTimeline periodsToIntersect)
-    {
-        return new PeriodTimeline(
-            new IntersectStartTimeline(source, periodsToIntersect),
-            new IntersectEndTimeline(source, periodsToIntersect));
-    }
-
-    /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
-    /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IPeriodTimeline source, IEnumerable<IPeriodTimeline> periodsToIntersect)
-    {
-        return periodsToIntersect.Aggregate(source, (current, pp) => current.IntersectPeriods(pp));
-    }
-
-    /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
-    /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IPeriodTimeline source, params IPeriodTimeline[] periodsToIntersect)
-    {
-        return periodsToIntersect.Aggregate(source, (current, pp) => current.IntersectPeriods(pp));
-    }
-
-    /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> that is inverted of <paramref name="source"/>.
-    /// </summary>
-    public static IPeriodTimeline Invert(this IPeriodTimeline source)
-    {
-        return new PeriodTimeline(
-            new InvertedStartTimeline(source),
-            new InvertedEndTimeline(source));
-    }
-
-    /// <summary>
-    /// Merges all periods in <paramref name="source"/> with <paramref name="periodToMerge"/>. Overlapping periods are combined.
-    /// </summary>
-    public static IPeriodTimeline Merge(this IPeriodTimeline source, Period periodToMerge)
-    {
-        var periodsToAddTimeline = periodToMerge.AsPeriodTimeline();
-        return new PeriodTimeline(
-            new MergeStartTimeline(source, periodsToAddTimeline),
-            new MergeEndTimeline(source, periodsToAddTimeline));
-    }
-
-    /// <summary>
-    /// Merges all periods in <paramref name="source"/> with all periods in <paramref name="periodsToMerge"/>. Overlapping periods are combined.
-    /// </summary>
-    public static IPeriodTimeline Merge(this IPeriodTimeline source, IEnumerable<Period> periodsToMerge)
-    {
-        var periodsToAddTimeline = periodsToMerge.AsPeriodTimeline();
-        return new PeriodTimeline(
-            new MergeStartTimeline(source, periodsToAddTimeline),
-            new MergeEndTimeline(source, periodsToAddTimeline));
-    }
-
-    /// <summary>
-    /// Merges all periods in <paramref name="source"/> with all periods in <paramref name="periodsToMerge"/>. Overlapping periods are combined.
-    /// </summary>
-    public static IPeriodTimeline Merge(this IPeriodTimeline source, params Period[] periodsToMerge)
-    {
-        var periodsToAddTimeline = periodsToMerge.AsPeriodTimeline();
-        return new PeriodTimeline(
-            new MergeStartTimeline(source, periodsToAddTimeline),
-            new MergeEndTimeline(source, periodsToAddTimeline));
-    }
-
-    /// <summary>
-    /// Merges all periods in <paramref name="source"/> with all periods in <paramref name="periodsToMerge"/>. Overlapping periods are combined.
-    /// </summary>
-    public static IPeriodTimeline Merge(this IPeriodTimeline source, IPeriodTimeline periodsToMerge)
-    {
-        return new PeriodTimeline(
-            new MergeStartTimeline(source, periodsToMerge),
-            new MergeEndTimeline(source, periodsToMerge));
-    }
-
-    /// <summary>
-    /// Merges all periods in <paramref name="source"/> with all periods in <paramref name="periodsToMerge"/>. Overlapping periods are combined.
-    /// </summary>
-    public static IPeriodTimeline Merge(this IPeriodTimeline source, IEnumerable<IPeriodTimeline> periodsToMerge)
-    {
-        return periodsToMerge.Aggregate(source, (current, pp) => current.Merge(pp));
-    }
-
-    /// <summary>
-    /// Merges all periods in <paramref name="source"/> with all periods in <paramref name="periodsToMerge"/>. Overlapping periods are combined.
-    /// </summary>
-    public static IPeriodTimeline Merge(this IPeriodTimeline source, params IPeriodTimeline[] periodsToMerge)
-    {
-        return periodsToMerge.Aggregate(source, (current, pp) => current.Merge(pp));
-    }
-
-    /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> in which all start instants are followed by an end instant and vice versa.
-    /// </summary>
-    public static IPeriodTimeline Normalize(this IPeriodTimeline source)
-    {
-        return new PeriodTimeline(
-            new NormalizedStartTimeline(source),
-            new NormalizedEndTimeline(source));
-    }
+    public static IPeriodTimeline Merge(this IPeriodTimeline source, params Interval[] intervalsToMerge) =>
+        source.Merge(intervalsToMerge.Select(i => i.ToPeriod()));
 
     /// <summary>
     /// Offsets <paramref name="source"/> with <paramref name="offset"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
     /// </summary>
-    public static IPeriodTimeline Offset(this IPeriodTimeline source, Duration offset)
-    {
-        return new PeriodTimeline(
-            TimelineExtensions.Offset(source.StartTimeline, offset),
-            TimelineExtensions.Offset(source.EndTimeline, offset));
-    }
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="ticks"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IPeriodTimeline OffsetTicks(this IPeriodTimeline source, long ticks) => source.Offset(Duration.FromTicks(ticks));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="microseconds"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IPeriodTimeline OffsetMicroseconds(this IPeriodTimeline source, double microseconds) =>
-#if NET7_0 || NET8_0 || NET9_0
-        source.Offset(Duration.FromMicroseconds(microseconds));
-#else
-        source.Offset(Duration.FromTicks((long)(microseconds * 10)));
-#endif
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="milliseconds"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IPeriodTimeline OffsetMilliseconds(this IPeriodTimeline source, double milliseconds) => source.Offset(Duration.FromMilliseconds(milliseconds));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="seconds"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IPeriodTimeline OffsetSeconds(this IPeriodTimeline source, double seconds) => source.Offset(Duration.FromSeconds(seconds));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="minutes"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IPeriodTimeline OffsetMinutes(this IPeriodTimeline source, double minutes) => source.Offset(Duration.FromMinutes(minutes));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="hours"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IPeriodTimeline OffsetHours(this IPeriodTimeline source, double hours) => source.Offset(Duration.FromHours(hours));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="days"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IPeriodTimeline OffsetDays(this IPeriodTimeline source, double days) => source.Offset(Duration.FromDays(days));
+    public static IPeriodTimeline Offset(this IPeriodTimeline source, Duration offset) =>
+        source.Offset(offset.ToTimeSpan());
 
     /// <summary>
     /// Randomizes <paramref name="source"/> with <paramref name="maxDeviation"/> in both directions on the timeline.
-    /// This method will never result in a change of period count or in overlapping periods.
+    /// This method will never result in a change of interval count or in overlapping intervals.
     /// </summary>
-    public static IPeriodTimeline Randomize(this IPeriodTimeline source, Duration maxDeviation)
-    {
-        return source.Randomize(new Random().Next(), maxDeviation, maxDeviation, s => new Random(s).NextDouble());
-    }
+    public static IPeriodTimeline Randomize(this IPeriodTimeline source, Duration maxDeviation) =>
+        source.Randomize(maxDeviation.ToTimeSpan());
 
     /// <summary>
     /// Randomizes <paramref name="source"/> with <paramref name="maxDeviation"/> in both directions on the timeline.
-    /// This method will never result in a change of period count or in overlapping periods.
+    /// This method will never result in a change of interval count or in overlapping intervals.
     /// Identical inputs with the same seed, will result in the same output.
     /// </summary>
-    public static IPeriodTimeline Randomize(this IPeriodTimeline source, int seed, Duration maxDeviation)
-    {
-        return source.Randomize(seed, maxDeviation, maxDeviation, s => new Random(s).NextDouble());
-    }
+    public static IPeriodTimeline Randomize(this IPeriodTimeline source, int seed, Duration maxDeviation) =>
+        source.Randomize(seed, maxDeviation.ToTimeSpan());
 
     /// <summary>
     /// Randomizes <paramref name="source"/> with <paramref name="maxDeviationBefore"/> towards the left and <paramref name="maxDeviationAfter"/> towards the right on the timeline.
-    /// This method will never result in a change of period count or in overlapping periods.
+    /// This method will never result in a change of interval count or in overlapping intervals.
     /// </summary>
-    public static IPeriodTimeline Randomize(this IPeriodTimeline source, Duration maxDeviationBefore, Duration maxDeviationAfter)
-    {
-        return source.Randomize(new Random().Next(), maxDeviationBefore, maxDeviationAfter, s => new Random(s).NextDouble());
-    }
+    public static IPeriodTimeline Randomize(this IPeriodTimeline source, Duration maxDeviationBefore, Duration maxDeviationAfter) =>
+        source.Randomize(maxDeviationBefore.ToTimeSpan(), maxDeviationAfter.ToTimeSpan());
 
     /// <summary>
     /// Randomizes <paramref name="source"/> with <paramref name="maxDeviationBefore"/> towards the left and <paramref name="maxDeviationAfter"/> towards the right on the timeline.
-    /// This method will never result in a change of period count or in overlapping periods.
+    /// This method will never result in a change of interval count or in overlapping intervals.
     /// Identical inputs with the same <paramref name="seed"/>, will result in the same output.
     /// </summary>
-    public static IPeriodTimeline Randomize(this IPeriodTimeline source, int seed, Duration maxDeviationBefore, Duration maxDeviationAfter)
-    {
-        return source.Randomize(seed, maxDeviationBefore, maxDeviationAfter, s => new Random(s).NextDouble());
-    }
+    public static IPeriodTimeline Randomize(this IPeriodTimeline source, int seed, Duration maxDeviationBefore, Duration maxDeviationAfter) =>
+        source.Randomize(seed, maxDeviationBefore.ToTimeSpan(), maxDeviationAfter.ToTimeSpan());
 
     /// <summary>
     /// Randomizes <paramref name="source"/> with <paramref name="maxDeviationBefore"/> towards the left and <paramref name="maxDeviationAfter"/> towards the right on the timeline.
     /// <paramref name="randomFunc"/> is to use input <c>int</c> as a seed and provide a random <c>double</c> between 0 and 1.
-    /// This method will never result in a change of period count or in overlapping periods.
+    /// This method will never result in a change of interval count or in overlapping intervals.
     /// Identical inputs with the same <paramref name="seed"/>, will result in the same output.
     /// </summary>
-    public static IPeriodTimeline Randomize(this IPeriodTimeline source, int seed, Duration maxDeviationBefore, Duration maxDeviationAfter, Func<int, double> randomFunc)
-    {
-        return new PeriodTimeline(
-            new RandomizedStartTimeline(source, seed, maxDeviationBefore, maxDeviationAfter, randomFunc),
-            new RandomizedEndTimeline(source, seed, maxDeviationBefore, maxDeviationAfter, randomFunc));
-    }
+    public static IPeriodTimeline Randomize(this IPeriodTimeline source, int seed, Duration maxDeviationBefore, Duration maxDeviationAfter, Func<int, double> randomFunc) =>
+        source.Randomize(seed, maxDeviationBefore.ToTimeSpan(), maxDeviationAfter.ToTimeSpan(), randomFunc);
 
     /// <summary>
-    /// Subtracts <paramref name="subtrahend"/> from all periods in <paramref name="source"/>.
+    /// Subtracts <paramref name="subtrahend"/> from all intervals in <paramref name="source"/>.
     /// </summary>
-    public static IPeriodTimeline Subtract(this IPeriodTimeline source, Period subtrahend)
-    {
-        var subtrahendPeriodTimeline = subtrahend.AsPeriodTimeline();
-        return new PeriodTimeline(
-            new SubtractStartTimeline(source, subtrahendPeriodTimeline),
-            new SubtractEndTimeline(source, subtrahendPeriodTimeline));
-    }
+    public static IPeriodTimeline Subtract(this IPeriodTimeline source, Interval subtrahend) =>
+        source.Subtract(subtrahend.ToPeriod());
 
     /// <summary>
-    /// Subtracts all periods in <paramref name="subtrahend"/> from all periods in <paramref name="source"/>.
+    /// Subtracts all intervals in <paramref name="subtrahends"/> from all intervals in <paramref name="source"/>.
     /// </summary>
-    public static IPeriodTimeline Subtract(this IPeriodTimeline source, IEnumerable<Period> subtrahend)
-    {
-        var subtrahendPeriodTimeline = subtrahend.AsPeriodTimeline();
-        return new PeriodTimeline(
-            new SubtractStartTimeline(source, subtrahendPeriodTimeline),
-            new SubtractEndTimeline(source, subtrahendPeriodTimeline));
-    }
+    public static IPeriodTimeline Subtract(this IPeriodTimeline source, IEnumerable<Interval> subtrahends) =>
+        source.Subtract(subtrahends.Select(i => i.ToPeriod()));
 
     /// <summary>
-    /// Subtracts all periods in <paramref name="subtrahends"/> from all periods in <paramref name="source"/>.
+    /// Subtracts all intervals in <paramref name="subtrahends"/> from all intervals in <paramref name="source"/>.
     /// </summary>
-    public static IPeriodTimeline Subtract(this IPeriodTimeline source, params Period[] subtrahends)
-    {
-        var subtrahendPeriodTimeline = subtrahends.AsPeriodTimeline();
-        return new PeriodTimeline(
-            new SubtractStartTimeline(source, subtrahendPeriodTimeline),
-            new SubtractEndTimeline(source, subtrahendPeriodTimeline));
-    }
-
-    /// <summary>
-    /// Subtracts all periods in <paramref name="subtrahend"/> from all periods in <paramref name="source"/>.
-    /// </summary>
-    public static IPeriodTimeline Subtract(this IPeriodTimeline source, IPeriodTimeline subtrahend)
-    {
-        return new PeriodTimeline(
-            new SubtractStartTimeline(source, subtrahend),
-            new SubtractEndTimeline(source, subtrahend));
-    }
-
-    /// <summary>
-    /// Subtracts all periods in <paramref name="subtrahends"/> from all periods in <paramref name="source"/>.
-    /// </summary>
-    public static IPeriodTimeline Subtract(this IPeriodTimeline source, IEnumerable<IPeriodTimeline> subtrahends)
-    {
-        return subtrahends.Aggregate(source, (current, pp) => current.Subtract(pp));
-    }
-
-    /// <summary>
-    /// Subtracts all periods in <paramref name="subtrahends"/> from all periods in <paramref name="source"/>.
-    /// </summary>
-    public static IPeriodTimeline Subtract(this IPeriodTimeline source, params IPeriodTimeline[] subtrahends)
-    {
-        return subtrahends.Aggregate(source, (current, pp) => current.Subtract(pp));
-    }
+    public static IPeriodTimeline Subtract(this IPeriodTimeline source, params Interval[] subtrahends) =>
+        source.Subtract(subtrahends.Select(i => i.ToPeriod()));
 }
