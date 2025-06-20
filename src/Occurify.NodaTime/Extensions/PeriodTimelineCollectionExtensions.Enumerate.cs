@@ -9,7 +9,8 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Enumerates all periods on <paramref name="source"/> that start on or after <paramref name="start"/> from earliest to latest.
     /// Periods are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<Period> EnumerateFrom(this IEnumerable<IPeriodTimeline> source, Instant start) => source.EnumerateFrom(start.ToDateTimeUtc());
+    public static IEnumerable<Period> EnumerateFrom(this IEnumerable<IPeriodTimeline> source, Instant start) => 
+        source.EnumerateFrom(start.ToDateTimeUtc());
 
     /// <summary>
     /// Enumerates all periods on <paramref name="source"/> that start on or after <paramref name="end"/> from latest to earliest.
@@ -66,7 +67,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Periods are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
     public static IEnumerable<Period> EnumerateRange(this IEnumerable<IPeriodTimeline> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly)
-        => source.EnumerateRange(start.ToDateTimeUtc(), end.ToDateTimeUtc());
+        => source.EnumerateRange(start.ToDateTimeUtc(), end.ToDateTimeUtc(), periodIncludeOptions);
 
     /// <summary>
     /// Enumerates all periods on <paramref name="source"/> between <paramref name="start"/> and <paramref name="end"/> from latest to earliest.
@@ -74,7 +75,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Periods are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
     public static IEnumerable<Period> EnumerateRangeBackwards(this IEnumerable<IPeriodTimeline> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly)
-        => source.EnumerateRangeBackwards(start.ToDateTimeUtc(), end.ToDateTimeUtc());
+        => source.EnumerateRangeBackwards(start.ToDateTimeUtc(), end.ToDateTimeUtc(), periodIncludeOptions);
 
     /// <summary>
     /// Enumerates all periods on <paramref name="source"/> within <paramref name="interval"/> from earliest to latest.
