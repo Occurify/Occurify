@@ -22,12 +22,6 @@ public static partial class InstantCollectionExtensions
         startInstants.AsTimeline().To(periodEndInstants.AsTimeline());
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with periods starting at <paramref name="startInstants"/> and ending with <paramref name="periodEndTimeline"/>.
-    /// </summary>
-    public static IPeriodTimeline To(this IEnumerable<Instant> startInstants, ITimeline periodEndTimeline) =>
-        startInstants.AsTimeline().To(periodEndTimeline);
-
-    /// <summary>
     /// Returns a <see cref="ITimeline"/> with all instants in <paramref name="source"/>.
     /// </summary>
     public static ITimeline AsTimeline(this IEnumerable<Instant> source) => Timeline.FromInstants(source.Select(i => i.ToDateTimeUtc()));

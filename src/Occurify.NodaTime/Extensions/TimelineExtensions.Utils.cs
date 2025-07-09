@@ -1,4 +1,6 @@
-﻿using Occurify.Helpers;
+﻿using NodaTime;
+using Occurify.Helpers;
+using Occurify.NodaTime.Extensions;
 using Occurify.TimelineUtils;
 
 namespace Occurify.Extensions;
@@ -9,70 +11,71 @@ namespace Occurify.Extensions;
 public static partial class TimelineExtensions
 {
     /// <summary>
-    /// Returns the time between <paramref name="instant"/> and the next instant on <paramref name="timeline"/>
+    /// Returns the previous instant relative to <paramref name="instantRelativeTo"/>.
     /// </summary>
-    public static TimeSpan? GetTimeToNextInstant(this ITimeline timeline, DateTime instant)
+    public static Instant? GetPreviousInstant(this ITimeline timeline, Instant instantRelativeTo) =>
+        timeline.GetPreviousUtcInstant(instantRelativeTo.ToDateTimeUtc()).ToInstant();
+
+    /// <summary>
+    /// Returns the next instant relative to <paramref name="instantRelativeTo"/>.
+    /// </summary>
+    public static Instant? GetNextInstant(this ITimeline timeline, Instant instantRelativeTo) =>
+        timeline.GetNextUtcInstant(instantRelativeTo.ToDateTimeUtc()).ToInstant();
+
+    /// <summary>
+    /// Returns the time between <paramref name="instant"/> and the next instant on <paramref name="timeline"/>.
+    /// </summary>
+    /// <param name="timeline">The timeline to search.</param>
+    /// <param name="instant">The reference instant.</param>
+    /// <returns>The duration until the next instant, or null if none exists.</returns>
+    public static Duration? GetTimeToNextInstant(this ITimeline timeline, Instant instant)
     {
-        return timeline.GetNextUtcInstant(instant) - instant;
+        return timeline.GetTimeToNextInstant(instant.ToDateTimeUtc()).ToDuration();
     }
 
     /// <summary>
-    /// Returns the time between <paramref name="instant"/> and the previous instant on <paramref name="timeline"/>
+    /// Returns the time between <paramref name="instant"/> and the previous instant on <paramref name="timeline"/>.
     /// </summary>
-    public static TimeSpan? GetTimeSincePreviousInstant(this ITimeline timeline, DateTime instant)
+    /// <param name="timeline">The timeline to search.</param>
+    /// <param name="instant">The reference instant.</param>
+    /// <returns>The duration since the previous instant, or null if none exists.</returns>
+    public static Duration? GetTimeSincePreviousInstant(this ITimeline timeline, Instant instant)
     {
-        return instant - timeline.GetPreviousUtcInstant(instant);
+        return timeline.GetTimeSincePreviousInstant(instant.ToDateTimeUtc()).ToDuration();
     }
 
     /// <summary>
-    /// Returns the previous instant on <paramref name="timeline"/> relative to <paramref name="instant"/>, or <paramref name="instant"/> itself if it is on <paramref name="timeline"/>.
+    /// Returns the previous instant on <paramref name="timeline"/> relative to <paramref name="instant"/>,
+    /// or <paramref name="instant"/> itself if it is on <paramref name="timeline"/>.
     /// </summary>
-    public static DateTime? GetCurrentOrPreviousUtcInstant(this ITimeline timeline, DateTime instant)
+    /// <param name="timeline">The timeline to search.</param>
+    /// <param name="instant">The reference instant.</param>
+    /// <returns>The previous or current instant, or null if none exists.</returns>
+    public static Instant? GetCurrentOrPreviousInstant(this ITimeline timeline, Instant instant)
     {
-        if (instant == DateTime.MaxValue)
-        {
-            return timeline.IsInstant(instant) ? instant : timeline.GetPreviousUtcInstant(instant);
-        }
-        // By using instant + TimeSpan.FromTicks(1), we improve performance, as we don't have to call timeline.IsInstant(instant).
-        return timeline.GetPreviousUtcInstant(instant + TimeSpan.FromTicks(1));
+        return timeline.GetCurrentOrPreviousUtcInstant(instant.ToDateTimeUtc()).ToInstant();
     }
 
     /// <summary>
-    /// Returns the next instant on <paramref name="timeline"/> relative to <paramref name="instant"/>, or <paramref name="instant"/> itself if it is on <paramref name="timeline"/>.
+    /// Returns the next instant on <paramref name="timeline"/> relative to <paramref name="instant"/>,
+    /// or <paramref name="instant"/> itself if it is on <paramref name="timeline"/>.
     /// </summary>
-    public static DateTime? GetCurrentOrNextUtcInstant(this ITimeline timeline, DateTime instant)
+    /// <param name="timeline">The timeline to search.</param>
+    /// <param name="instant">The reference instant.</param>
+    /// <returns>The next or current instant, or null if none exists.</returns>
+    public static Instant? GetCurrentOrNextInstant(this ITimeline timeline, Instant instant)
     {
-        if (instant == DateTime.MinValue)
-        {
-            return timeline.IsInstant(instant) ? instant : timeline.GetNextUtcInstant(instant);
-        }
-        // By using instant - TimeSpan.FromTicks(1), we improve performance, as we don't have to call timeline.IsInstant(instant).
-        return timeline.GetNextUtcInstant(instant - TimeSpan.FromTicks(1));
+        return timeline.GetCurrentOrNextUtcInstant(instant.ToDateTimeUtc()).ToInstant();
     }
 
     /// <summary>
     /// Determines whether <paramref name="instant"/> is on <paramref name="timeline"/>.
     /// </summary>
-    public static bool ContainsInstant(this ITimeline timeline, DateTime instant) => timeline.IsInstant(instant);
-
-    /// <summary>
-    /// Determines whether <paramref name="timeline"/> contains no instants.
-    /// </summary>
-    public static bool IsEmpty(this ITimeline timeline) => timeline.GetCurrentOrNextUtcInstant(DateTimeHelper.MinValueUtc) == null;
-
-    /// <summary>
-    /// Synchronizes <paramref name="source"/> such that method calls cannot occur concurrently.
-    /// </summary>
-    public static ITimeline Synchronize(this ITimeline source)
+    /// <param name="timeline">The timeline to check.</param>
+    /// <param name="instant">The instant to test for membership.</param>
+    /// <returns>True if the instant is on the timeline; otherwise, false.</returns>
+    public static bool ContainsInstant(this ITimeline timeline, Instant instant)
     {
-        return new SynchronizedTimeline(source);
-    }
-
-    /// <summary>
-    /// Synchronizes <paramref name="source"/> such that method calls cannot occur concurrently.
-    /// </summary>
-    public static ITimeline Synchronize(this ITimeline source, object gate)
-    {
-        return new SynchronizedTimeline(source, gate);
+        return timeline.ContainsInstant(instant.ToDateTimeUtc());
     }
 }

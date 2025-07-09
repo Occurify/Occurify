@@ -11,13 +11,13 @@ public static partial class IntervalCollectionExtensions
     /// Determines whether <paramref name="instant"/> is on any of the intervals in <paramref name="intervals"/>.
     /// </summary>
     public static bool ContainsInstant(this IEnumerable<Interval> intervals, Instant instant) =>
-        intervals.Any(p => p.ContainsInstant(instant));
+        intervals.Any(p => p.Contains(instant));
 
     /// <summary>
     /// Determines whether <paramref name="instants"/> is on any of the intervals in <paramref name="intervals"/>.
     /// </summary>
     public static bool ContainsAnyInstant(this IEnumerable<Interval> intervals, IEnumerable<Instant> instants) =>
-        intervals.Any(p => p.ContainsAnyInstant(instants));
+        intervals.Any(p => instants.Any(p.Contains));
 
     /// <summary>
     /// Determines whether any instant on <paramref name="timeline"/> is on any of the intervals in <paramref name="intervals"/>.

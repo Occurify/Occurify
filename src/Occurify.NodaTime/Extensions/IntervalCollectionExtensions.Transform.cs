@@ -48,12 +48,12 @@ public static partial class IntervalCollectionExtensions
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, IEnumerable<Interval> periodsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(periodsToIntersect);
+    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, IEnumerable<Interval> periodsToIntersect) => source.AsPeriodTimeline().IntersectIntervals(periodsToIntersect);
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, params Interval[] periodsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(periodsToIntersect);
+    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, params Interval[] periodsToIntersect) => source.AsPeriodTimeline().IntersectIntervals(periodsToIntersect);
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
@@ -136,47 +136,7 @@ public static partial class IntervalCollectionExtensions
     public static IPeriodTimeline Subtract(this IEnumerable<Interval> source, params IPeriodTimeline[] subtrahend) => source.AsPeriodTimeline().Subtract(subtrahend);
 
     /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="offset"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IEnumerable<Interval> Offset(this IEnumerable<Interval> source, Duration offset) => source.Select(p => PeriodExtensions.Offset(p, offset));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="ticks"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IEnumerable<Interval> OffsetTicks(this IEnumerable<Interval> source, long ticks) => source.Select(p => p.OffsetTicks(ticks));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="microseconds"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IEnumerable<Interval> OffsetMicroseconds(this IEnumerable<Interval> source, double microseconds) => source.Select(p => p.OffsetMicroseconds(microseconds));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="milliseconds"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IEnumerable<Interval> OffsetMilliseconds(this IEnumerable<Interval> source, double milliseconds) => source.Select(p => p.OffsetMilliseconds(milliseconds));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="seconds"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IEnumerable<Interval> OffsetSeconds(this IEnumerable<Interval> source, double seconds) => source.Select(p => p.OffsetSeconds(seconds));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="minutes"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IEnumerable<Interval> OffsetMinutes(this IEnumerable<Interval> source, double minutes) => source.Select(p => p.OffsetMinutes(minutes));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="hours"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IEnumerable<Interval> OffsetHours(this IEnumerable<Interval> source, double hours) => source.Select(p => p.OffsetHours(hours));
-
-    /// <summary>
-    /// Offsets <paramref name="source"/> with <paramref name="days"/>. Overflow on <c>Instant.MinValue</c> or <c>Instant.MaxValue</c> results in <c>null</c>.
-    /// </summary>
-    public static IEnumerable<Interval> OffsetDays(this IEnumerable<Interval> source, double days) => source.Select(p => p.OffsetDays(days));
-
-    /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with intervals <paramref name="source"/>. Overlapping intervals are combined.
     /// </summary>
-    public static IPeriodTimeline AsPeriodTimeline(this IEnumerable<Interval> source) => PeriodTimeline.FromPeriods(source);
+    public static IPeriodTimeline AsPeriodTimeline(this IEnumerable<Interval> source) => PeriodTimeline.FromPeriods(source.Select(i => i.ToPeriod()));
 }
