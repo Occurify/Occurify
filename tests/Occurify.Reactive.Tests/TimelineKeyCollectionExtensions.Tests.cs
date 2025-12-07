@@ -174,7 +174,7 @@ public class TimelineKeyCollectionExtensionsTests
 
     private void AssertSampleCollections(KeyValuePair<DateTime, string[]>[] expected, List<KeyValuePair<DateTime, string[]>> actual)
     {
-        Assert.AreEqual(expected.Length, actual.Count);
+        Assert.HasCount(expected.Length, actual);
 
         for (var i = 0; i < expected.Length; i++)
         {
