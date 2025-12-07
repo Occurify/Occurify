@@ -6,7 +6,7 @@ namespace Occurify.Tests;
 [TestClass]
 public class StringTimelineHelperTimelineTests
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(new int[0], " ")]
     [DataRow(new[] { 0 }, "|")]
     [DataRow(new[] { 0 }, "| ")]
@@ -56,7 +56,7 @@ public class StringTimelineHelperTimelineTests
         helper.TimelineToString(timeline, 2, TimelineMethods.GetPreviousUtcInstant);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(new int[0], " ")]
     [DataRow(new[] { 0 }, "|")]
     [DataRow(new[] { 0 }, "| ")]
@@ -129,7 +129,7 @@ public class StringTimelineHelperTimelineTests
         helper.TimelineToString(timeline, 3, TimelineMethods.GetNextUtcInstant);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(new int[0], " ")]
     [DataRow(new[] { 0 }, "|")]
     [DataRow(new[] { 0 }, "| ")]
@@ -148,7 +148,7 @@ public class StringTimelineHelperTimelineTests
         Assert.AreEqual(expectedTimeline, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(" ")]
     [DataRow("|")]
     [DataRow("| |")]

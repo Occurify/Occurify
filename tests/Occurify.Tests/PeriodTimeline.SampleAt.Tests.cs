@@ -8,8 +8,8 @@ namespace Occurify.Tests;
 [TestClass]
 public class PeriodTimelineSampleAtTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void SampleAt(string source, string instant, string expected, string expectedType)
     {
         Console.WriteLine($"Source:          \"{source}\"");

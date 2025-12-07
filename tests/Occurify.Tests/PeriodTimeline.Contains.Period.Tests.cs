@@ -9,15 +9,15 @@ namespace Occurify.Tests;
 [TestClass]
 public class PeriodTimelineContainsPeriodTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Contains(string source, string periods, bool expected)
     {
         ExecuteTest(source, periods, expected, DateTime.UtcNow);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Contains_StartAtMinValue(string source, string periods, bool expected)
     {
         ExecuteTest(source, periods, expected, DateTimeHelper.MinValueUtc);

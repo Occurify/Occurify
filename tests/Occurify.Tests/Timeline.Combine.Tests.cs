@@ -8,22 +8,22 @@ namespace Occurify.Tests;
 [TestClass]
 public class TimelineCombineTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void GetPreviousUtcInstant(string[] sources, string expected)
     {
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, sources, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void GetNextUtcInstant(string[] sources, string expected)
     {
         ExecuteTest(TimelineMethods.GetNextUtcInstant, sources, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void IsInstant(string[] sources, string expected)
     {
         ExecuteTest(TimelineMethods.IsInstant, sources, expected);

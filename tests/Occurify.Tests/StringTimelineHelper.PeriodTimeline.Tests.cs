@@ -7,7 +7,7 @@ namespace Occurify.Tests;
 [TestClass]
 public class StringTimelineHelperPeriodTimelineTests
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(new int[0], new int[0], " ")]
 
     // Start only
@@ -84,7 +84,7 @@ public class StringTimelineHelperPeriodTimelineTests
         helper.PeriodTimelineToString(timeline, 2, TimelineMethods.GetPreviousUtcInstant);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(new int[0], new int[0], " ")]
 
     // Start only
@@ -184,7 +184,7 @@ public class StringTimelineHelperPeriodTimelineTests
         helper.PeriodTimelineToString(timeline, 3, TimelineMethods.GetNextUtcInstant);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(new int[0], new int[0], " ")]
 
     // Start only
@@ -216,7 +216,7 @@ public class StringTimelineHelperPeriodTimelineTests
         Assert.AreEqual(expectedTimeline, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(" ")]
     [DataRow("<")]
     [DataRow(">")]

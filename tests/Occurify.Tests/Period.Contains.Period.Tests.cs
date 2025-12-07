@@ -8,29 +8,29 @@ namespace Occurify.Tests;
 [TestClass]
 public class PeriodContainsPeriodTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(CompleteOnlyTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(CompleteOnlyTestCaseSource))]
     public void Contains_CompleteOnly(string period, string otherPeriod, bool expected)
     {
         ExecuteTest(period, otherPeriod, PeriodIncludeOptions.CompleteOnly, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(StartPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(StartPartialAllowedTestCaseSource))]
     public void Contains_StartPartialAllowed(string period, string otherPeriod, bool expected)
     {
         ExecuteTest(period, otherPeriod, PeriodIncludeOptions.StartPartialAllowed, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EndPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EndPartialAllowedTestCaseSource))]
     public void Contains_EndPartialAllowed(string period, string otherPeriod, bool expected)
     {
         ExecuteTest(period, otherPeriod, PeriodIncludeOptions.EndPartialAllowed, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(PartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(PartialAllowedTestCaseSource))]
     public void Contains_PartialAllowed(string period, string otherPeriod, bool expected)
     {
         ExecuteTest(period, otherPeriod, PeriodIncludeOptions.PartialAllowed, expected);
