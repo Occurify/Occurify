@@ -53,7 +53,7 @@ public class TimelineValueCollectionExtensionsTests
         ], results);
 
         scheduler.AdvanceBy(timeGap2 - 1);
-        Assert.AreEqual(1, results.Count);
+        Assert.HasCount(1, results);
 
         scheduler.AdvanceBy(1);
         AssertSampleCollections([
@@ -62,7 +62,7 @@ public class TimelineValueCollectionExtensionsTests
         ], results);
 
         scheduler.AdvanceBy(timeGap3 - 1);
-        Assert.AreEqual(2, results.Count);
+        Assert.HasCount(2, results);
 
         scheduler.AdvanceBy(1);
         AssertSampleCollections([
@@ -72,7 +72,7 @@ public class TimelineValueCollectionExtensionsTests
         ], results);
 
         scheduler.AdvanceBy(timeGap4 - 1);
-        Assert.AreEqual(3, results.Count);
+        Assert.HasCount(3, results);
 
         scheduler.AdvanceBy(1);
         AssertSampleCollections([
@@ -127,10 +127,10 @@ public class TimelineValueCollectionExtensionsTests
         // First set the current time. Note that we do this after creating the observable, as Observable.Generate also uses the scheduler for the first iteration, and this triggers that setup.
         scheduler.AdvanceTo(now.Ticks);
 
-        Assert.AreEqual(1, results.Count);
+        Assert.HasCount(1, results);
 
         scheduler.AdvanceBy(timeGap1 - 1);
-        Assert.AreEqual(1, results.Count);
+        Assert.HasCount(1, results);
 
         scheduler.AdvanceBy(1);
         AssertSampleCollections([
@@ -139,7 +139,7 @@ public class TimelineValueCollectionExtensionsTests
         ], results);
 
         scheduler.AdvanceBy(timeGap2 - 1);
-        Assert.AreEqual(2, results.Count);
+        Assert.HasCount(2, results);
 
         scheduler.AdvanceBy(1);
         AssertSampleCollections([
@@ -149,7 +149,7 @@ public class TimelineValueCollectionExtensionsTests
         ], results);
 
         scheduler.AdvanceBy(timeGap3 - 1);
-        Assert.AreEqual(3, results.Count);
+        Assert.HasCount(3, results);
 
         scheduler.AdvanceBy(1);
         AssertSampleCollections([
@@ -160,7 +160,7 @@ public class TimelineValueCollectionExtensionsTests
         ], results);
 
         scheduler.AdvanceBy(timeGap4 - 1);
-        Assert.AreEqual(4, results.Count);
+        Assert.HasCount(4, results);
 
         scheduler.AdvanceBy(1);
         AssertSampleCollections([
@@ -174,7 +174,7 @@ public class TimelineValueCollectionExtensionsTests
 
     private void AssertSampleCollections(KeyValuePair<DateTime, string[]>[] expected, List<KeyValuePair<DateTime, string[]>> actual)
     {
-        Assert.AreEqual(expected.Length, actual.Count);
+        Assert.HasCount(expected.Length, actual);
 
         for (var i = 0; i < expected.Length; i++)
         {

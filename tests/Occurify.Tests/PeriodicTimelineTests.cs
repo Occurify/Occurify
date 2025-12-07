@@ -9,7 +9,7 @@ namespace Occurify.Tests
         private const long NoonOfLastDay = 3155378544000000000L;
         private const long NoonOfFirstDay = 432000000000L;
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(0)]
         [DataRow(MaxUtc)]
         public void SaturatedTimeline_GetPreviousUtcInstant(long origin)
@@ -25,7 +25,7 @@ namespace Occurify.Tests
             Assert.AreEqual(now - TimeSpan.FromTicks(1), result);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(0)]
         [DataRow(MaxUtc)]
         public void SaturatedTimeline_GetPreviousUtcInstant_MinValue_Null(long origin)
@@ -40,7 +40,7 @@ namespace Occurify.Tests
             Assert.IsNull(result);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(0)]
         [DataRow(MaxUtc)]
         public void SaturatedTimeline_GetNextUtcInstant(long origin)
@@ -56,7 +56,7 @@ namespace Occurify.Tests
             Assert.AreEqual(now + TimeSpan.FromTicks(1), result);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(0)]
         [DataRow(MaxUtc)]
         public void SaturatedTimeline_GetNextUtcInstant_MaxValue_Null(long origin)
@@ -71,7 +71,7 @@ namespace Occurify.Tests
             Assert.IsNull(result);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(0, 0)]
         [DataRow(0, MaxUtc)]
         [DataRow(MaxUtc, 0)]
@@ -118,7 +118,7 @@ namespace Occurify.Tests
             Assert.AreEqual(startOfToday - TimeSpan.FromTicks(1), result);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(NoonOfFirstDay)]
         [DataRow(NoonOfLastDay)]
         public void DayTimeline_GetPreviousUtcInstant_OriginNoon(long origin)
@@ -211,7 +211,7 @@ namespace Occurify.Tests
             Assert.AreEqual(startOfTomorrow - TimeSpan.FromTicks(1), result);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(NoonOfFirstDay)]
         [DataRow(NoonOfLastDay)]
         public void DayTimeline_GetNextUtcInstant_OriginNoon(long origin)
@@ -286,7 +286,7 @@ namespace Occurify.Tests
         }
 
         
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(NoonOfFirstDay)]
         [DataRow(NoonOfLastDay)]
         public void DayTimeline_IsInstant_OriginNoon(long origin)
