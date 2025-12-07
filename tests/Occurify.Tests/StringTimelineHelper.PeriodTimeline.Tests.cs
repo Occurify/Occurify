@@ -62,15 +62,15 @@ public class StringTimelineHelperPeriodTimelineTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentOutOfRangeException), "Origin + convertLength cannot be larger or equal to DateTime.MaxValue as we need to start one tick after the origin + convertLength to use GetPreviousUtcInstant.")]
-    public void PeriodTimelineToString_GetPreviousUtcInstant_OriginTooLate_ArgumentOutOfRangeException()
+    public void PeriodTimelineToString_GetPreviousUtcInstant_OriginTooLate_ThrowsArgumentOutOfRangeException()
     {
         // Arrange
         var helper = new StringTimelineHelper(new DateTime(DateTime.MaxValue.Ticks - 3));
         var timeline = PeriodTimeline.Empty();
 
-        // Act
-        helper.PeriodTimelineToString(timeline, 3, TimelineMethods.GetPreviousUtcInstant);
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            helper.PeriodTimelineToString(timeline, 3, TimelineMethods.GetPreviousUtcInstant), "Origin + convertLength cannot be larger or equal to DateTime.MaxValue as we need to start one tick after the origin + convertLength to use GetPreviousUtcInstant.");
     }
 
     [TestMethod]
@@ -139,15 +139,15 @@ public class StringTimelineHelperPeriodTimelineTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentOutOfRangeException), "Origin cannot be DateTime.MinValue as we need to start one tick before the origin to use GetNextUtcInstant.")]
-    public void PeriodTimelineToString_GetNextUtcInstant_OriginTooEarly_ArgumentOutOfRangeException()
+    public void PeriodTimelineToString_GetNextUtcInstant_OriginTooEarly_ThrowsArgumentOutOfRangeException()
     {
         // Arrange
         var helper = new StringTimelineHelper(DateTimeHelper.MinValueUtc);
         var timeline = PeriodTimeline.Empty();
 
-        // Act
-        helper.PeriodTimelineToString(timeline, 1, TimelineMethods.GetNextUtcInstant);
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            helper.PeriodTimelineToString(timeline, 1, TimelineMethods.GetNextUtcInstant), "Origin cannot be DateTime.MinValue as we need to start one tick before the origin to use GetNextUtcInstant.");
     }
 
     [TestMethod]
@@ -162,15 +162,15 @@ public class StringTimelineHelperPeriodTimelineTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentOutOfRangeException), "Origin + convertLength cannot be larger than DateTime.MaxValue.")]
-    public void PeriodTimelineToString_GetNextUtcInstant_OriginTooLate_ArgumentOutOfRangeException()
+    public void PeriodTimelineToString_GetNextUtcInstant_OriginTooLate_ThrowsArgumentOutOfRangeException()
     {
         // Arrange
         var helper = new StringTimelineHelper(new DateTime(DateTime.MaxValue.Ticks - 3));
         var timeline = PeriodTimeline.Empty();
 
-        // Act
-        helper.PeriodTimelineToString(timeline, 4, TimelineMethods.GetNextUtcInstant);
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            helper.PeriodTimelineToString(timeline, 4, TimelineMethods.GetNextUtcInstant), "Origin + convertLength cannot be larger than DateTime.MaxValue.");
     }
 
     [TestMethod]
