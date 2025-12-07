@@ -1,5 +1,6 @@
 ﻿
 using Occurify.Tests.Helpers;
+#pragma warning disable MSTEST0037 // We explicitly want to test CompareTo here.
 
 namespace Occurify.Tests
 {

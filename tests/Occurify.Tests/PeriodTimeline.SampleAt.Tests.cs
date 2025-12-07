@@ -46,7 +46,7 @@ public class PeriodTimelineSampleAtTests
         if (expectingPeriod)
         {
             Assert.IsTrue(sample.IsPeriod);
-            Assert.AreEqual(sample.Period, expectedPeriod);
+            Assert.AreEqual(expectedPeriod, sample.Period);
 
             Console.WriteLine($"Actual period:   \"{(sample.Period.IsInfiniteInBothDirections ? 
                 new string(' ', source.Length) : 
@@ -55,7 +55,7 @@ public class PeriodTimelineSampleAtTests
         else
         {
             Assert.IsTrue(sample.IsGap);
-            Assert.AreEqual(sample.Gap, expectedPeriod);
+            Assert.AreEqual(expectedPeriod, sample.Gap);
 
             Console.WriteLine($"Actual gap:      \"{(sample.Gap.IsInfiniteInBothDirections ?
                 new string(' ', source.Length) : 
