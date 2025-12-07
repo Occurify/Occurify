@@ -20,8 +20,8 @@ namespace Occurify.Examples.Extensions
                     continue;
                 }
                 var command = new Command(example.Command);
-                command.SetHandler(example.Run);
-                rootCommand.AddCommand(command);
+                command.SetAction(_ => example.Run());
+                rootCommand.Add(command);
             }
 
             return rootCommand;
