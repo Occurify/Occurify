@@ -18,16 +18,6 @@ jobs:
       - name: 🗂️ Checkout the repository
         uses: actions/checkout@main
 
-      - name: ⬇️ Install .NET 6
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '6.0.x'
-          
-      - name: ⬇️ Install .NET 7
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '7.0.x'
-          
       - name: ⬇️ Install .NET 8
         uses: actions/setup-dotnet@v5
         with:
@@ -37,6 +27,11 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '9.0.x'
+      
+      - name: ⬇️ Install .NET 10
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
 
       - name: 🛠️ Build code
         run: dotnet build --configuration Release -p:TreatWarningsAsErrors=true
