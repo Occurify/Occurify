@@ -97,11 +97,11 @@ namespace Occurify.TimeZones.Tests
             var timeline = TimeZoneInstants.FromCron(timeOnly.ToCronExpression(), DutchTimeZone);
 
             // 35 minutes after daylight savings
-            var localJustBeforeDaylightSavings = new DateTime(2024, 3, 31, 3, 35, 0);
-            var utcJustBeforeDaylightSavings = TimeZoneInfo.ConvertTimeToUtc(localJustBeforeDaylightSavings, DutchTimeZone);
+            var localJustAfterDaylightSavings = new DateTime(2024, 3, 31, 3, 35, 0);
+            var utcJustAfterDaylightSavings = TimeZoneInfo.ConvertTimeToUtc(localJustAfterDaylightSavings, DutchTimeZone);
 
             // Act
-            var nextInstant = timeline.GetPreviousUtcInstant(utcJustBeforeDaylightSavings);
+            var nextInstant = timeline.GetPreviousUtcInstant(utcJustAfterDaylightSavings);
 
             // Assert
             var expectedLocalTime = new DateTime(2024, 3, 31, 3, 0, 0); // The corrected time.

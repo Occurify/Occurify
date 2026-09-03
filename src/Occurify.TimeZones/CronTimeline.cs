@@ -1,6 +1,4 @@
 ﻿using Cronos;
-using Occurify.Extensions;
-using Occurify.TimeZones.Extensions;
 using Occurify.TimeZones.Helpers;
 
 namespace Occurify.TimeZones
@@ -9,7 +7,6 @@ namespace Occurify.TimeZones
     {
         private readonly CronExpression _cronExpression;
         private readonly TimeZoneInfo _timeZoneInfo;
-        private readonly TimeSpan? _firstPeriodDuration;
 
         internal CronTimeline(
             string cronExpression,
@@ -17,8 +14,6 @@ namespace Occurify.TimeZones
         {
             _cronExpression = CronExpression.Parse(cronExpression, CronHelper.ResolveCronFormat(cronExpression));
             _timeZoneInfo = timeZoneInfo;
-
-            _firstPeriodDuration = _cronExpression.GetFirstPeriodDuration(timeZoneInfo);
         }
 
         internal CronTimeline(
@@ -28,8 +23,6 @@ namespace Occurify.TimeZones
         {
             _cronExpression = CronExpression.Parse(cronExpression, cronFormat);
             _timeZoneInfo = timeZoneInfo;
-
-            _firstPeriodDuration = _cronExpression.GetFirstPeriodDuration(timeZoneInfo);
         }
 
         public override DateTime? GetPreviousUtcInstant(DateTime utcRelativeTo)
@@ -39,49 +32,7 @@ namespace Occurify.TimeZones
                 throw new ArgumentException($"{nameof(utcRelativeTo)} should be UTC time.");
             }
 
-            if (_firstPeriodDuration == null)
-            {
-                // In this case the cron expression returns maximum one result.
-                var result = _cronExpression.GetNextOccurrence(utcRelativeTo, _timeZoneInfo, inclusive: true);
-                if (result == null || result.Value >= utcRelativeTo)
-                {
-                    return null;
-                }
-
-                return result.Value;
-            }
-
-            var periodEstimate = _firstPeriodDuration.Value * 1.5;
-            DateTime[] occurrences;
-            var attempt = 0;
-            do
-            {
-                var fromUtc = utcRelativeTo.AddOrNullOnOverflow(-periodEstimate * (attempt + 1));
-                var toUtc = utcRelativeTo.AddOrNullOnOverflow(-periodEstimate * attempt);
-                if (fromUtc == null && toUtc == null)
-                {
-                    return null;
-                }
-
-                if (fromUtc == null)
-                {
-                    occurrences = _cronExpression.GetOccurrences(new(0L, DateTimeKind.Utc), toUtc!.Value,
-                        _timeZoneInfo, fromInclusive: true, toInclusive: false).ToArray();
-                    if (!occurrences.Any())
-                    {
-                        return null;
-                    }
-                }
-                else
-                {
-                    occurrences = _cronExpression.GetOccurrences(fromUtc.Value, toUtc!.Value, _timeZoneInfo,
-                        fromInclusive: true, toInclusive: false).ToArray();
-                }
-
-                attempt++;
-            } while (!occurrences.Any());
-
-            return DateTime.SpecifyKind(occurrences.Last(), DateTimeKind.Utc);
+            return _cronExpression.GetPreviousOccurrence(utcRelativeTo, _timeZoneInfo);
         }
 
         public override DateTime? GetNextUtcInstant(DateTime utcRelativeTo)
