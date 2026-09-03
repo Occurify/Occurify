@@ -8,8 +8,8 @@ namespace Occurify.Tests;
 [TestClass]
 public class PeriodTimelineContainsInstantTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Contains(string source, string instant, bool expected)
     {
         Console.WriteLine($"Source:   \"{source}\"");

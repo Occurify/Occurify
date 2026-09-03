@@ -6,7 +6,7 @@ namespace Occurify.Tests;
 [TestClass]
 public class StringTimelineHelperTimelineTests
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(new int[0], " ")]
     [DataRow(new[] { 0 }, "|")]
     [DataRow(new[] { 0 }, "| ")]
@@ -34,15 +34,15 @@ public class StringTimelineHelperTimelineTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentOutOfRangeException), "Origin + convertLength cannot be larger or equal to DateTime.MaxValue as we need to start one tick after the origin + convertLength to use GetPreviousUtcInstant.")]
-    public void TimelineToString_GetPreviousUtcInstant_OriginTooLate_ArgumentOutOfRangeException()
+    public void TimelineToString_GetPreviousUtcInstant_OriginTooLate_ThrowsArgumentOutOfRangeException()
     {
         // Arrange
         var helper = new StringTimelineHelper(new DateTime(DateTime.MaxValue.Ticks - 3));
         var timeline = Timeline.Empty();
 
-        // Act
-        helper.TimelineToString(timeline, 3, TimelineMethods.GetPreviousUtcInstant);
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            helper.TimelineToString(timeline, 3, TimelineMethods.GetPreviousUtcInstant), "Origin + convertLength cannot be larger or equal to DateTime.MaxValue as we need to start one tick after the origin + convertLength to use GetPreviousUtcInstant.");
     }
 
     [TestMethod]
@@ -56,7 +56,7 @@ public class StringTimelineHelperTimelineTests
         helper.TimelineToString(timeline, 2, TimelineMethods.GetPreviousUtcInstant);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(new int[0], " ")]
     [DataRow(new[] { 0 }, "|")]
     [DataRow(new[] { 0 }, "| ")]
@@ -84,15 +84,15 @@ public class StringTimelineHelperTimelineTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentOutOfRangeException), "Origin cannot be DateTime.MinValue as we need to start one tick before the origin to use GetNextUtcInstant.")]
-    public void TimelineToString_GetNextUtcInstant_OriginTooEarly_ArgumentOutOfRangeException()
+    public void TimelineToString_GetNextUtcInstant_OriginTooEarly_ThrowsArgumentOutOfRangeException()
     {
         // Arrange
         var helper = new StringTimelineHelper(DateTimeHelper.MinValueUtc);
         var timeline = Timeline.Empty();
 
-        // Act
-        helper.TimelineToString(timeline, 1, TimelineMethods.GetNextUtcInstant);
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            helper.TimelineToString(timeline, 1, TimelineMethods.GetNextUtcInstant), "Origin cannot be DateTime.MinValue as we need to start one tick before the origin to use GetNextUtcInstant.");
     }
 
     [TestMethod]
@@ -107,15 +107,15 @@ public class StringTimelineHelperTimelineTests
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentOutOfRangeException), "Origin + convertLength cannot be larger than DateTime.MaxValue.")]
-    public void TimelineToString_GetNextUtcInstant_OriginTooLate_ArgumentOutOfRangeException()
+    public void TimelineToString_GetNextUtcInstant_OriginTooLate_ThrowsArgumentOutOfRangeException()
     {
         // Arrange
         var helper = new StringTimelineHelper(new DateTime(DateTime.MaxValue.Ticks - 3));
         var timeline = Timeline.Empty();
 
-        // Act
-        helper.TimelineToString(timeline, 4, TimelineMethods.GetNextUtcInstant);
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            helper.TimelineToString(timeline, 4, TimelineMethods.GetNextUtcInstant), "Origin + convertLength cannot be larger than DateTime.MaxValue.");
     }
 
     [TestMethod]
@@ -129,7 +129,7 @@ public class StringTimelineHelperTimelineTests
         helper.TimelineToString(timeline, 3, TimelineMethods.GetNextUtcInstant);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(new int[0], " ")]
     [DataRow(new[] { 0 }, "|")]
     [DataRow(new[] { 0 }, "| ")]
@@ -148,7 +148,7 @@ public class StringTimelineHelperTimelineTests
         Assert.AreEqual(expectedTimeline, actual);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(" ")]
     [DataRow("|")]
     [DataRow("| |")]

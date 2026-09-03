@@ -9,22 +9,22 @@ namespace Occurify.Tests;
 [TestClass]
 public class TimelineOffsetTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void GetPreviousUtcInstant(string source, int offset, string expected)
     {
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, source, offset, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void GetNextUtcInstant(string source, int offset, string expected)
     {
         ExecuteTest(TimelineMethods.GetNextUtcInstant, source, offset, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void IsInstant(string source, int offset, string expected)
     {
         ExecuteTest(TimelineMethods.IsInstant, source, offset, expected);

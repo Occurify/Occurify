@@ -1,5 +1,4 @@
-﻿
-using Occurify.Extensions;
+﻿using Occurify.Extensions;
 
 namespace Occurify.Tests
 {
@@ -39,16 +38,16 @@ namespace Occurify.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(OverflowException), "Start is not allowed to overflow DateTime.MaxValue.")]
-        public void Offset_AddPositive_OverflowsStartAndEnd()
+        public void Offset_AddPositive_OverflowsStartAndEnd_ThrowsOverflowException()
         {
             // Arrange
             var start = DateTime.MaxValue - TimeSpan.FromTicks(1);
             var period = Period.Create(start, DateTime.MaxValue);
             var amountToAdd = TimeSpan.FromTicks(2);
 
-            // Act
-            _ = period.Offset(amountToAdd);
+            // Act & Assert
+            Assert.Throws<OverflowException>(() =>
+                period.Offset(amountToAdd), "Start is not allowed to overflow DateTime.MaxValue.");
         }
 
         [TestMethod]
@@ -84,16 +83,16 @@ namespace Occurify.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(OverflowException), "End is not allowed to overflow DateTime.MinValue.")]
-        public void Offset_AddNegative_OverflowsStartAndEnd()
+        public void Offset_AddNegative_OverflowsStartAndEnd_ThrowsOverflowException()
         {
             // Arrange
             var end = DateTime.MinValue + TimeSpan.FromTicks(1);
             var period = Period.Create(DateTime.MinValue, end);
             var amountToAdd = TimeSpan.FromTicks(2);
 
-            // Act
-            _ = period.Offset(-amountToAdd);
+            // Act & Assert
+            Assert.Throws<OverflowException>(() =>
+                period.Offset(-amountToAdd), "End is not allowed to overflow DateTime.MinValue.");
         }
     }
 }

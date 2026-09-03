@@ -9,45 +9,45 @@ namespace Occurify.Tests;
 [TestClass]
 public class PeriodTimelineInvertTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Invert_GetPreviousUtcInstant(string source, string expected)
     {
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, 1, source, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Invert_GetNextUtcInstant(string source, string expected)
     {
         ExecuteTest(TimelineMethods.GetNextUtcInstant, 1, source, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Invert_IsInstant(string source, string expected)
     {
         ExecuteTest(TimelineMethods.IsInstant, 1, source, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Invert_Twice_GetPreviousUtcInstant(string source, string expected)
     {
         // As InvertedStartTimeline retains state, we call the methods reading the timeline twice to make sure it remains consistent.
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, 2, source, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Invert_Twice_GetNextUtcInstant(string source, string expected)
     {
         // As InvertedStartTimeline retains state, we call the methods reading the timeline twice to make sure it remains consistent.
         ExecuteTest(TimelineMethods.GetNextUtcInstant, 2, source, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Invert_Twice_IsInstant(string source, string expected)
     {
         // As InvertedStartTimeline retains state, we call the methods reading the timeline twice to make sure it remains consistent.

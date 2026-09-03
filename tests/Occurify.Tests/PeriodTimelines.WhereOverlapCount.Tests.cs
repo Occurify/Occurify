@@ -9,43 +9,43 @@ namespace Occurify.Tests;
 [TestClass]
 public class PeriodTimelinesWhereOverlapCountTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void WhereOverlapCountEven_GetPreviousUtcInstant(string[] source, string expected)
     {
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, source, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void WhereOverlapCountEven_GetNextUtcInstant(string[] source, string expected)
     {
         ExecuteTest(TimelineMethods.GetNextUtcInstant, source, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void WhereOverlapCountEven_IsInstant(string[] periods, string expected)
     {
         ExecuteTest(TimelineMethods.IsInstant, periods, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void WhereOverlapCountEvenSameAsInvertedUneven_GetPreviousUtcInstant(string[] source, string _)
     {
         Execute_InvertedIsTheSameAsUneven(TimelineMethods.GetPreviousUtcInstant, source);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void WhereOverlapCountEvenSameAsInvertedUneven_GetNextUtcInstant(string[] source, string _)
     {
         Execute_InvertedIsTheSameAsUneven(TimelineMethods.GetNextUtcInstant, source);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void WhereOverlapCountEvenSameAsInvertedUneven_IsInstant(string[] periods, string _)
     {
         Execute_InvertedIsTheSameAsUneven(TimelineMethods.IsInstant, periods);

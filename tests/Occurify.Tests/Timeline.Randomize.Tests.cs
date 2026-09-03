@@ -9,22 +9,22 @@ namespace Occurify.Tests;
 [TestClass]
 public class TimelineRandomizeTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void GetPreviousUtcInstant(string source, string expected, int maxDeviationBefore, int maxDeviationAfter, TimelineRandomResult[] randomResults)
     {
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, source, expected, maxDeviationBefore, maxDeviationAfter, randomResults);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void GetNextUtcInstant(string source, string expected, int maxDeviationBefore, int maxDeviationAfter, TimelineRandomResult[] randomResults)
     {
         ExecuteTest(TimelineMethods.GetNextUtcInstant, source, expected, maxDeviationBefore, maxDeviationAfter, randomResults);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void IsInstant(string source, string expected, int maxDeviationBefore, int maxDeviationAfter, TimelineRandomResult[] randomResults)
     {
         ExecuteTest(TimelineMethods.IsInstant, source, expected, maxDeviationBefore, maxDeviationAfter, randomResults);

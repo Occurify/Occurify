@@ -8,43 +8,43 @@ namespace Occurify.Tests;
 [TestClass]
 public class PeriodTimelineFromPeriodsTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void AsPeriodTimeline_GetPreviousUtcInstant(string[] periods, string expected)
     {
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, periods, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void AsPeriodTimeline_GetNextUtcInstant(string[] periods, string expected)
     {
         ExecuteTest(TimelineMethods.GetNextUtcInstant, periods, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void AsPeriodTimeline_IsInstant(string[] periods, string expected)
     {
         ExecuteTest(TimelineMethods.IsInstant, periods, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Merge_GetPreviousUtcInstant(string[] periods, string expected)
     {
         Execute_MergingGivesSameResult(TimelineMethods.GetPreviousUtcInstant, periods, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Merge_GetNextUtcInstant(string[] periods, string expected)
     {
         Execute_MergingGivesSameResult(TimelineMethods.GetNextUtcInstant, periods, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Merge_IsInstant(string[] periods, string expected)
     {
         Execute_MergingGivesSameResult(TimelineMethods.IsInstant, periods, expected);

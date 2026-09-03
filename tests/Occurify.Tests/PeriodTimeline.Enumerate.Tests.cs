@@ -8,15 +8,15 @@ namespace Occurify.Tests;
 [TestClass]
 public class PeriodTimelineEnumerateTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateTestCaseSource))]
     public void Enumerate(string source, string expected)
     {
         ExecuteEnumerateTest(source, expected, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateTestCaseSource))]
     public void EnumerateBackwards(string source, string expected)
     {
         ExecuteEnumerateTest(source, expected, true);
@@ -43,15 +43,15 @@ public class PeriodTimelineEnumerateTests
         Assert.AreEqual(expected, actualPeriodsTimeline);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateFromTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateFromTestCaseSource))]
     public void EnumerateFrom(string source, string from, string expected)
     {
         ExecuteEnumerateFrom(source, from, expected, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateFromTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateFromTestCaseSource))]
     public void EnumerateBackwardsTo(string source, string from, string expected)
     {
         ExecuteEnumerateFrom(source, from, expected, true);
@@ -80,14 +80,14 @@ public class PeriodTimelineEnumerateTests
         Assert.AreEqual(expected, actualPeriodsTimeline);
     }
 
-    [DataTestMethod] [DynamicData(nameof(EnumerateFromIncludingPartialTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod] [DynamicData(nameof(EnumerateFromIncludingPartialTestCaseSource))]
     public void EnumerateFromIncludingPartial(string source, string from, string expected)
     {
         ExecuteEnumerateFromIncludingPartial(source, from, expected, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateFromIncludingPartialTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateFromIncludingPartialTestCaseSource))]
     public void EnumerateBackwardsToIncludingPartial(string source, string from, string expected)
     {
         ExecuteEnumerateFromIncludingPartial(source, from, expected, true);
@@ -116,15 +116,15 @@ public class PeriodTimelineEnumerateTests
         Assert.AreEqual(expected, actualPeriodsTimeline);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateToTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateToTestCaseSource))]
     public void EnumerateTo(string source, string to, string expected)
     {
         ExecuteEnumerateTo(source, to, expected, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateToTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateToTestCaseSource))]
     public void EnumerateBackwardsFrom(string source, string to, string expected)
     {
         ExecuteEnumerateTo(source, to, expected, true);
@@ -153,15 +153,15 @@ public class PeriodTimelineEnumerateTests
         Assert.AreEqual(expected, actualPeriodsTimeline);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateToIncludingPartialTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateToIncludingPartialTestCaseSource))]
     public void EnumerateToIncludingPartial(string source, string from, string expected)
     {
         ExecuteEnumerateToIncludingPartial(source, from, expected, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateToIncludingPartialTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateToIncludingPartialTestCaseSource))]
     public void EnumerateBackwardsFromIncludingPartial(string source, string from, string expected)
     {
         ExecuteEnumerateToIncludingPartial(source, from, expected, true);
@@ -190,57 +190,57 @@ public class PeriodTimelineEnumerateTests
         Assert.AreEqual(expected, actualPeriodsTimeline);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateRangeCompleteOnlyTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateRangeCompleteOnlyTestCaseSource))]
     public void EnumerateRangeCompleteOnly(string source, string range, string expected)
     {
         ExecuteEnumerateRange(source, range, expected, PeriodIncludeOptions.CompleteOnly, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateRangeCompleteOnlyTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateRangeCompleteOnlyTestCaseSource))]
     public void EnumerateRangeBackwardsCompleteOnly(string source, string range, string expected)
     {
         ExecuteEnumerateRange(source, range, expected, PeriodIncludeOptions.CompleteOnly, true);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateRangeStartPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateRangeStartPartialAllowedTestCaseSource))]
     public void EnumerateRangeStartPartialAllowed(string source, string range, string expected)
     {
         ExecuteEnumerateRange(source, range, expected, PeriodIncludeOptions.StartPartialAllowed, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateRangeStartPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateRangeStartPartialAllowedTestCaseSource))]
     public void EnumerateRangeBackwardsStartPartialAllowed(string source, string range, string expected)
     {
         ExecuteEnumerateRange(source, range, expected, PeriodIncludeOptions.StartPartialAllowed, true);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateRangeEndPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateRangeEndPartialAllowedTestCaseSource))]
     public void EnumerateRangeEndPartialAllowed(string source, string range, string expected)
     {
         ExecuteEnumerateRange(source, range, expected, PeriodIncludeOptions.EndPartialAllowed, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateRangeEndPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateRangeEndPartialAllowedTestCaseSource))]
     public void EnumerateRangeBackwardsEndPartialAllowed(string source, string range, string expected)
     {
         ExecuteEnumerateRange(source, range, expected, PeriodIncludeOptions.EndPartialAllowed, true);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateRangePartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateRangePartialAllowedTestCaseSource))]
     public void EnumerateRangePartialAllowed(string source, string range, string expected)
     {
         ExecuteEnumerateRange(source, range, expected, PeriodIncludeOptions.PartialAllowed, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateRangePartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateRangePartialAllowedTestCaseSource))]
     public void EnumerateRangeBackwardsPartialAllowed(string source, string range, string expected)
     {
         ExecuteEnumerateRange(source, range, expected, PeriodIncludeOptions.PartialAllowed, true);
@@ -276,57 +276,57 @@ public class PeriodTimelineEnumerateTests
         Assert.AreEqual(expected, actualPeriodsTimeline);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumeratePeriodCompleteOnlyTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumeratePeriodCompleteOnlyTestCaseSource))]
     public void EnumeratePeriodCompleteOnly(string source, string range, string expected)
     {
         ExecuteEnumeratePeriod(source, range, expected, PeriodIncludeOptions.CompleteOnly, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumeratePeriodCompleteOnlyTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumeratePeriodCompleteOnlyTestCaseSource))]
     public void EnumeratePeriodBackwardsCompleteOnly(string source, string range, string expected)
     {
         ExecuteEnumeratePeriod(source, range, expected, PeriodIncludeOptions.CompleteOnly, true);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumeratePeriodStartPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumeratePeriodStartPartialAllowedTestCaseSource))]
     public void EnumeratePeriodStartPartialAllowed(string source, string period, string expected)
     {
         ExecuteEnumeratePeriod(source, period, expected, PeriodIncludeOptions.StartPartialAllowed, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumeratePeriodStartPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumeratePeriodStartPartialAllowedTestCaseSource))]
     public void EnumeratePeriodBackwardsStartPartialAllowed(string source, string period, string expected)
     {
         ExecuteEnumeratePeriod(source, period, expected, PeriodIncludeOptions.StartPartialAllowed, true);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumeratePeriodEndPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumeratePeriodEndPartialAllowedTestCaseSource))]
     public void EnumeratePeriodEndPartialAllowed(string source, string period, string expected)
     {
         ExecuteEnumeratePeriod(source, period, expected, PeriodIncludeOptions.EndPartialAllowed, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumeratePeriodEndPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumeratePeriodEndPartialAllowedTestCaseSource))]
     public void EnumeratePeriodBackwardsEndPartialAllowed(string source, string period, string expected)
     {
         ExecuteEnumeratePeriod(source, period, expected, PeriodIncludeOptions.EndPartialAllowed, true);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumeratePeriodPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumeratePeriodPartialAllowedTestCaseSource))]
     public void EnumeratePeriodPartialAllowed(string source, string period, string expected)
     {
         ExecuteEnumeratePeriod(source, period, expected, PeriodIncludeOptions.PartialAllowed, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumeratePeriodPartialAllowedTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumeratePeriodPartialAllowedTestCaseSource))]
     public void EnumeratePeriodBackwardsPartialAllowed(string source, string period, string expected)
     {
         ExecuteEnumeratePeriod(source, period, expected, PeriodIncludeOptions.PartialAllowed, true);

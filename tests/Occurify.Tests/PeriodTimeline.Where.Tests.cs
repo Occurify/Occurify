@@ -8,43 +8,43 @@ namespace Occurify.Tests;
 [TestClass]
 public class PeriodTimelineWhereTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(LargerThan2TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(LargerThan2TestCaseSource))]
     public void LargerThan2_GetPreviousUtcInstant(string source, string expected)
     {
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, source, p => p.Duration == null || p.Duration > TimeSpan.FromTicks(2), expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(LargerThan2TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(LargerThan2TestCaseSource))]
     public void LargerThan2_GetNextUtcInstant(string source, string expected)
     {
         ExecuteTest(TimelineMethods.GetNextUtcInstant, source, p => p.Duration == null || p.Duration > TimeSpan.FromTicks(2), expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(LargerThan2TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(LargerThan2TestCaseSource))]
     public void LargerThan2_IsInstant(string source, string expected)
     {
         ExecuteTest(TimelineMethods.IsInstant, source, p => p.Duration == null || p.Duration > TimeSpan.FromTicks(2), expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(SmallerThan2TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(SmallerThan2TestCaseSource))]
     public void SmallerThan2_GetPreviousUtcInstant(string source, string expected)
     {
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, source, p => p.Duration < TimeSpan.FromTicks(2), expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(SmallerThan2TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(SmallerThan2TestCaseSource))]
     public void SmallerThan2_GetNextUtcInstant(string source, string expected)
     {
         ExecuteTest(TimelineMethods.GetNextUtcInstant, source, p => p.Duration < TimeSpan.FromTicks(2), expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(SmallerThan2TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(SmallerThan2TestCaseSource))]
     public void SmallerThan2_IsInstant(string source, string expected)
     {
         ExecuteTest(TimelineMethods.IsInstant, source, p => p.Duration < TimeSpan.FromTicks(2), expected);

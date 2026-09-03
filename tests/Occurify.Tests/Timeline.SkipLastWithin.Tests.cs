@@ -8,22 +8,22 @@ namespace Occurify.Tests;
 [TestClass]
 public class TimelineSkipLastWithinTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void GetPreviousUtcInstant(string source, string periods, int skipCount, string expected)
     {
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, source, periods, skipCount, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void GetNextUtcInstant(string source, string periods, int skipCount, string expected)
     {
         ExecuteTest(TimelineMethods.GetNextUtcInstant, source, periods, skipCount, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void IsInstant(string source, string periods, int skipCount, string expected)
     {
         ExecuteTest(TimelineMethods.IsInstant, source, periods, skipCount, expected);

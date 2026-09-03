@@ -44,19 +44,19 @@ public class TimelineCollectionExtensionsTests
         CollectionAssert.AreEqual(new[] { time1 }, results);
 
         scheduler.AdvanceBy(timeGap2 - 1);
-        Assert.AreEqual(1, results.Count);
+        Assert.HasCount(1, results);
 
         scheduler.AdvanceBy(1);
         CollectionAssert.AreEqual(new[] { time1, time2 }, results);
 
         scheduler.AdvanceBy(timeGap3 - 1);
-        Assert.AreEqual(2, results.Count);
+        Assert.HasCount(2, results);
 
         scheduler.AdvanceBy(1);
         CollectionAssert.AreEqual(new[] { time1, time2, time3 }, results);
 
         scheduler.AdvanceBy(timeGap4 - 1);
-        Assert.AreEqual(3, results.Count);
+        Assert.HasCount(3, results);
 
         scheduler.AdvanceBy(1);
         CollectionAssert.AreEqual(new[] { time1, time2, time3, time4 }, results);
@@ -97,28 +97,28 @@ public class TimelineCollectionExtensionsTests
         // First set the current time. Note that we do this after creating the observable, as Observable.Generate also uses the scheduler for the first iteration, and this triggers that setup.
         scheduler.AdvanceTo(now.Ticks);
 
-        Assert.AreEqual(1, results.Count);
+        Assert.HasCount(1, results);
 
         scheduler.AdvanceBy(timeGap1 - 1);
-        Assert.AreEqual(1, results.Count);
+        Assert.HasCount(1, results);
 
         scheduler.AdvanceBy(1);
         CollectionAssert.AreEqual(new[] { now, time1 }, results);
 
         scheduler.AdvanceBy(timeGap2 - 1);
-        Assert.AreEqual(2, results.Count);
+        Assert.HasCount(2, results);
 
         scheduler.AdvanceBy(1);
         CollectionAssert.AreEqual(new[] { now, time1, time2 }, results);
 
         scheduler.AdvanceBy(timeGap3 - 1);
-        Assert.AreEqual(3, results.Count);
+        Assert.HasCount(3, results);
 
         scheduler.AdvanceBy(1);
         CollectionAssert.AreEqual(new[] { now, time1, time2, time3 }, results);
 
         scheduler.AdvanceBy(timeGap4 - 1);
-        Assert.AreEqual(4, results.Count);
+        Assert.HasCount(4, results);
 
         scheduler.AdvanceBy(1);
         CollectionAssert.AreEqual(new[] { now, time1, time2, time3, time4 }, results);

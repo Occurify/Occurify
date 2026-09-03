@@ -9,67 +9,67 @@ namespace Occurify.Tests;
 [TestClass]
 public class PeriodTimelineMergeTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Merge_GetPreviousUtcInstant(string source, string periods, string expected)
     {
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, 1, source, periods , expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Merge_GetNextUtcInstant(string source, string periods, string expected)
     {
         ExecuteTest(TimelineMethods.GetNextUtcInstant, 1, source, periods , expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Merge_IsInstant(string source, string periods, string expected)
     {
         ExecuteTest(TimelineMethods.IsInstant, 1, source, periods , expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Merge_Twice_GetPreviousUtcInstant(string source, string periods, string expected)
     {
         // As MergeStartTimeline retains state, we call the methods reading the timeline twice to make sure it remains consistent.
         ExecuteTest(TimelineMethods.GetPreviousUtcInstant, 2, source, periods, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Merge_Twice_GetNextUtcInstant(string source, string periods, string expected)
     {
         // As MergeStartTimeline retains state, we call the methods reading the timeline twice to make sure it remains consistent.
         ExecuteTest(TimelineMethods.GetNextUtcInstant, 2, source, periods, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void Merge_Twice_IsInstant(string source, string periods, string expected)
     {
         // As MergeStartTimeline retains state, we call the methods reading the timeline twice to make sure it remains consistent.
         ExecuteTest(TimelineMethods.IsInstant, 2, source, periods, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void AsPeriodTimeline_GetPreviousUtcInstant(string source, string periods, string expected)
     {
         Execute_AsPeriodTimelineGivesSameResult(TimelineMethods.GetPreviousUtcInstant, source, periods, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void AsPeriodTimeline_GetNextUtcInstant(string source, string periods, string expected)
     {
         Execute_AsPeriodTimelineGivesSameResult(TimelineMethods.GetNextUtcInstant, source, periods, expected);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void AsPeriodTimeline_IsInstant(string source, string periods, string expected)
     {
         Execute_AsPeriodTimelineGivesSameResult(TimelineMethods.IsInstant, source, periods, expected);
@@ -125,8 +125,8 @@ public class PeriodTimelineMergeTests
         Assert.AreEqual(expected, actual);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(FullTimelineTestData), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(FullTimelineTestData))]
     public void FullTimeline_GetPreviousUtcInstant(Period period1, Period period2)
     {
         // Arrange
@@ -141,8 +141,8 @@ public class PeriodTimelineMergeTests
         Assert.IsNull(end);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(FullTimelineTestData), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(FullTimelineTestData))]
     public void FullTimeline_GetPreviousUtcInstant_Twice(Period period1, Period period2)
     {
         // As MergeStartTimeline retains state, we call the methods reading the timeline twice to make sure it remains consistent.
@@ -161,8 +161,8 @@ public class PeriodTimelineMergeTests
         Assert.IsNull(end);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(FullTimelineTestData), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(FullTimelineTestData))]
     public void FullTimeline_GetNextUtcInstant(Period period1, Period period2)
     {
         // Arrange
@@ -178,8 +178,8 @@ public class PeriodTimelineMergeTests
         Assert.IsNull(end);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(FullTimelineTestData), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(FullTimelineTestData))]
     public void FullTimeline_GetNextUtcInstant_Twice(Period period1, Period period2)
     {
         // As MergeStartTimeline retains state, we call the methods reading the timeline twice to make sure it remains consistent.
@@ -199,8 +199,8 @@ public class PeriodTimelineMergeTests
         Assert.IsNull(end);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(FullTimelineTestData), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(FullTimelineTestData))]
     public void FullTimeline_IsInstant(Period period1, Period period2)
     {
         // Arrange
@@ -215,8 +215,8 @@ public class PeriodTimelineMergeTests
         Assert.IsFalse(firstInstantIsEnd);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(FullTimelineTestData), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(FullTimelineTestData))]
     public void FullTimeline_IsInstant_Twice(Period period1, Period period2)
     {
         // As MergeStartTimeline retains state, we call the methods reading the timeline twice to make sure it remains consistent.

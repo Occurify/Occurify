@@ -7,4 +7,5 @@ Coordinates.Local = new Coordinates(48.8584, 2.2945, 330); // Top point of the E
 
 await new RootCommand("Example app for Occurify")
     .AssignExamples()
-    .InvokeAsync(args);
+    .Parse(args)
+    .InvokeAsync();

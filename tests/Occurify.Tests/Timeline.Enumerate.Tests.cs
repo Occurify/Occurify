@@ -8,15 +8,15 @@ namespace Occurify.Tests;
 [TestClass]
 public class TimelineEnumerateTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateTestCaseSource))]
     public void Enumerate(string source, string expected)
     {
         ExecuteEnumerateTest(source, expected, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateTestCaseSource))]
     public void EnumerateBackwards(string source, string expected)
     {
         ExecuteEnumerateTest(source, expected, true);
@@ -44,15 +44,15 @@ public class TimelineEnumerateTests
         Assert.AreEqual(expected, actualInstantsTimeline);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateFromTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateFromTestCaseSource))]
     public void EnumerateFrom(string source, string fromInstant, string expected)
     {
         ExecuteEnumerateFrom(source, fromInstant, expected, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateFromTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateFromTestCaseSource))]
     public void EnumerateBackwardsTo(string source, string fromInstant, string expected)
     {
         ExecuteEnumerateFrom(source, fromInstant, expected, true);
@@ -82,15 +82,15 @@ public class TimelineEnumerateTests
         Assert.AreEqual(expected, actualInstantsTimeline);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateToTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateToTestCaseSource))]
     public void EnumerateTo(string source, string toInstant, string expected)
     {
         ExecuteEnumerateTo(source, toInstant, expected, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateToTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateToTestCaseSource))]
     public void EnumerateBackwardsFrom(string source, string toInstant, string expected)
     {
         ExecuteEnumerateTo(source, toInstant, expected, true);
@@ -120,15 +120,15 @@ public class TimelineEnumerateTests
         Assert.AreEqual(expected, actualInstantsTimeline);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateRangeTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateRangeTestCaseSource))]
     public void EnumerateRange(string source, string range, string expected)
     {
         ExecuteEnumerateRange(source, range, expected, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumerateRangeTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumerateRangeTestCaseSource))]
     public void EnumerateRangeBackwards(string source, string range, string expected)
     {
         ExecuteEnumerateRange(source, range, expected, true);
@@ -165,15 +165,15 @@ public class TimelineEnumerateTests
         Assert.AreEqual(expected, actualInstantsTimeline);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumeratePeriodTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumeratePeriodTestCaseSource))]
     public void EnumeratePeriod(string source, string period, string expected)
     {
         ExecuteEnumeratePeriod(source, period, expected, false);
     }
 
-    [DataTestMethod]
-    [DynamicData(nameof(EnumeratePeriodTestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(EnumeratePeriodTestCaseSource))]
     public void EnumeratePeriodBackwards(string source, string period, string expected)
     {
         ExecuteEnumeratePeriod(source, period, expected, true);

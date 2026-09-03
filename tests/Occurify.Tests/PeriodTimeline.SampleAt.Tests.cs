@@ -8,8 +8,8 @@ namespace Occurify.Tests;
 [TestClass]
 public class PeriodTimelineSampleAtTests
 {
-    [DataTestMethod]
-    [DynamicData(nameof(TestCaseSource), DynamicDataSourceType.Method)]
+    [TestMethod]
+    [DynamicData(nameof(TestCaseSource))]
     public void SampleAt(string source, string instant, string expected, string expectedType)
     {
         Console.WriteLine($"Source:          \"{source}\"");
@@ -46,7 +46,7 @@ public class PeriodTimelineSampleAtTests
         if (expectingPeriod)
         {
             Assert.IsTrue(sample.IsPeriod);
-            Assert.AreEqual(sample.Period, expectedPeriod);
+            Assert.AreEqual(expectedPeriod, sample.Period);
 
             Console.WriteLine($"Actual period:   \"{(sample.Period.IsInfiniteInBothDirections ? 
                 new string(' ', source.Length) : 
@@ -55,7 +55,7 @@ public class PeriodTimelineSampleAtTests
         else
         {
             Assert.IsTrue(sample.IsGap);
-            Assert.AreEqual(sample.Gap, expectedPeriod);
+            Assert.AreEqual(expectedPeriod, sample.Gap);
 
             Console.WriteLine($"Actual gap:      \"{(sample.Gap.IsInfiniteInBothDirections ?
                 new string(' ', source.Length) : 
