@@ -1,9 +1,7 @@
-﻿using NodaTime;
-using Occurify.NodaTime.Extensions;
-using Occurify.PeriodTimelineFilters;
-using System.Threading.Tasks;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class PeriodTimelineExtensions
 {

@@ -1,7 +1,7 @@
-﻿using NodaTime;
-using Occurify.Helpers;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class PeriodTimelineCollectionExtensions
 {
@@ -82,7 +82,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around the start and end of <paramref name="interval"/>.
     /// Periods are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<Period> EnumerateInterval(this IEnumerable<IPeriodTimeline> source, Interval interval, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly)
+    public static IEnumerable<Period> EnumeratePeriod(this IEnumerable<IPeriodTimeline> source, Interval interval, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly)
         => source.EnumeratePeriod(interval.ToPeriod(), periodIncludeOptions);
 
     /// <summary>

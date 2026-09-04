@@ -1,8 +1,7 @@
-﻿using NodaTime.Extensions;
 using NodaTime;
-using Occurify.Helpers;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class PeriodTimelineKeyCollectionExtensions
 {
@@ -79,18 +78,18 @@ public static partial class PeriodTimelineKeyCollectionExtensions
         source.EnumerateRangeBackwards(start.ToDateTimeUtc(), end.ToDateTimeUtc(), periodIncludeOptions);
 
     /// <summary>
-    /// Enumerates all periods on <paramref name="source"/> within <paramref name="period"/> from earliest to latest and returns the period along with the keys of the timelines that include this exact period.
-    /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around the start and end of <paramref name="period"/>.
+    /// Enumerates all periods on <paramref name="source"/> within <paramref name="interval"/> from earliest to latest and returns the period along with the keys of the timelines that include this exact period.
+    /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around the start and end of <paramref name="interval"/>.
     /// Periods are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<KeyValuePair<Period, TKey[]>> EnumeratePeriod<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval period, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
-        source.EnumeratePeriod(new Period(period.Start.ToDateTimeUtc(), period.End.ToDateTimeUtc()), periodIncludeOptions);
+    public static IEnumerable<KeyValuePair<Period, TKey[]>> EnumeratePeriod<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval interval, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+        source.EnumeratePeriod(interval.ToPeriod(), periodIncludeOptions);
 
     /// <summary>
-    /// Enumerates all periods on <paramref name="source"/> within <paramref name="period"/> from latest to earliest and returns the period along with the keys of the timelines that include this exact period.
-    /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around the start and end of <paramref name="period"/>.
+    /// Enumerates all periods on <paramref name="source"/> within <paramref name="interval"/> from latest to earliest and returns the period along with the keys of the timelines that include this exact period.
+    /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around the start and end of <paramref name="interval"/>.
     /// Periods are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<KeyValuePair<Period, TKey[]>> EnumeratePeriodBackwards<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval period, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
-        source.EnumeratePeriodBackwards(new Period(period.Start.ToDateTimeUtc(), period.End.ToDateTimeUtc()), periodIncludeOptions);
+    public static IEnumerable<KeyValuePair<Period, TKey[]>> EnumeratePeriodBackwards<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval interval, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+        source.EnumeratePeriodBackwards(interval.ToPeriod(), periodIncludeOptions);
 }

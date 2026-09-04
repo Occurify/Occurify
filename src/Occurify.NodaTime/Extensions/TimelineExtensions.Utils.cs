@@ -1,9 +1,7 @@
-﻿using NodaTime;
-using Occurify.Helpers;
-using Occurify.NodaTime.Extensions;
-using Occurify.TimelineUtils;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 /// <summary>
 /// Provides extension methods for working with <see cref="ITimeline"/>.

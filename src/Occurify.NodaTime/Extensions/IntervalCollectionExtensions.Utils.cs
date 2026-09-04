@@ -1,6 +1,7 @@
-﻿using NodaTime;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 /// <summary>
 /// Provides extension methods for working with <see cref="IEnumerable{Interval}"/>.
@@ -47,4 +48,11 @@ public static partial class IntervalCollectionExtensions
     /// </summary>
     public static bool Excludes(this IEnumerable<Interval> intervals, Interval interval) =>
         intervals.All(p => p.Excludes(interval));
+
+    /// <summary>
+    /// Returns the total duration of all intervals in <paramref name="intervals"/>. <c>null</c> if any of the intervals is infinite.
+    /// If <paramref name="mergeOverlapping"/> is <c>true</c>, overlapping intervals are only counted once.
+    /// </summary>
+    public static Duration? TotalDuration(this IEnumerable<Interval> intervals, bool mergeOverlapping = false) =>
+        intervals.Select(i => i.ToPeriod()).TotalDuration(mergeOverlapping).ToDuration();
 }

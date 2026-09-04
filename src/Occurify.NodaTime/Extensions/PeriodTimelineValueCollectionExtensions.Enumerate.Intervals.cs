@@ -1,10 +1,22 @@
-﻿using NodaTime;
-using Occurify.Helpers;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class PeriodTimelineValueCollectionExtensions
 {
+    /// <summary>
+    /// Enumerates all intervals on <paramref name="source"/> from earliest to latest and returns the interval along with the values of the timelines that include this interval.
+    /// </summary>
+    public static IEnumerable<KeyValuePair<Interval, TValue[]>> EnumerateIntervals<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source) =>
+        source.Enumerate().Select(kvp => new KeyValuePair<Interval, TValue[]>(kvp.Key.ToInterval(), kvp.Value));
+
+    /// <summary>
+    /// Enumerates all intervals on <paramref name="source"/> from latest to earliest and returns the interval along with the values of the timelines that include this interval.
+    /// </summary>
+    public static IEnumerable<KeyValuePair<Interval, TValue[]>> EnumerateIntervalsBackwards<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source) =>
+        source.EnumerateBackwards().Select(kvp => new KeyValuePair<Interval, TValue[]>(kvp.Key.ToInterval(), kvp.Value));
+
     /// <summary>
     /// Enumerates all intervals on <paramref name="source"/> that start on or after <paramref name="start"/> from earliest to latest and returns the interval along with the values of the timelines that include this exact interval.
     /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
@@ -78,18 +90,18 @@ public static partial class PeriodTimelineValueCollectionExtensions
         source.EnumerateRangeBackwards(start, end, periodIncludeOptions).Select(kvp => new KeyValuePair<Interval, TValue[]>(kvp.Key.ToInterval(), kvp.Value));
 
     /// <summary>
-    /// Enumerates all intervals on <paramref name="source"/> within <paramref name="period"/> from earliest to latest and returns the interval along with the values of the timelines that include this exact interval.
-    /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around the start and end of <paramref name="period"/>.
+    /// Enumerates all intervals on <paramref name="source"/> within <paramref name="interval"/> from earliest to latest and returns the interval along with the values of the timelines that include this exact interval.
+    /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around the start and end of <paramref name="interval"/>.
     /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<KeyValuePair<Interval, TValue[]>> EnumerateIntervals<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, Interval period, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
-        source.EnumeratePeriod(period, periodIncludeOptions).Select(kvp => new KeyValuePair<Interval, TValue[]>(kvp.Key.ToInterval(), kvp.Value));
+    public static IEnumerable<KeyValuePair<Interval, TValue[]>> EnumerateIntervals<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, Interval interval, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+        source.EnumeratePeriod(interval, periodIncludeOptions).Select(kvp => new KeyValuePair<Interval, TValue[]>(kvp.Key.ToInterval(), kvp.Value));
 
     /// <summary>
-    /// Enumerates all intervals on <paramref name="source"/> within <paramref name="period"/> from latest to earliest and returns the interval along with the values of the timelines that include this exact interval.
-    /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around the start and end of <paramref name="period"/>.
+    /// Enumerates all intervals on <paramref name="source"/> within <paramref name="interval"/> from latest to earliest and returns the interval along with the values of the timelines that include this exact interval.
+    /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around the start and end of <paramref name="interval"/>.
     /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<KeyValuePair<Interval, TValue[]>> EnumerateIntervalsBackwards<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, Interval period, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
-        source.EnumeratePeriodBackwards(period, periodIncludeOptions).Select(kvp => new KeyValuePair<Interval, TValue[]>(kvp.Key.ToInterval(), kvp.Value));
+    public static IEnumerable<KeyValuePair<Interval, TValue[]>> EnumerateIntervalsBackwards<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, Interval interval, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+        source.EnumeratePeriodBackwards(interval, periodIncludeOptions).Select(kvp => new KeyValuePair<Interval, TValue[]>(kvp.Key.ToInterval(), kvp.Value));
 }

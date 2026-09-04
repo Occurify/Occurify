@@ -1,9 +1,7 @@
-﻿using NodaTime;
-using Occurify.NodaTime.Extensions;
-using Occurify.PeriodTimelineTransformations;
-using System.Reflection.Metadata;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class PeriodTimelineExtensions
 {
@@ -28,19 +26,19 @@ public static partial class PeriodTimelineExtensions
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="intervalToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectInterval(this IPeriodTimeline source, Interval intervalToIntersect) =>
+    public static IPeriodTimeline IntersectPeriod(this IPeriodTimeline source, Interval intervalToIntersect) =>
         source.IntersectPeriod(intervalToIntersect.ToPeriod());
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectIntervals(this IPeriodTimeline source, IEnumerable<Interval> intervalsToIntersect) =>
+    public static IPeriodTimeline IntersectPeriods(this IPeriodTimeline source, IEnumerable<Interval> intervalsToIntersect) =>
         source.IntersectPeriods(intervalsToIntersect.Select(i => i.ToPeriod()));
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectIntervals(this IPeriodTimeline source, params Interval[] intervalsToIntersect) =>
+    public static IPeriodTimeline IntersectPeriods(this IPeriodTimeline source, params Interval[] intervalsToIntersect) =>
         source.IntersectPeriods(intervalsToIntersect.Select(i => i.ToPeriod()));
 
     /// <summary>

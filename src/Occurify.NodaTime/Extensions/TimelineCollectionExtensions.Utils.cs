@@ -1,8 +1,7 @@
-﻿
 using NodaTime;
-using Occurify.NodaTime.Extensions;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 /// <summary>
 /// Provides extension methods for working with <see cref="IEnumerable{ITimeline}"/>.
@@ -24,37 +23,37 @@ public static partial class TimelineCollectionExtensions
     /// <summary>
     /// Returns the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
     /// </summary>
-    public static Instant? GetPreviousUtcInstant(this IEnumerable<ITimeline> source, Instant instant) =>
+    public static Instant? GetPreviousInstant(this IEnumerable<ITimeline> source, Instant instant) =>
         source.GetPreviousUtcInstant(instant.ToDateTimeUtc()).ToInstant();
 
     /// <summary>
     /// Returns the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
     /// </summary>
-    public static Instant? GetNextUtcInstant(this IEnumerable<ITimeline> source, Instant instant) =>
+    public static Instant? GetNextInstant(this IEnumerable<ITimeline> source, Instant instant) =>
         source.GetNextUtcInstant(instant.ToDateTimeUtc()).ToInstant();
 
     /// <summary>
     /// Returns the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>, or <paramref name="instant"/> itself if it is on any of <paramref name="source"/>.
     /// </summary>
-    public static Instant? GetCurrentOrPreviousUtcInstant(this IEnumerable<ITimeline> source, Instant instant) =>
+    public static Instant? GetCurrentOrPreviousInstant(this IEnumerable<ITimeline> source, Instant instant) =>
         source.GetCurrentOrPreviousUtcInstant(instant.ToDateTimeUtc()).ToInstant();
 
     /// <summary>
     /// Returns the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>, or <paramref name="instant"/> itself if it is on any of <paramref name="source"/>.
     /// </summary>
-    public static Instant? GetCurrentOrNextUtcInstant(this IEnumerable<ITimeline> source, Instant instant) =>
+    public static Instant? GetCurrentOrNextInstant(this IEnumerable<ITimeline> source, Instant instant) =>
         source.GetCurrentOrNextUtcInstant(instant.ToDateTimeUtc()).ToInstant();
 
     /// <summary>
     /// Returns the timelines in <paramref name="source"/> that have an instant at <paramref name="instant"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> GetTimelinesAtUtcInstant(this IEnumerable<ITimeline> source, Instant instant) =>
+    public static IEnumerable<ITimeline> GetTimelinesAtInstant(this IEnumerable<ITimeline> source, Instant instant) =>
         source.GetTimelinesAtUtcInstant(instant.ToDateTimeUtc());
 
     /// <summary>
     /// Returns the timelines on the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
     /// </summary>
-    public static KeyValuePair<Instant?, ITimeline[]> GetTimelinesAtPreviousUtcInstant(this IEnumerable<ITimeline> source, Instant instant)
+    public static KeyValuePair<Instant?, ITimeline[]> GetTimelinesAtPreviousInstant(this IEnumerable<ITimeline> source, Instant instant)
     {
         var pair = source.GetTimelinesAtPreviousUtcInstant(instant.ToDateTimeUtc());
         return new KeyValuePair<Instant?, ITimeline[]>(pair.Key.ToInstant(), pair.Value);
@@ -63,7 +62,7 @@ public static partial class TimelineCollectionExtensions
     /// <summary>
     /// Returns the timelines on the closest previous instant on any of <paramref name="source"/> relative to <paramref name="instant"/>, or the timelines on <paramref name="instant"/> itself if it is on any of <paramref name="source"/>.
     /// </summary>
-    public static KeyValuePair<Instant?, ITimeline[]> GetTimelinesAtCurrentOrPreviousUtcInstant(this IEnumerable<ITimeline> source, Instant instant)
+    public static KeyValuePair<Instant?, ITimeline[]> GetTimelinesAtCurrentOrPreviousInstant(this IEnumerable<ITimeline> source, Instant instant)
     {
         var pair = source.GetTimelinesAtCurrentOrPreviousUtcInstant(instant.ToDateTimeUtc());
         return new KeyValuePair<Instant?, ITimeline[]>(pair.Key.ToInstant(), pair.Value);
@@ -72,7 +71,7 @@ public static partial class TimelineCollectionExtensions
     /// <summary>
     /// Returns the timelines on the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>.
     /// </summary>
-    public static KeyValuePair<Instant?, ITimeline[]> GetTimelinesAtNextUtcInstant(this IEnumerable<ITimeline> source, Instant instant)
+    public static KeyValuePair<Instant?, ITimeline[]> GetTimelinesAtNextInstant(this IEnumerable<ITimeline> source, Instant instant)
     {
         var pair = source.GetTimelinesAtNextUtcInstant(instant.ToDateTimeUtc());
         return new KeyValuePair<Instant?, ITimeline[]>(pair.Key.ToInstant(), pair.Value);
@@ -81,7 +80,7 @@ public static partial class TimelineCollectionExtensions
     /// <summary>
     /// Returns the timelines on the closest next instant on any of <paramref name="source"/> relative to <paramref name="instant"/>, or the timelines on <paramref name="instant"/> itself if it is on any of <paramref name="source"/>.
     /// </summary>
-    public static KeyValuePair<Instant?, ITimeline[]> GetTimelinesAtCurrentOrNextUtcInstant(this IEnumerable<ITimeline> source, Instant instant)
+    public static KeyValuePair<Instant?, ITimeline[]> GetTimelinesAtCurrentOrNextInstant(this IEnumerable<ITimeline> source, Instant instant)
     {
         var pair = source.GetTimelinesAtCurrentOrNextUtcInstant(instant.ToDateTimeUtc());
         return new KeyValuePair<Instant?, ITimeline[]>(pair.Key.ToInstant(), pair.Value);

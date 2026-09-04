@@ -1,22 +1,26 @@
-﻿using NodaTime;
+using NodaTime;
 using Occurify.Extensions;
 
 namespace Occurify.NodaTime.Extensions;
 
-public static partial class DateTimeExtensions
+/// <summary>
+/// Provides extension methods for converting <see cref="DateTime"/> to NodaTime types.
+/// </summary>
+public static class DateTimeExtensions
 {
-    internal static Instant? ToInstant(this DateTime? dateTime)
+    /// <summary>
+    /// Converts <paramref name="utcDateTime"/> to an <see cref="Instant"/>. <paramref name="utcDateTime"/> is required to be of kind <see cref="DateTimeKind.Utc"/>.
+    /// <c>null</c> is converted to <c>null</c>.
+    /// </summary>
+    public static Instant? ToInstant(this DateTime? utcDateTime) => utcDateTime?.ToInstant();
+
+    internal static Instant ToInstant(this DateTime utcDateTime)
     {
-        if (dateTime == null)
+        if (utcDateTime.Kind != DateTimeKind.Utc)
         {
-            return null;
+            throw new ArgumentException($"{nameof(utcDateTime)} should be UTC time.", nameof(utcDateTime));
         }
 
-        if (dateTime.Value.Kind == DateTimeKind.Utc)
-        {
-            return Instant.FromDateTimeUtc(dateTime.Value);
-        }
-
-        throw new ArgumentException($"{nameof(dateTime)} should be UTC time.", nameof(dateTime));
+        return Instant.FromDateTimeUtc(utcDateTime);
     }
 }

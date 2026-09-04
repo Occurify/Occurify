@@ -1,6 +1,7 @@
-﻿using NodaTime;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class PeriodTimelineCollectionExtensions
 {
@@ -92,11 +93,5 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Filters the timelines in <paramref name="source"/> based on which intervals do not contain any of the intervals in <paramref name="intervalsNotToContain"/>.
     /// </summary>
     public static IEnumerable<IPeriodTimeline> Without(this IEnumerable<IPeriodTimeline> source, params Interval[] intervalsNotToContain) =>
-        source.Select(t => t.Without(intervalsNotToContain));
-
-    /// <summary>
-    /// Filters the timelines in <paramref name="source"/> based on which intervals do not contain any of the intervals in <paramref name="intervalsNotToContain"/>.
-    /// </summary>
-    public static IEnumerable<IPeriodTimeline> Without(this IEnumerable<IPeriodTimeline> source, IPeriodTimeline intervalsNotToContain) =>
         source.Select(t => t.Without(intervalsNotToContain));
 }

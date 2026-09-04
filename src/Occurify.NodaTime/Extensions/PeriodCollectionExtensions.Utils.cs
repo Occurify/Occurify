@@ -1,6 +1,7 @@
-﻿using NodaTime;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 /// <summary>
 /// Provides extension methods for working with <see cref="IEnumerable{Period}"/>.
@@ -29,4 +30,15 @@ public static partial class PeriodCollectionExtensions
     /// Determines whether <paramref name="instant"/> is excluded by all the periods in <paramref name="periods"/>.
     /// </summary>
     public static bool Excludes(this IEnumerable<Period> periods, Instant instant) => periods.All(p => p.Excludes(instant));
+
+    /// <summary>
+    /// Determines whether <paramref name="interval"/> is included in any of the periods in <paramref name="periods"/>.
+    /// </summary>
+    public static bool ContainsPeriod(this IEnumerable<Period> periods, Interval interval, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+        periods.ContainsPeriod(interval.ToPeriod(), periodIncludeOptions);
+
+    /// <summary>
+    /// Determines whether <paramref name="interval"/> is excluded by all the periods in <paramref name="periods"/>.
+    /// </summary>
+    public static bool Excludes(this IEnumerable<Period> periods, Interval interval) => periods.Excludes(interval.ToPeriod());
 }

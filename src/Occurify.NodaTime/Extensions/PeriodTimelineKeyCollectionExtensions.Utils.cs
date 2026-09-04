@@ -1,7 +1,7 @@
-﻿
 using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 /// <summary>
 /// Provides extension methods for working with collections related to <see cref="IEnumerable{KeyValuePair}"/> with <see cref="IPeriodTimeline"/> as value.
@@ -17,14 +17,14 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// <summary>
     /// Determines whether <paramref name="interval"/> is included in any of the intervals in the timelines in <paramref name="source"/>.
     /// </summary>
-    public static bool ContainsInterval<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval interval) =>
-        source.Select(kvp => kvp.Value).ContainsInterval(interval);
+    public static bool ContainsPeriod<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval interval) =>
+        source.Select(kvp => kvp.Value).ContainsPeriod(interval);
 
     /// <summary>
     /// Determines whether any of the intervals in the timelines in <paramref name="source"/> is exactly <paramref name="interval"/>.
     /// </summary>
-    public static bool ContainsExactInterval<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval interval) =>
-        source.Select(kvp => kvp.Value).ContainsExactInterval(interval);
+    public static bool ContainsExactPeriod<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval interval) =>
+        source.Select(kvp => kvp.Value).ContainsExactPeriod(interval);
 
     /// <summary>
     /// Returns the first complete period on the timelines in <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
@@ -85,7 +85,7 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// <summary>
     /// Returns the keys of timelines in <paramref name="source"/> that have a interval at <paramref name="instant"/>.
     /// </summary>
-    public static TKey[] GetKeysAtUtcInstant<TKey>(
+    public static TKey[] GetKeysAtInstant<TKey>(
         this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant instant)
     {
         return source.Where(kvp => kvp.Value.ContainsInstant(instant)).Select(kvp => kvp.Key).ToArray();
@@ -94,19 +94,19 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// <summary>
     /// Returns the keys of timelines in <paramref name="source"/> that have a interval that contains <paramref name="interval"/>.
     /// </summary>
-    public static TKey[] GetKeysAtInterval<TKey>(
+    public static TKey[] GetKeysAtPeriod<TKey>(
         this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval interval)
     {
-        return source.Where(kvp => kvp.Value.ContainsInterval(interval)).Select(kvp => kvp.Key).ToArray();
+        return source.Where(kvp => kvp.Value.ContainsPeriod(interval)).Select(kvp => kvp.Key).ToArray();
     }
 
     /// <summary>
     /// Returns the keys of timelines in <paramref name="source"/> that have a interval that exactly matches <paramref name="interval"/>.
     /// </summary>
-    public static TKey[] GetKeysAtExactInterval<TKey>(
+    public static TKey[] GetKeysAtExactPeriod<TKey>(
         this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval interval)
     {
-        return source.Where(kvp => kvp.Value.ContainsExactInterval(interval)).Select(kvp => kvp.Key).ToArray();
+        return source.Where(kvp => kvp.Value.ContainsExactPeriod(interval)).Select(kvp => kvp.Key).ToArray();
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// </summary>
     public static KeyValuePair<Interval?, TKey[]> GetKeysAtPreviousCompleteInterval<TKey>(
         this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant instant) =>
-        source.GetKeysAtPreviousCompletePeriod(instant).ConvertPeriodKvpToIntervalKvp();
+        source.GetKeysAtPreviousCompletePeriod(instant).ToIntervalKey();
 
     /// <summary>
     /// Returns the keys of the timelines on the first complete period on the timelines in <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
@@ -149,7 +149,7 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// </summary>
     public static KeyValuePair<Interval?, TKey[]> GetKeysAtPreviousIntervalIncludingPartial<TKey>(
         this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant instant) =>
-        source.GetKeysAtPreviousPeriodIncludingPartial(instant).ConvertPeriodKvpToIntervalKvp();
+        source.GetKeysAtPreviousPeriodIncludingPartial(instant).ToIntervalKey();
 
     /// <summary>
     /// Returns the keys of the timelines on the first complete period on the timelines in <paramref name="source"/> starting on or later than <paramref name="instant"/>.
@@ -170,7 +170,7 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// </summary>
     public static KeyValuePair<Interval?, TKey[]> GetKeysAtNextCompleteInterval<TKey>(
         this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant instant) =>
-        source.GetKeysAtNextCompletePeriod(instant).ConvertPeriodKvpToIntervalKvp();
+        source.GetKeysAtNextCompletePeriod(instant).ToIntervalKey();
 
     /// <summary>
     /// Returns the keys of the timelines on the first complete period on the timelines in <paramref name="source"/> that includes or starts later than <paramref name="instant"/>.
@@ -191,13 +191,13 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// </summary>
     public static KeyValuePair<Interval?, TKey[]> GetKeysAtNextIntervalIncludingPartial<TKey>(
         this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant instant) =>
-        source.GetKeysAtNextPeriodIncludingPartial(instant).ConvertPeriodKvpToIntervalKvp();
+        source.GetKeysAtNextPeriodIncludingPartial(instant).ToIntervalKey();
 
     /// <summary>
     /// Returns the timelines in <paramref name="source"/> that contain a interval that is exactly <paramref name="interval"/>.
     /// </summary>
-    public static IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> GetTimelinesAtExactInterval<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval interval) =>
-        source.Where(kvp => kvp.Value.ContainsExactInterval(interval));
+    public static IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> GetTimelinesAtExactPeriod<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval interval) =>
+        source.Where(kvp => kvp.Value.ContainsExactPeriod(interval));
 
     /// <summary>
     /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
@@ -218,7 +218,7 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// </summary>
     public static KeyValuePair<Interval?, KeyValuePair<TKey, IPeriodTimeline>[]> GetTimelinesAtPreviousCompleteInterval<TKey>(
         this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant instant) =>
-        source.GetTimelinesAtPreviousCompletePeriod(instant).ConvertPeriodKvpToIntervalKvp();
+        source.GetTimelinesAtPreviousCompletePeriod(instant).ToIntervalKey();
 
     /// <summary>
     /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
@@ -239,7 +239,7 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// </summary>
     public static KeyValuePair<Interval?, KeyValuePair<TKey, IPeriodTimeline>[]> GetTimelinesAtPreviousIntervalIncludingPartial<TKey>(
         this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant instant) =>
-        source.GetTimelinesAtPreviousPeriodIncludingPartial(instant).ConvertPeriodKvpToIntervalKvp();
+        source.GetTimelinesAtPreviousPeriodIncludingPartial(instant).ToIntervalKey();
 
     /// <summary>
     /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> starting on or later than <paramref name="instant"/>.
@@ -260,7 +260,7 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// </summary>
     public static KeyValuePair<Interval?, KeyValuePair<TKey, IPeriodTimeline>[]> GetTimelinesAtNextCompleteInterval<TKey>(
         this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant instant) =>
-        source.GetTimelinesAtNextCompletePeriod(instant).ConvertPeriodKvpToIntervalKvp();
+        source.GetTimelinesAtNextCompletePeriod(instant).ToIntervalKey();
 
     /// <summary>
     /// Returns the timelines on the first complete period on the timelines in <paramref name="source"/> that includes or starts later than <paramref name="instant"/>.
@@ -281,7 +281,7 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// </summary>
     public static KeyValuePair<Interval?, KeyValuePair<TKey, IPeriodTimeline>[]> GetTimelinesAtNextIntervalIncludingPartial<TKey>(
         this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant instant) =>
-        source.GetTimelinesAtNextPeriodIncludingPartial(instant).ConvertPeriodKvpToIntervalKvp();
+        source.GetTimelinesAtNextPeriodIncludingPartial(instant).ToIntervalKey();
 
     /// <summary>
     /// Takes a sample of the timelines in <paramref name="source"/> at <paramref name="instant"/>.

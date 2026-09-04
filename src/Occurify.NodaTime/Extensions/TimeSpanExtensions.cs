@@ -1,17 +1,17 @@
-﻿using NodaTime;
+using NodaTime;
 using Occurify.Extensions;
 
 namespace Occurify.NodaTime.Extensions;
 
-public static partial class TimeSpanExtensions
+/// <summary>
+/// Provides extension methods for converting <see cref="TimeSpan"/> to NodaTime types.
+/// </summary>
+public static class TimeSpanExtensions
 {
-    internal static Duration? ToDuration(this TimeSpan? timeSpan)
-    {
-        if (timeSpan == null)
-        {
-            return null;
-        }
+    /// <summary>
+    /// Converts <paramref name="timeSpan"/> to a <see cref="Duration"/>. <c>null</c> is converted to <c>null</c>.
+    /// </summary>
+    public static Duration? ToDuration(this TimeSpan? timeSpan) => timeSpan?.ToDuration();
 
-        return Duration.FromTimeSpan(timeSpan.Value);
-    }
+    internal static Duration ToDuration(this TimeSpan timeSpan) => Duration.FromTimeSpan(timeSpan);
 }

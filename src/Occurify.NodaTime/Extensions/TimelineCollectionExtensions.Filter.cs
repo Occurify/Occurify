@@ -1,301 +1,162 @@
-﻿
-namespace Occurify.Extensions;
+using NodaTime;
+using Occurify.Extensions;
 
-public static partial class TimelineExtensions
+namespace Occurify.NodaTime.Extensions;
+
+public static partial class TimelineCollectionExtensions
 {
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the first <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/> are bypassed.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the first <paramref name="count"/> instants of the timelines in <paramref name="source"/> within the interval <paramref name="mask"/> are bypassed.
     /// </summary>
-    public static IEnumerable<ITimeline> SkipWithin(this IEnumerable<ITimeline> source, Period mask, int count) =>
-        source.Select(tl => tl.SkipWithin(mask, count));
+    public static IEnumerable<ITimeline> SkipWithin(this IEnumerable<ITimeline> source, Interval mask, int count) =>
+        source.SkipWithin(mask.ToPeriod(), count);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the first <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/> are bypassed.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the first <paramref name="count"/> instants of the timelines in <paramref name="source"/> within every interval in <paramref name="mask"/> are bypassed.
     /// </summary>
-    public static IEnumerable<ITimeline> SkipWithin(this IEnumerable<ITimeline> source, IEnumerable<Period> mask, int count) =>
-        source.Select(tl => tl.SkipWithin(mask, count));
+    public static IEnumerable<ITimeline> SkipWithin(this IEnumerable<ITimeline> source, IEnumerable<Interval> mask, int count) =>
+        source.SkipWithin(mask.Select(i => i.ToPeriod()), count);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the first <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/> are bypassed.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the last <paramref name="count"/> instants of the timelines in <paramref name="source"/> within the interval <paramref name="mask"/> are omitted.
     /// </summary>
-    public static IEnumerable<ITimeline> SkipWithin(this IEnumerable<ITimeline> source, ITimeline mask, int count) =>
-        source.Select(tl => tl.SkipWithin(mask, count));
+    public static IEnumerable<ITimeline> SkipLastWithin(this IEnumerable<ITimeline> source, Interval mask, int count) =>
+        source.SkipLastWithin(mask.ToPeriod(), count);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the first <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/> are bypassed.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the last <paramref name="count"/> instants of the timelines in <paramref name="source"/> within every interval in <paramref name="mask"/> are omitted.
     /// </summary>
-    public static IEnumerable<ITimeline> SkipWithin(this IEnumerable<ITimeline> source, IPeriodTimeline mask, int count) =>
-        source.Select(tl => tl.SkipWithin(mask, count));
+    public static IEnumerable<ITimeline> SkipLastWithin(this IEnumerable<ITimeline> source, IEnumerable<Interval> mask, int count) =>
+        source.SkipLastWithin(mask.Select(i => i.ToPeriod()), count);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the last <paramref name="count"/> amount of instants of every timeline in <paramref name="source"/> within every period <paramref name="mask"/> are omitted.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first <paramref name="count"/> instants of the timelines in <paramref name="source"/> within the interval <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> SkipLastWithin(this IEnumerable<ITimeline> source, Period mask, int count) =>
-        source.Select(tl => tl.SkipLastWithin(mask, count));
+    public static IEnumerable<ITimeline> TakeWithin(this IEnumerable<ITimeline> source, Interval mask, int count) =>
+        source.TakeWithin(mask.ToPeriod(), count);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the last <paramref name="count"/> amount of instants of every timeline in <paramref name="source"/> within every period <paramref name="mask"/> are omitted.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first <paramref name="count"/> instants of the timelines in <paramref name="source"/> within every interval in <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> SkipLastWithin(this IEnumerable<ITimeline> source, IEnumerable<Period> mask, int count) =>
-        source.Select(tl => tl.SkipLastWithin(mask, count));
+    public static IEnumerable<ITimeline> TakeWithin(this IEnumerable<ITimeline> source, IEnumerable<Interval> mask, int count) =>
+        source.TakeWithin(mask.Select(i => i.ToPeriod()), count);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the last <paramref name="count"/> amount of instants of every timeline in <paramref name="source"/> within every period <paramref name="mask"/> are omitted.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last <paramref name="count"/> instants of the timelines in <paramref name="source"/> within the interval <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> SkipLastWithin(this IEnumerable<ITimeline> source, ITimeline mask, int count) =>
-        source.Select(tl => tl.SkipLastWithin(mask, count));
+    public static IEnumerable<ITimeline> TakeLastWithin(this IEnumerable<ITimeline> source, Interval mask, int count) =>
+        source.TakeLastWithin(mask.ToPeriod(), count);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the last <paramref name="count"/> amount of instants of every timeline in <paramref name="source"/> within every period <paramref name="mask"/> are omitted.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last <paramref name="count"/> instants of the timelines in <paramref name="source"/> within every interval in <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> SkipLastWithin(this IEnumerable<ITimeline> source, IPeriodTimeline mask, int count) =>
-        source.Select(tl => tl.SkipLastWithin(mask, count));
+    public static IEnumerable<ITimeline> TakeLastWithin(this IEnumerable<ITimeline> source, IEnumerable<Interval> mask, int count) =>
+        source.TakeLastWithin(mask.Select(i => i.ToPeriod()), count);
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first instant of the timelines in <paramref name="source"/> within the interval <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> TakeWithin(this IEnumerable<ITimeline> source, Period mask, int count) =>
-        source.Select(tl => tl.TakeWithin(mask, count));
+    public static IEnumerable<ITimeline> FirstWithin(this IEnumerable<ITimeline> source, Interval mask) =>
+        source.FirstWithin(mask.ToPeriod());
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first instant of the timelines in <paramref name="source"/> within every interval in <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> TakeWithin(this IEnumerable<ITimeline> source, IEnumerable<Period> mask, int count) =>
-        source.Select(tl => tl.TakeWithin(mask, count));
+    public static IEnumerable<ITimeline> FirstWithin(this IEnumerable<ITimeline> source, IEnumerable<Interval> mask) =>
+        source.FirstWithin(mask.Select(i => i.ToPeriod()));
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last instant of the timelines in <paramref name="source"/> within the interval <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> TakeWithin(this IEnumerable<ITimeline> source, ITimeline mask, int count) =>
-        source.Select(tl => tl.TakeWithin(mask, count));
+    public static IEnumerable<ITimeline> LastWithin(this IEnumerable<ITimeline> source, Interval mask) =>
+        source.LastWithin(mask.ToPeriod());
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last instant of the timelines in <paramref name="source"/> within every interval in <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> TakeWithin(this IEnumerable<ITimeline> source, IPeriodTimeline mask, int count) =>
-        source.Select(tl => tl.TakeWithin(mask, count));
+    public static IEnumerable<ITimeline> LastWithin(this IEnumerable<ITimeline> source, IEnumerable<Interval> mask) =>
+        source.LastWithin(mask.Select(i => i.ToPeriod()));
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains <paramref name="instantToContain"/> if it is also present in the timelines in <paramref name="source"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> TakeLastWithin(this IEnumerable<ITimeline> source, Period mask, int count) =>
-        source.Select(tl => tl.TakeLastWithin(mask, count));
+    public static IEnumerable<ITimeline> Containing(this IEnumerable<ITimeline> source, Instant instantToContain) =>
+        source.Containing(instantToContain.ToDateTimeUtc());
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Filters the timelines in <paramref name="source"/> based on which instants are also present in <paramref name="instantsToContain"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> TakeLastWithin(this IEnumerable<ITimeline> source, IEnumerable<Period> mask, int count) =>
-        source.Select(tl => tl.TakeLastWithin(mask, count));
+    public static IEnumerable<ITimeline> Containing(this IEnumerable<ITimeline> source, IEnumerable<Instant> instantsToContain) =>
+        source.Containing(instantsToContain.Select(i => i.ToDateTimeUtc()));
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Filters the timelines in <paramref name="source"/> based on which instants are also present in <paramref name="instantsToContain"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> TakeLastWithin(this IEnumerable<ITimeline> source, ITimeline mask, int count) =>
-        source.Select(tl => tl.TakeLastWithin(mask, count));
+    public static IEnumerable<ITimeline> Containing(this IEnumerable<ITimeline> source, params Instant[] instantsToContain) =>
+        source.Containing(instantsToContain.Select(i => i.ToDateTimeUtc()).ToArray());
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last <paramref name="count"/> instants of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Filters the timelines in <paramref name="source"/> based on which instants are inside <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> TakeLastWithin(this IEnumerable<ITimeline> source, IPeriodTimeline mask, int count) =>
-        source.Select(tl => tl.TakeLastWithin(mask, count));
+    public static IEnumerable<ITimeline> Within(this IEnumerable<ITimeline> source, Interval mask) =>
+        source.Within(mask.ToPeriod());
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first instant of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Filters the timelines in <paramref name="source"/> based on which instants are inside any of the intervals in <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> FirstWithin(this IEnumerable<ITimeline> source, Period mask) =>
-        source.Select(tl => tl.FirstWithin(mask));
+    public static IEnumerable<ITimeline> Within(this IEnumerable<ITimeline> source, IEnumerable<Interval> mask) =>
+        source.Within(mask.Select(i => i.ToPeriod()));
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first instant of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Filters the timelines in <paramref name="source"/> based on which instants are inside any of the intervals in <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> FirstWithin(this IEnumerable<ITimeline> source, IEnumerable<Period> mask) =>
-        source.Select(tl => tl.FirstWithin(mask));
+    public static IEnumerable<ITimeline> Within(this IEnumerable<ITimeline> source, params Interval[] mask) =>
+        source.Within(mask.Select(i => i.ToPeriod()));
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first instant of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Filters the timelines in <paramref name="source"/> based on which instants are not inside <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> FirstWithin(this IEnumerable<ITimeline> source, ITimeline mask) =>
-        source.Select(tl => tl.FirstWithin(mask));
+    public static IEnumerable<ITimeline> Outside(this IEnumerable<ITimeline> source, Interval mask) =>
+        source.Outside(mask.ToPeriod());
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the first instant of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Filters the timelines in <paramref name="source"/> based on which instants are not inside any of the intervals in <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> FirstWithin(this IEnumerable<ITimeline> source, IPeriodTimeline mask) =>
-        source.Select(tl => tl.FirstWithin(mask));
+    public static IEnumerable<ITimeline> Outside(this IEnumerable<ITimeline> source, IEnumerable<Interval> mask) =>
+        source.Outside(mask.Select(i => i.ToPeriod()));
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last instant of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Filters the timelines in <paramref name="source"/> based on which instants are not inside any of the intervals in <paramref name="mask"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> LastWithin(this IEnumerable<ITimeline> source, Period mask) =>
-        source.Select(tl => tl.LastWithin(mask));
+    public static IEnumerable<ITimeline> Outside(this IEnumerable<ITimeline> source, params Interval[] mask) =>
+        source.Outside(mask.Select(i => i.ToPeriod()));
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last instant of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Returns a <see cref="IEnumerable{ITimeline}"/> in which the timelines do not contain <paramref name="instantToExclude"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> LastWithin(this IEnumerable<ITimeline> source, IEnumerable<Period> mask) =>
-        source.Select(tl => tl.LastWithin(mask));
+    public static IEnumerable<ITimeline> Without(this IEnumerable<ITimeline> source, Instant instantToExclude) =>
+        source.Without(instantToExclude.ToDateTimeUtc());
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last instant of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Filters <paramref name="instantsToExclude"/> from the timelines in <paramref name="source"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> LastWithin(this IEnumerable<ITimeline> source, ITimeline mask) =>
-        source.Select(tl => tl.LastWithin(mask));
+    public static IEnumerable<ITimeline> Without(this IEnumerable<ITimeline> source, IEnumerable<Instant> instantsToExclude) =>
+        source.Without(instantsToExclude.Select(i => i.ToDateTimeUtc()));
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contains the last instant of every timeline in <paramref name="source"/> within every period in <paramref name="mask"/>.
-    /// This method is applied to individual timelines in <paramref name="source"/>.
+    /// Filters <paramref name="instantsToExclude"/> from the timelines in <paramref name="source"/>.
     /// </summary>
-    public static IEnumerable<ITimeline> LastWithin(this IEnumerable<ITimeline> source, IPeriodTimeline mask) =>
-        source.Select(tl => tl.LastWithin(mask));
+    public static IEnumerable<ITimeline> Without(this IEnumerable<ITimeline> source, params Instant[] instantsToExclude) =>
+        source.Without(instantsToExclude.Select(i => i.ToDateTimeUtc()).ToArray());
 
     /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that contain <paramref name="instantToContain"/> if it is also present in <paramref name="source"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Containing(this IEnumerable<ITimeline> source, DateTime instantToContain) =>
-        source.Select(tl => tl.Containing(instantToContain));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are also present in <paramref name="instantsToContain"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Containing(this IEnumerable<ITimeline> source, IEnumerable<DateTime> instantsToContain) =>
-        source.Select(tl => tl.Containing(instantsToContain));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are also present in <paramref name="instantsToContain"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Containing(this IEnumerable<ITimeline> source, params DateTime[] instantsToContain) =>
-        source.Select(tl => tl.Containing(instantsToContain));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are also present in <paramref name="instantsToContain"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Containing(this IEnumerable<ITimeline> source, ITimeline instantsToContain) =>
-        source.Select(tl => tl.Containing(instantsToContain));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are also present in <paramref name="instantsToContain"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Containing(this IEnumerable<ITimeline> source, IEnumerable<ITimeline> instantsToContain) =>
-        source.Select(tl => tl.Containing(instantsToContain));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are also present in <paramref name="instantsToContain"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Containing(this IEnumerable<ITimeline> source, params ITimeline[] instantsToContain) =>
-        source.Select(tl => tl.Containing(instantsToContain));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are inside <paramref name="mask"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Within(this IEnumerable<ITimeline> source, Period mask) =>
-        source.Select(tl => tl.Within(mask));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are inside any of the periods in <paramref name="mask"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Within(this IEnumerable<ITimeline> source, IEnumerable<Period> mask) =>
-        source.Select(tl => tl.Within(mask));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are inside any of the periods in <paramref name="mask"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Within(this IEnumerable<ITimeline> source, params Period[] mask) =>
-        source.Select(tl => tl.Within(mask));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are inside any of the periods in <paramref name="mask"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Within(this IEnumerable<ITimeline> source, IPeriodTimeline mask) =>
-        source.Select(tl => tl.Within(mask));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are not inside <paramref name="mask"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Outside(this IEnumerable<ITimeline> source, Period mask) =>
-        source.Select(tl => tl.Outside(mask));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are not inside any of the periods in <paramref name="mask"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Outside(this IEnumerable<ITimeline> source, IEnumerable<Period> mask) =>
-        source.Select(tl => tl.Outside(mask));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are not inside any of the periods in <paramref name="mask"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Outside(this IEnumerable<ITimeline> source, params Period[] mask) =>
-        source.Select(tl => tl.Outside(mask));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on which instants are not inside any of the periods in <paramref name="mask"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Outside(this IEnumerable<ITimeline> source, IPeriodTimeline mask) =>
-        source.Select(tl => tl.Outside(mask));
-
-    /// <summary>
-    /// Returns a <see cref="IEnumerable{ITimeline}"/> that does not contain <paramref name="instantToExclude"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Without(this IEnumerable<ITimeline> source, DateTime instantToExclude) =>
-        source.Select(tl => tl.Without(instantToExclude));
-
-    /// <summary>
-    /// Filters <paramref name="instantsToExclude"/> from <paramref name="source"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Without(this IEnumerable<ITimeline> source, IEnumerable<DateTime> instantsToExclude) =>
-        source.Select(tl => tl.Without(instantsToExclude));
-
-    /// <summary>
-    /// Filters <paramref name="instantsToExclude"/> from <paramref name="source"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Without(this IEnumerable<ITimeline> source, params DateTime[] instantsToExclude) =>
-        source.Select(tl => tl.Without(instantsToExclude));
-
-    /// <summary>
-    /// Filters <paramref name="instantsToExclude"/> from <paramref name="source"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Without(this IEnumerable<ITimeline> source, ITimeline instantsToExclude) =>
-        source.Select(tl => tl.Without(instantsToExclude));
-
-    /// <summary>
-    /// Filters <paramref name="instantsToExclude"/> from <paramref name="source"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Without(this IEnumerable<ITimeline> source, IEnumerable<ITimeline> instantsToExclude) =>
-        source.Select(tl => tl.Without(instantsToExclude));
-
-    /// <summary>
-    /// Filters <paramref name="instantsToExclude"/> from <paramref name="source"/>.
-    /// </summary>
-    public static IEnumerable<ITimeline> Without(this IEnumerable<ITimeline> source, params ITimeline[] instantsToExclude) =>
-        source.Select(tl => tl.Without(instantsToExclude));
-
-    /// <summary>
-    /// Filters <paramref name="source"/> based on <paramref name="predicate"/>.
+    /// Filters the timelines in <paramref name="source"/> based on <paramref name="predicate"/>.
     /// Do not use this method lightly: as it always has to evaluate every instant, the performance impact might be significant.
-    /// In order for Occurify to function properly, <paramref name="predicate"/> should be deterministic. 
+    /// In order for Occurify to function properly, <paramref name="predicate"/> should be deterministic.
     /// </summary>
-    public static IEnumerable<ITimeline> WhereInstants(this IEnumerable<ITimeline> source, Func<DateTime, bool> predicate) =>
-        source.Select(tl => tl.WhereInstants(predicate));
+    /// <remarks>
+    /// When both <c>Occurify.Extensions</c> and <c>Occurify.NodaTime.Extensions</c> are imported, type the lambda parameter (<c>(Instant i) => ...</c>) to disambiguate from the <see cref="DateTime"/> overload.
+    /// </remarks>
+    public static IEnumerable<ITimeline> WhereInstants(this IEnumerable<ITimeline> source, Func<Instant, bool> predicate) =>
+        source.WhereInstants((DateTime dt) => predicate(dt.ToInstant()));
 }

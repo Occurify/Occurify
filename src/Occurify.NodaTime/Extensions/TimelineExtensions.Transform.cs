@@ -1,8 +1,7 @@
-﻿using NodaTime;
-using Occurify.NodaTime.Extensions;
-using Occurify.TimelineTransformations;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class TimelineExtensions
 {
@@ -76,4 +75,9 @@ public static partial class TimelineExtensions
     /// </summary>
     public static IPeriodTimeline To(this ITimeline periodStartTimeline, params Instant[] periodEndInstants) =>
         periodStartTimeline.To(periodEndInstants.Select(i => i.ToDateTimeUtc()).ToArray());
+
+    /// <summary>
+    /// Offsets <paramref name="source"/> with <paramref name="offset"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
+    /// </summary>
+    public static ITimeline Offset(this ITimeline source, Duration offset) => source.Offset(offset.ToTimeSpan());
 }

@@ -1,9 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection.Metadata;
+using System.Diagnostics.CodeAnalysis;
 using NodaTime;
-using Occurify.Helpers;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 /// <summary>
 /// Provides extension methods for working with <see cref="IPeriodTimeline"/>.
@@ -19,13 +18,13 @@ public static partial class PeriodTimelineExtensions
     /// <summary>
     /// Determines whether <paramref name="interval"/> is included in any of the intervals in <paramref name="intervalTimeline"/>.
     /// </summary>
-    public static bool ContainsInterval(this IPeriodTimeline intervalTimeline, Interval interval) =>
+    public static bool ContainsPeriod(this IPeriodTimeline intervalTimeline, Interval interval) =>
         intervalTimeline.ContainsPeriod(interval.ToPeriod());
 
     /// <summary>
     /// Determines whether any of the intervals in <paramref name="intervalTimeline"/> is exactly the same as <paramref name="interval"/>.
     /// </summary>
-    public static bool ContainsExactInterval(this IPeriodTimeline intervalTimeline, Interval interval) =>
+    public static bool ContainsExactPeriod(this IPeriodTimeline intervalTimeline, Interval interval) =>
         intervalTimeline.ContainsExactPeriod(interval.ToPeriod());
 
     /// <summary>
@@ -54,7 +53,7 @@ public static partial class PeriodTimelineExtensions
     /// <c>null</c> if no period is found.
     /// </summary>
     public static Period? GetNextPeriodIncludingPartial(this IPeriodTimeline source, Instant instant) =>
-        source.GetNextCompletePeriod(instant.ToDateTimeUtc());
+        source.GetNextPeriodIncludingPartial(instant.ToDateTimeUtc());
 
     /// <summary>
     /// Takes a sample of <paramref name="source"/> at <paramref name="instant"/>.
@@ -67,4 +66,32 @@ public static partial class PeriodTimelineExtensions
     /// </summary>
     public static bool TryGetPeriod(this IPeriodTimeline source, Instant instant, [NotNullWhen(true)] out Period? period) =>
         source.TryGetPeriod(instant.ToDateTimeUtc(), out period);
+
+    /// <summary>
+    /// Returns the first complete interval on <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.
+    /// <c>null</c> if no interval is found.
+    /// </summary>
+    public static Interval? GetPreviousCompleteInterval(this IPeriodTimeline source, Instant instant) =>
+        source.GetPreviousCompletePeriod(instant)?.ToInterval();
+
+    /// <summary>
+    /// Returns the first interval on <paramref name="source"/> that includes or ends earlier than <paramref name="instant"/>.
+    /// <c>null</c> if no interval is found.
+    /// </summary>
+    public static Interval? GetPreviousIntervalIncludingPartial(this IPeriodTimeline source, Instant instant) =>
+        source.GetPreviousPeriodIncludingPartial(instant)?.ToInterval();
+
+    /// <summary>
+    /// Returns the first complete interval on <paramref name="source"/> starting on or later than <paramref name="instant"/>.
+    /// <c>null</c> if no interval is found.
+    /// </summary>
+    public static Interval? GetNextCompleteInterval(this IPeriodTimeline source, Instant instant) =>
+        source.GetNextCompletePeriod(instant)?.ToInterval();
+
+    /// <summary>
+    /// Returns the first interval on <paramref name="source"/> that includes or starts later than <paramref name="instant"/>.
+    /// <c>null</c> if no interval is found.
+    /// </summary>
+    public static Interval? GetNextIntervalIncludingPartial(this IPeriodTimeline source, Instant instant) =>
+        source.GetNextPeriodIncludingPartial(instant)?.ToInterval();
 }

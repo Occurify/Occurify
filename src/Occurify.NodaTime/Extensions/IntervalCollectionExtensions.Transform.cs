@@ -1,7 +1,7 @@
-﻿
 using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class IntervalCollectionExtensions
 {
@@ -43,17 +43,17 @@ public static partial class IntervalCollectionExtensions
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of all intervals in <paramref name="source"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source) => source.Select(p => p.AsPeriodTimeline()).IntersectPeriods();
+    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source) => Occurify.Extensions.PeriodTimelineCollectionExtensions.IntersectPeriods(source.Select(p => p.AsPeriodTimeline()));
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, IEnumerable<Interval> periodsToIntersect) => source.AsPeriodTimeline().IntersectIntervals(periodsToIntersect);
+    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, IEnumerable<Interval> periodsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(periodsToIntersect);
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, params Interval[] periodsToIntersect) => source.AsPeriodTimeline().IntersectIntervals(periodsToIntersect);
+    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, params Interval[] periodsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(periodsToIntersect);
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
@@ -139,4 +139,9 @@ public static partial class IntervalCollectionExtensions
     /// Returns a <see cref="IPeriodTimeline"/> with intervals <paramref name="source"/>. Overlapping intervals are combined.
     /// </summary>
     public static IPeriodTimeline AsPeriodTimeline(this IEnumerable<Interval> source) => PeriodTimeline.FromPeriods(source.Select(i => i.ToPeriod()));
+
+    /// <summary>
+    /// Offsets the intervals in <paramref name="source"/> with <paramref name="offset"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in an interval without a start or end.
+    /// </summary>
+    public static IEnumerable<Interval> Offset(this IEnumerable<Interval> source, Duration offset) => source.Select(i => i.Offset(offset));
 }

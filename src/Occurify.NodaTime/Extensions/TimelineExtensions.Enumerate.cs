@@ -1,157 +1,67 @@
-﻿using Occurify.Helpers;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class TimelineExtensions
 {
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> from earliest to latest.
     /// </summary>
-    public static IEnumerable<DateTime> Enumerate(this ITimeline source) =>
-        source.EnumerateFrom(DateTimeHelper.MinValueUtc);
+    public static IEnumerable<Instant> EnumerateInstants(this ITimeline source) =>
+        source.Enumerate().Select(i => i.ToInstant());
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> from latest to earliest.
     /// </summary>
-    public static IEnumerable<DateTime> EnumerateBackwards(this ITimeline source)
-    {
-        var current = source.GetCurrentOrPreviousUtcInstant(DateTimeHelper.MaxValueUtc);
-
-        while (current != null)
-        {
-            yield return current.Value;
-            current = source.GetPreviousUtcInstant(current.Value);
-        }
-    }
+    public static IEnumerable<Instant> EnumerateInstantsBackwards(this ITimeline source) =>
+        source.EnumerateBackwards().Select(i => i.ToInstant());
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur on or after <paramref name="utcStart"/> from earliest to latest.
+    /// Enumerates all instants on <paramref name="source"/> that occur on or after <paramref name="start"/> from earliest to latest.
     /// </summary>
-    public static IEnumerable<DateTime> EnumerateFrom(this ITimeline source, DateTime utcStart)
-    {
-        var current = source.GetCurrentOrNextUtcInstant(utcStart);
-        while (current != null)
-        {
-            yield return current.Value;
-            current = source.GetNextUtcInstant(current.Value);
-        }
-    }
+    public static IEnumerable<Instant> EnumerateInstantsFrom(this ITimeline source, Instant start) =>
+        source.EnumerateFrom(start.ToDateTimeUtc()).Select(i => i.ToInstant());
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur on or after <paramref name="utcEnd"/> from latest to earliest.
+    /// Enumerates all instants on <paramref name="source"/> that occur on or after <paramref name="end"/> from latest to earliest.
     /// </summary>
-    public static IEnumerable<DateTime> EnumerateBackwardsTo(this ITimeline source, DateTime utcEnd) =>
-        source.EnumerateBackwards().TakeWhile(i => i >= utcEnd);
+    public static IEnumerable<Instant> EnumerateInstantsBackwardsTo(this ITimeline source, Instant end) =>
+        source.EnumerateBackwardsTo(end.ToDateTimeUtc()).Select(i => i.ToInstant());
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur earlier than <paramref name="utcEnd"/> from earliest to latest.
+    /// Enumerates all instants on <paramref name="source"/> that occur earlier than <paramref name="end"/> from earliest to latest.
     /// </summary>
-    public static IEnumerable<DateTime> EnumerateTo(this ITimeline source, DateTime utcEnd) =>
-        source.TakeWhile(p => p < utcEnd);
+    public static IEnumerable<Instant> EnumerateInstantsTo(this ITimeline source, Instant end) =>
+        source.EnumerateTo(end.ToDateTimeUtc()).Select(i => i.ToInstant());
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur earlier than <paramref name="utcStart"/> from latest to earliest.
+    /// Enumerates all instants on <paramref name="source"/> that occur earlier than <paramref name="start"/> from latest to earliest.
     /// </summary>
-    public static IEnumerable<DateTime> EnumerateBackwardsFrom(this ITimeline source, DateTime utcStart)
-    {
-        var current = source.GetPreviousUtcInstant(utcStart);
-
-        while (current != null)
-        {
-            yield return current.Value;
-            current = source.GetPreviousUtcInstant(current.Value);
-        }
-    }
+    public static IEnumerable<Instant> EnumerateInstantsBackwardsFrom(this ITimeline source, Instant start) =>
+        source.EnumerateBackwardsFrom(start.ToDateTimeUtc()).Select(i => i.ToInstant());
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="utcStart"/> and <paramref name="utcEnd"/> from earliest to latest.
+    /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="start"/> and <paramref name="end"/> from earliest to latest.
     /// </summary>
-    public static IEnumerable<DateTime> EnumerateRange(this ITimeline source, DateTime utcStart, DateTime utcEnd)
-    {
-        if (utcStart == utcEnd)
-        {
-            yield break;
-        }
-
-        if (utcStart > utcEnd)
-        {
-            (utcEnd, utcStart) = (utcStart, utcEnd);
-        }
-
-        var current = source.GetCurrentOrNextUtcInstant(utcStart);
-        while (current != null && current.Value < utcEnd)
-        {
-            yield return current.Value;
-            current = source.GetNextUtcInstant(current.Value);
-        }
-    }
+    public static IEnumerable<Instant> EnumerateInstantRange(this ITimeline source, Instant start, Instant end) =>
+        source.EnumerateRange(start.ToDateTimeUtc(), end.ToDateTimeUtc()).Select(i => i.ToInstant());
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="utcStart"/> and <paramref name="utcEnd"/> from latest to earliest.
+    /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="start"/> and <paramref name="end"/> from latest to earliest.
     /// </summary>
-    public static IEnumerable<DateTime> EnumerateRangeBackwards(this ITimeline source, DateTime utcStart, DateTime utcEnd)
-    {
-        if (utcStart == utcEnd)
-        {
-            yield break;
-        }
-
-        if (utcStart > utcEnd)
-        {
-            (utcEnd, utcStart) = (utcStart, utcEnd);
-        }
-
-        var current = source.GetPreviousUtcInstant(utcEnd);
-        while (current != null && current.Value >= utcStart)
-        {
-            yield return current.Value;
-            current = source.GetPreviousUtcInstant(current.Value);
-        }
-    }
+    public static IEnumerable<Instant> EnumerateInstantRangeBackwards(this ITimeline source, Instant start, Instant end) =>
+        source.EnumerateRangeBackwards(start.ToDateTimeUtc(), end.ToDateTimeUtc()).Select(i => i.ToInstant());
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur in <paramref name="period"/> from earliest to latest.
+    /// Enumerates all instants on <paramref name="source"/> that occur in <paramref name="interval"/> from earliest to latest.
     /// </summary>
-    public static IEnumerable<DateTime> EnumeratePeriod(this ITimeline source, Period period)
-    {
-        if (period.Start != null && period.End != null)
-        {
-            return source.EnumerateRange(period.Start.Value, period.End.Value);
-        }
-
-        if (period.End != null)
-        {
-            return source.EnumerateTo(period.End.Value);
-        }
-
-        if (period.Start != null)
-        {
-            return source.EnumerateFrom(period.Start.Value);
-        }
-
-        return source;
-    }
+    public static IEnumerable<Instant> EnumerateInstants(this ITimeline source, Interval interval) =>
+        source.EnumeratePeriod(interval.ToPeriod()).Select(i => i.ToInstant());
 
     /// <summary>
-    /// Enumerates all instants on <paramref name="source"/> that occur in <paramref name="period"/> from latest to earliest.
+    /// Enumerates all instants on <paramref name="source"/> that occur in <paramref name="interval"/> from latest to earliest.
     /// </summary>
-    public static IEnumerable<DateTime> EnumeratePeriodBackwards(this ITimeline source, Period period)
-    {
-        if (period.Start != null && period.End != null)
-        {
-            return source.EnumerateRangeBackwards(period.Start.Value, period.End.Value);
-        }
-
-        if (period.End != null)
-        {
-            return source.EnumerateBackwardsFrom(period.End.Value);
-        }
-
-        if (period.Start != null)
-        {
-            return source.EnumerateBackwardsTo(period.Start.Value);
-        }
-
-        return source.EnumerateBackwards();
-    }
+    public static IEnumerable<Instant> EnumerateInstantsBackwards(this ITimeline source, Interval interval) =>
+        source.EnumeratePeriodBackwards(interval.ToPeriod()).Select(i => i.ToInstant());
 }

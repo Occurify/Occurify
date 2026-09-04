@@ -1,4 +1,4 @@
-﻿using NodaTime;
+using NodaTime;
 using Occurify.Extensions;
 
 namespace Occurify.NodaTime.Extensions;

@@ -1,8 +1,7 @@
-﻿using NodaTime;
-using Occurify.NodaTime.Extensions;
-using Occurify.TimelineFilters;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class TimelineExtensions
 {
@@ -156,5 +155,5 @@ public static partial class TimelineExtensions
     /// In order for Occurify to function properly, <paramref name="predicate"/> should be deterministic. 
     /// </summary>
     public static ITimeline WhereInstants(this ITimeline source, Func<Instant, bool> predicate) =>
-        source.WhereInstants(dt => predicate(Instant.FromDateTimeUtc(dt)));
+        source.WhereInstants(dt => predicate(dt.ToInstant()));
 }

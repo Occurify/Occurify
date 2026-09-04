@@ -1,4 +1,3 @@
-﻿
 using NodaTime;
 using Occurify.Extensions;
 

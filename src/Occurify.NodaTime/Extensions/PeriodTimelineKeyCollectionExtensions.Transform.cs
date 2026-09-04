@@ -1,6 +1,7 @@
-﻿using NodaTime;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class PeriodTimelineKeyCollectionExtensions
 {
@@ -25,20 +26,20 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// <summary>
     /// Returns a Dictionary&lt;TKey, IPeriodTimeline&gt; with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalToIntersect"/>.
     /// </summary>
-    public static Dictionary<TKey, IPeriodTimeline> IntersectInterval<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval intervalToIntersect) where TKey : notnull =>
-        source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.IntersectInterval(intervalToIntersect));
+    public static Dictionary<TKey, IPeriodTimeline> IntersectPeriod<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Interval intervalToIntersect) where TKey : notnull =>
+        source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.IntersectPeriod(intervalToIntersect));
 
     /// <summary>
     /// Returns a Dictionary&lt;TKey, IPeriodTimeline&gt; with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static Dictionary<TKey, IPeriodTimeline> IntersectIntervals<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, IEnumerable<Interval> intervalsToIntersect) where TKey : notnull =>
-        source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.IntersectIntervals(intervalsToIntersect));
+    public static Dictionary<TKey, IPeriodTimeline> IntersectPeriods<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, IEnumerable<Interval> intervalsToIntersect) where TKey : notnull =>
+        source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.IntersectPeriods(intervalsToIntersect));
 
     /// <summary>
     /// Returns a Dictionary&lt;TKey, IPeriodTimeline&gt; with the intersections of the timelines in <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static Dictionary<TKey, IPeriodTimeline> IntersectIntervals<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, params Interval[] intervalsToIntersect) where TKey : notnull =>
-        source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.IntersectIntervals(intervalsToIntersect));
+    public static Dictionary<TKey, IPeriodTimeline> IntersectPeriods<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, params Interval[] intervalsToIntersect) where TKey : notnull =>
+        source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.IntersectPeriods(intervalsToIntersect));
 
     /// <summary>
     /// Merges all intervals in the timelines in <paramref name="source"/> with <paramref name="intervalToMerge"/>. Overlapping intervals are combined.

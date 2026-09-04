@@ -1,10 +1,24 @@
-﻿using NodaTime;
-using Occurify.Helpers;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class PeriodTimelineCollectionExtensions
 {
+    /// <summary>
+    /// Enumerates all intervals on <paramref name="source"/> from earliest to latest.
+    /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
+    /// </summary>
+    public static IEnumerable<Interval> EnumerateIntervals(this IEnumerable<IPeriodTimeline> source) =>
+        source.Enumerate().Select(p => p.ToInterval());
+
+    /// <summary>
+    /// Enumerates all intervals on <paramref name="source"/> from latest to earliest.
+    /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
+    /// </summary>
+    public static IEnumerable<Interval> EnumerateIntervalsBackwards(this IEnumerable<IPeriodTimeline> source) =>
+        source.EnumerateBackwards().Select(p => p.ToInterval());
+
     /// <summary>
     /// Enumerates all intervals on <paramref name="source"/> that start on or after <paramref name="start"/> from earliest to latest.
     /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
@@ -83,7 +97,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
     public static IEnumerable<Interval> EnumerateIntervals(this IEnumerable<IPeriodTimeline> source, Interval interval, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
-        source.EnumerateInterval(interval, periodIncludeOptions).Select(p => p.ToInterval());
+        source.EnumeratePeriod(interval, periodIncludeOptions).Select(p => p.ToInterval());
 
     /// <summary>
     /// Enumerates all intervals on <paramref name="source"/> within <paramref name="interval"/> from latest to earliest.

@@ -1,7 +1,7 @@
-﻿using NodaTime;
-using Occurify.Helpers;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 /// <summary>
 /// Provides extension methods for working with <see cref="Interval"/>.
@@ -9,65 +9,39 @@ namespace Occurify.Extensions;
 public static partial class IntervalExtensions
 {
     /// <summary>
+    /// Determines whether <paramref name="instant"/> is on <paramref name="interval"/>.
+    /// </summary>
+    public static bool ContainsInstant(this Interval interval, Instant instant) => interval.Contains(instant);
+
+    /// <summary>
+    /// Determines whether any of <paramref name="instants"/> is on <paramref name="interval"/>.
+    /// </summary>
+    public static bool ContainsAnyInstant(this Interval interval, IEnumerable<Instant> instants) => instants.Any(interval.Contains);
+
+    /// <summary>
     /// Determines whether any instant on <paramref name="timeline"/> is on <paramref name="interval"/>.
     /// </summary>
-    public static bool ContainsAnyInstant(this Interval interval, ITimeline timeline)
-    {
-        if (interval.IsInfiniteInBothDirections)
-        {
-            return !timeline.IsEmpty();
-        }
-
-        if (interval.End == null)
-        {
-            var currentOrPrevious = timeline.GetCurrentOrPreviousUtcInstant(DateTimeHelper.MaxValueUtc);
-            return currentOrPrevious != null && currentOrPrevious >= interval.Start;
-        }
-
-        var currentOrNext = timeline.GetCurrentOrNextUtcInstant(interval.Start ?? DateTimeHelper.MinValueUtc);
-        return currentOrNext != null && currentOrNext < interval.End;
-    }
+    public static bool ContainsAnyInstant(this Interval interval, ITimeline timeline) => interval.ToPeriod().ContainsAnyInstant(timeline);
 
     /// <summary>
-    /// Determines whether a interval starting at <paramref name="periodStart"/> and ending at <paramref name="periodEnd"/> is included in <paramref name="interval"/>.
+    /// Determines whether an interval starting at <paramref name="intervalStart"/> and ending at <paramref name="intervalEnd"/> is included in <paramref name="interval"/>.
     /// </summary>
-    public static bool ContainsInterval(this Interval interval, Instant? periodStart, Instant? periodEnd, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
-        interval.ContainsInterval(periodStart.To(periodEnd), periodIncludeOptions);
+    public static bool ContainsPeriod(this Interval interval, Instant? intervalStart, Instant? intervalEnd, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+        interval.ToPeriod().ContainsPeriod(intervalStart?.ToDateTimeUtc(), intervalEnd?.ToDateTimeUtc(), periodIncludeOptions);
 
     /// <summary>
-    /// Determines whether <paramref name="otherPeriod"/> is included in <paramref name="interval"/>.
+    /// Determines whether <paramref name="otherInterval"/> is included in <paramref name="interval"/>.
     /// </summary>
-    public static bool ContainsInterval(this Interval interval, Interval otherPeriod, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly)
-    {
-        var startIsInPeriod =
-            (interval.Start == null || (otherPeriod.Start != null && otherPeriod.Start >= interval.Start)) &&
-            (interval.End == null || otherPeriod.Start == null || otherPeriod.Start < interval.End);
-        var endIsInPeriod =
-            (interval.End == null || (otherPeriod.End != null && otherPeriod.End <= interval.End)) &&
-            (interval.Start == null || otherPeriod.End == null || otherPeriod.End > interval.Start);
-
-        switch (periodIncludeOptions)
-        {
-            case PeriodIncludeOptions.CompleteOnly:
-                return startIsInPeriod && endIsInPeriod;
-            case PeriodIncludeOptions.StartPartialAllowed:
-                return endIsInPeriod;
-            case PeriodIncludeOptions.EndPartialAllowed:
-                return startIsInPeriod;
-            case PeriodIncludeOptions.PartialAllowed:
-                return startIsInPeriod || endIsInPeriod || otherPeriod.ContainsPeriod(interval);
-            default:
-                throw new ArgumentOutOfRangeException(nameof(periodIncludeOptions), periodIncludeOptions, null);
-        }
-    }
+    public static bool ContainsPeriod(this Interval interval, Interval otherInterval, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+        interval.ToPeriod().ContainsPeriod(otherInterval.ToPeriod(), periodIncludeOptions);
 
     /// <summary>
     /// Determines whether <paramref name="instant"/> is not on <paramref name="interval"/>.
     /// </summary>
-    public static bool Excludes(this Interval interval, Instant instant) => !interval.ContainsInstant(instant);
+    public static bool Excludes(this Interval interval, Instant instant) => !interval.Contains(instant);
 
     /// <summary>
-    /// Determines whether <paramref name="otherPeriod"/> is excluded by <paramref name="interval"/>.
+    /// Determines whether <paramref name="otherInterval"/> is excluded by <paramref name="interval"/>.
     /// </summary>
-    public static bool Excludes(this Interval interval, Interval otherPeriod) => !interval.ContainsPeriod(otherPeriod, PeriodIncludeOptions.PartialAllowed);
+    public static bool Excludes(this Interval interval, Interval otherInterval) => interval.ToPeriod().Excludes(otherInterval.ToPeriod());
 }

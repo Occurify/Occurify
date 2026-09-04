@@ -1,12 +1,13 @@
-﻿
 using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class IntervalExtensions
 {
     /// <summary>
-    /// Converts a NodaTime <see cref="Interval"/> to an Occurify <see cref="Interval"/>.
+    /// Converts a NodaTime <see cref="Interval"/> to an Occurify <see cref="Period"/>.
+    /// An interval without a start or end results in a period with a <c>null</c> start or end.
     /// </summary>
     public static Period ToPeriod(this Interval interval)
     {
@@ -147,4 +148,8 @@ public static partial class IntervalExtensions
     /// </summary>
     public static IPeriodTimeline AsPeriodTimeline(this Interval interval) => PeriodTimeline.FromPeriod(interval.ToPeriod());
 
+    /// <summary>
+    /// Offsets <paramref name="interval"/> with <paramref name="offset"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in an interval without a start or end.
+    /// </summary>
+    public static Interval Offset(this Interval interval, Duration offset) => interval.ToPeriod().Offset(offset.ToTimeSpan()).ToInterval();
 }

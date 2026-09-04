@@ -1,7 +1,7 @@
-﻿using NodaTime;
-using Occurify.Helpers;
+using NodaTime;
+using Occurify.Extensions;
 
-namespace Occurify.Extensions;
+namespace Occurify.NodaTime.Extensions;
 
 public static partial class PeriodTimelineExtensions
 {
