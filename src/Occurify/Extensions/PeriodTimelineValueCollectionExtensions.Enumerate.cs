@@ -91,11 +91,11 @@ public static partial class PeriodTimelineValueCollectionExtensions
         while (current.Key != null)
         {
             yield return new KeyValuePair<Period, TValue[]>(current.Key, current.Value);
-            if (current.Key.End == null)
+            if (current.Key.Start == null)
             {
                 break;
             }
-            current = source.GetValuesAtPreviousCompletePeriod(current.Key.End.Value);
+            current = source.GetValuesAtPreviousCompletePeriod(current.Key.Start.Value);
         }
     }
 
@@ -118,11 +118,11 @@ public static partial class PeriodTimelineValueCollectionExtensions
         while (current.Key != null)
         {
             yield return new KeyValuePair<Period, TValue[]>(current.Key, current.Value);
-            if (current.Key.End == null)
+            if (current.Key.Start == null)
             {
                 break;
             }
-            current = source.GetValuesAtPreviousCompletePeriod(current.Key.End.Value);
+            current = source.GetValuesAtPreviousCompletePeriod(current.Key.Start.Value);
         }
     }
 

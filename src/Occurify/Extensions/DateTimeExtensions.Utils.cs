@@ -56,7 +56,7 @@ public static partial class DateTimeExtensions
     /// Determines whether <paramref name="source"/> is outside all the periods in <paramref name="mask"/>.
     /// </summary>
     public static bool IsOutside(this DateTime source, IPeriodTimeline mask) =>
-        mask.All(p => !p.ContainsInstant(source));
+        !mask.ContainsInstant(source);
 
     /// <summary>
     /// Determines whether <paramref name="source"/> is outside all the periods in <paramref name="mask"/>.
