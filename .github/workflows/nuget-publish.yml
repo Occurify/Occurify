@@ -9,6 +9,9 @@ jobs:
     name: 📦 Publish NuGet Packages
     runs-on: ubuntu-latest
     environment: CI - release environment
+    permissions:
+      contents: read
+      id-token: write # required for NuGet trusted publishing (OIDC)
     steps:
       - name: 🗂️ Checkout the repository
         uses: actions/checkout@main
@@ -34,6 +37,12 @@ jobs:
           dotnet pack ./src/Occurify.Reactive/ --configuration Release -p:PackageVersion=${{ steps.version.outputs.version }} -p:Version=${{ steps.version.outputs.version }}
           dotnet pack ./src/Occurify.TimeZones/ --configuration Release -p:PackageVersion=${{ steps.version.outputs.version }} -p:Version=${{ steps.version.outputs.version }}
           dotnet pack ./src/Occurify.NodaTime/ --configuration Release -p:PackageVersion=${{ steps.version.outputs.version }} -p:Version=${{ steps.version.outputs.version }}
+      
+      - name: 🔑 NuGet login (OIDC to temporary API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
         
       - name: 📨 Push to NuGet
-        run: dotnet nuget push **/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push **/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
