@@ -43,3 +43,4 @@ jobs:
           dotnet test --no-build --configuration Release tests/Occurify.TimeZones.Tests/Occurify.TimeZones.Tests.csproj -- RunConfiguration.CollectSourceInformation=true
           dotnet test --no-build --configuration Release tests/Occurify.Astro.Tests/Occurify.Astro.Tests.csproj -- RunConfiguration.CollectSourceInformation=true
           dotnet test --no-build --configuration Release tests/Occurify.Reactive.Tests/Occurify.Reactive.Tests.csproj -- RunConfiguration.CollectSourceInformation=true
+          dotnet test --no-build --configuration Release tests/Occurify.NodaTime.Tests/Occurify.NodaTime.Tests.csproj -- RunConfiguration.CollectSourceInformation=true

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Occurify.Astro\Occurify.Astro.csproj" />
+    <ProjectReference Include="..\..\src\Occurify.NodaTime\Occurify.NodaTime.csproj" />
     <ProjectReference Include="..\..\src\Occurify.Reactive\Occurify.Reactive.csproj" />
     <ProjectReference Include="..\..\src\Occurify.TimeZones\Occurify.TimeZones.csproj" />
     <ProjectReference Include="..\..\src\Occurify\Occurify.csproj" />

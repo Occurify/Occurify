@@ -330,11 +330,11 @@ public static partial class PeriodTimelineExtensions
     }
 
     /// <summary>
-    /// Subtracts all periods in <paramref name="subtrahend"/> from all periods in <paramref name="source"/>.
+    /// Subtracts all periods in <paramref name="subtrahends"/> from all periods in <paramref name="source"/>.
     /// </summary>
-    public static IPeriodTimeline Subtract(this IPeriodTimeline source, IEnumerable<Period> subtrahend)
+    public static IPeriodTimeline Subtract(this IPeriodTimeline source, IEnumerable<Period> subtrahends)
     {
-        var subtrahendPeriodTimeline = subtrahend.AsPeriodTimeline();
+        var subtrahendPeriodTimeline = subtrahends.AsPeriodTimeline();
         return new PeriodTimeline(
             new SubtractStartTimeline(source, subtrahendPeriodTimeline),
             new SubtractEndTimeline(source, subtrahendPeriodTimeline));
