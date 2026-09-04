@@ -82,6 +82,14 @@ Reactive Extensions for Occurify: Enabling seamless scheduling of instant and pe
 
 - Uses ReactiveX to enable scheduling for both timelines and periods.
 
+### [Occurify.NodaTime](https://www.nuget.org/packages/Occurify.NodaTime)
+
+NodaTime compatibility for Occurify: Use `Instant`, `Duration` and `Interval` to define, filter, transform and schedule instants and periods.
+
+- Adds `Instant`, `Duration` and `Interval` overloads of the Occurify extension methods for timelines, period timelines and their collections and dictionaries.
+- Adds `EnumerateInstants*` and `EnumerateIntervals*` methods and `*Instant`/`*Interval` lookups (e.g. `GetNextInstant`, `GetNextCompleteInterval`) that return NodaTime types.
+- Converts between `Period` and `Interval` with `ToInterval()` and `ToPeriod()`, including open-ended periods.
+
 ## Installation
 
 Occurify is distributed as the following NuGet packages:
@@ -92,6 +100,7 @@ Package | Description
 [Occurify.TimeZones](https://www.nuget.org/packages/Occurify.TimeZones) | Time zone and cron expression support for Occurify: Filter, manipulate, and schedule instants and periods across time zones.
 [Occurify.Astro](https://www.nuget.org/packages/Occurify.Astro) | Astronomical instants and periods for Occurify: Track sun states, perform calculations, and manage events.
 [Occurify.Reactive](https://www.nuget.org/packages/Occurify.Reactive) | Reactive Extensions for Occurify: Enabling seamless scheduling of instant and period-based timelines.
+[Occurify.NodaTime](https://www.nuget.org/packages/Occurify.NodaTime) | NodaTime compatibility for Occurify: Use `Instant`, `Duration` and `Interval` to define, filter, transform and schedule instants and periods.
 
 To install the core Occurify package, use the NuGet Package Manager Console:
 
@@ -633,6 +642,29 @@ EnumeratePeriod | Enumerates all instants/periods on the source timeline that oc
 EnumeratePeriodBackwards | Enumerates all instants/periods on the source timeline that occur in a provided period from latest to earliest.
 
 For all extension methods on `IPeriodTimeline`, you can specify whether a period should be completely inside a range or if touching one or both sides of the range/period is also acceptable. For example, with `EnumerateTo`, there is an alternative method called `EnumerateToIncludingPartial`. Both the range and period methods accept an optional `PeriodIncludeOptions` parameter, which can be set to one of the following values: `CompleteOnly`, `StartPartialAllowed`, `EndPartialAllowed`, or `PartialAllowed`.
+
+### NodaTime
+
+The `Occurify.NodaTime` package (namespace `Occurify.NodaTime.Extensions`) mirrors the extension methods for NodaTime types. Every method keeps its core name and the argument type selects the overload: `Within(Interval)`, `Cut(Instant)`, `Offset(Duration)`, `ContainsPeriod(Interval)`, `IntersectPeriod(Interval)`, `EnumeratePeriod(Interval)`. A name changes only to describe what comes back: `Utc` is dropped because an `Instant` is always UTC (`GetNextInstant`, `GetKeysAtInstant`), and `Instant` or `Interval` in a name always means that type is returned (`EnumerateInstants*`, `EnumerateIntervals*`, `GetNextCompleteInterval`, `GetKeysAtNextCompleteInterval`). `Period` and `Interval` convert with `ToInterval()` and `ToPeriod()`; a `null` start or end maps to an interval without a start or end.
+
+```cs
+using Occurify.Extensions;
+using Occurify.NodaTime.Extensions;
+
+var now = SystemClock.Instance.GetCurrentInstant();
+var nextWeek = new Interval(now, now + Duration.FromDays(7));
+
+var workingDays = TimeZonePeriods.Days().EnumerateIntervals(nextWeek);
+var nextSunset = AstroInstants.LocalSunsets.GetNextInstant(now);
+var sunlight = AstroPeriods.LocalDaytimes.Within(nextWeek).Offset(Duration.FromMinutes(30));
+```
+
+A few things to be aware of:
+
+- Both Occurify and NodaTime define a type named `Period`. When both namespaces are imported, add `using Period = Occurify.Period;`.
+- `WhereInstants` exists with a `DateTime` and an `Instant` predicate. Type the lambda parameter when both extension namespaces are imported: `WhereInstants((Instant i) => ...)`.
+- `TotalDuration` returns a `TimeSpan?`; convert it with `.ToDuration()`. NodaTime itself provides `ToInstant()` and `ToDuration()` for non-nullable `DateTime` and `TimeSpan`.
+- Instants outside the `DateTime` range (for example `Instant.MinValue`) cannot be converted and throw.
 
 ### Filter ITimeline
 
