@@ -28,8 +28,8 @@ public class PeriodTimelineExtensionsTests
         CollectionAssert.AreEqual(new[] { Day(5), Day(3) }, Days135.EnumerateIntervalsBackwardsTo(At(2025, 1, 3)).ToArray());
         CollectionAssert.AreEqual(new[] { Day(1) }, Days135.EnumerateIntervalsBackwardsFrom(At(2025, 1, 3, 12)).ToArray());
         CollectionAssert.AreEqual(new[] { Day(3), Day(1) }, Days135.EnumerateIntervalsBackwardsFromIncludingPartial(At(2025, 1, 3, 12)).ToArray());
-        CollectionAssert.AreEqual(new[] { Day(1), Day(3) }, Days135.EnumerateIntervalRange(At(2025, 1, 1), At(2025, 1, 4)).ToArray());
-        CollectionAssert.AreEqual(new[] { Day(3), Day(1) }, Days135.EnumerateIntervalRangeBackwards(At(2025, 1, 1), At(2025, 1, 4)).ToArray());
+        CollectionAssert.AreEqual(new[] { Day(1), Day(3) }, Days135.EnumerateIntervalsRange(At(2025, 1, 1), At(2025, 1, 4)).ToArray());
+        CollectionAssert.AreEqual(new[] { Day(3), Day(1) }, Days135.EnumerateIntervalsRangeBackwards(At(2025, 1, 1), At(2025, 1, 4)).ToArray());
         CollectionAssert.AreEqual(new[] { Day(3), Day(5) }, Days135.EnumerateIntervals(Between(At(2025, 1, 1, 12), At(2025, 1, 6))).ToArray());
         CollectionAssert.AreEqual(new[] { Day(1), Day(3), Day(5) }, Days135.EnumerateIntervals(Between(At(2025, 1, 1, 12), At(2025, 1, 6)), PeriodIncludeOptions.PartialAllowed).ToArray());
         CollectionAssert.AreEqual(new[] { Day(5), Day(3) }, Days135.EnumerateIntervalsBackwards(Between(At(2025, 1, 3), null)).ToArray());
@@ -112,8 +112,8 @@ public class PeriodTimelineExtensionsTests
         Assert.AreEqual(Day(1), sample.PeriodAsInterval());
         Assert.IsNull(sample.GapAsInterval());
         Assert.AreEqual(Day(1), sample.ToInterval());
-        Assert.AreEqual(At(2025, 1, 1), sample.IntervalStart());
-        Assert.AreEqual(At(2025, 1, 2), sample.IntervalEnd());
+        Assert.AreEqual(At(2025, 1, 1), sample.StartInstant());
+        Assert.AreEqual(At(2025, 1, 2), sample.EndInstant());
     }
 
     [TestMethod]
@@ -133,8 +133,8 @@ public class PeriodTimelineExtensionsTests
         var sample = Days135.SampleAt(At(2024, 12, 31));
 
         Assert.IsTrue(sample.IsGap);
-        Assert.IsNull(sample.IntervalStart());
-        Assert.AreEqual(At(2025, 1, 1), sample.IntervalEnd());
+        Assert.IsNull(sample.StartInstant());
+        Assert.AreEqual(At(2025, 1, 1), sample.EndInstant());
         Assert.IsFalse(sample.ToInterval().HasStart);
     }
 }

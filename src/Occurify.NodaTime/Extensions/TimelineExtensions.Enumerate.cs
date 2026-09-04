@@ -44,13 +44,13 @@ public static partial class TimelineExtensions
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="start"/> and <paramref name="end"/> from earliest to latest.
     /// </summary>
-    public static IEnumerable<Instant> EnumerateInstantRange(this ITimeline source, Instant start, Instant end) =>
+    public static IEnumerable<Instant> EnumerateInstantsRange(this ITimeline source, Instant start, Instant end) =>
         source.EnumerateRange(start.ToDateTimeUtc(), end.ToDateTimeUtc()).Select(i => i.ToInstant());
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="start"/> and <paramref name="end"/> from latest to earliest.
     /// </summary>
-    public static IEnumerable<Instant> EnumerateInstantRangeBackwards(this ITimeline source, Instant start, Instant end) =>
+    public static IEnumerable<Instant> EnumerateInstantsRangeBackwards(this ITimeline source, Instant start, Instant end) =>
         source.EnumerateRangeBackwards(start.ToDateTimeUtc(), end.ToDateTimeUtc()).Select(i => i.ToInstant());
 
     /// <summary>

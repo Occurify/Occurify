@@ -21,8 +21,8 @@ public class TimelineExtensionsTests
         CollectionAssert.AreEqual(Days(1, 2), Timeline5.EnumerateInstantsTo(At(2025, 1, 3)).ToArray());
         CollectionAssert.AreEqual(Days(5, 4, 3), Timeline5.EnumerateInstantsBackwardsTo(At(2025, 1, 3)).ToArray());
         CollectionAssert.AreEqual(Days(2, 1), Timeline5.EnumerateInstantsBackwardsFrom(At(2025, 1, 3)).ToArray());
-        CollectionAssert.AreEqual(Days(2, 3), Timeline5.EnumerateInstantRange(At(2025, 1, 2), At(2025, 1, 4)).ToArray());
-        CollectionAssert.AreEqual(Days(3, 2), Timeline5.EnumerateInstantRangeBackwards(At(2025, 1, 2), At(2025, 1, 4)).ToArray());
+        CollectionAssert.AreEqual(Days(2, 3), Timeline5.EnumerateInstantsRange(At(2025, 1, 2), At(2025, 1, 4)).ToArray());
+        CollectionAssert.AreEqual(Days(3, 2), Timeline5.EnumerateInstantsRangeBackwards(At(2025, 1, 2), At(2025, 1, 4)).ToArray());
         CollectionAssert.AreEqual(Days(2, 3), Timeline5.EnumerateInstants(Between(At(2025, 1, 2), At(2025, 1, 4))).ToArray());
         CollectionAssert.AreEqual(Days(3, 2), Timeline5.EnumerateInstantsBackwards(Between(At(2025, 1, 2), At(2025, 1, 4))).ToArray());
         CollectionAssert.AreEqual(Days(1, 2), Timeline5.EnumerateInstants(Between(null, At(2025, 1, 3))).ToArray());

@@ -24,10 +24,10 @@ public static partial class IntervalExtensions
     public static bool ContainsAnyInstant(this Interval interval, ITimeline timeline) => interval.ToPeriod().ContainsAnyInstant(timeline);
 
     /// <summary>
-    /// Determines whether an interval starting at <paramref name="intervalStart"/> and ending at <paramref name="intervalEnd"/> is included in <paramref name="interval"/>.
+    /// Determines whether a period starting at <paramref name="periodStart"/> and ending at <paramref name="periodEnd"/> is included in <paramref name="interval"/>.
     /// </summary>
-    public static bool ContainsPeriod(this Interval interval, Instant? intervalStart, Instant? intervalEnd, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
-        interval.ToPeriod().ContainsPeriod(intervalStart?.ToDateTimeUtc(), intervalEnd?.ToDateTimeUtc(), periodIncludeOptions);
+    public static bool ContainsPeriod(this Interval interval, Instant? periodStart, Instant? periodEnd, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+        interval.ToPeriod().ContainsPeriod(periodStart?.ToDateTimeUtc(), periodEnd?.ToDateTimeUtc(), periodIncludeOptions);
 
     /// <summary>
     /// Determines whether <paramref name="otherInterval"/> is included in <paramref name="interval"/>.

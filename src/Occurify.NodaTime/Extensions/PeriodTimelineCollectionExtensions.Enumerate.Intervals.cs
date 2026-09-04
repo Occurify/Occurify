@@ -80,7 +80,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around <paramref name="start"/> or <paramref name="end"/>.
     /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<Interval> EnumerateIntervalRange(this IEnumerable<IPeriodTimeline> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+    public static IEnumerable<Interval> EnumerateIntervalsRange(this IEnumerable<IPeriodTimeline> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
         source.EnumerateRange(start, end, periodIncludeOptions).Select(p => p.ToInterval());
 
     /// <summary>
@@ -88,7 +88,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around <paramref name="start"/> or <paramref name="end"/>.
     /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<Interval> EnumerateIntervalRangeBackwards(this IEnumerable<IPeriodTimeline> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+    public static IEnumerable<Interval> EnumerateIntervalsRangeBackwards(this IEnumerable<IPeriodTimeline> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
         source.EnumerateRangeBackwards(start, end, periodIncludeOptions).Select(p => p.ToInterval());
 
     /// <summary>

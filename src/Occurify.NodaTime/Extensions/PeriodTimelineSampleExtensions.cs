@@ -32,10 +32,10 @@ public static class PeriodTimelineSampleExtensions
     /// <summary>
     /// Start of the period or gap sampled in <paramref name="sample"/>. <c>null</c> if it has always started.
     /// </summary>
-    public static Instant? IntervalStart(this PeriodTimelineSample sample) => sample.Start.ToInstant();
+    public static Instant? StartInstant(this PeriodTimelineSample sample) => sample.Start.ToInstant();
 
     /// <summary>
     /// End of the period or gap sampled in <paramref name="sample"/>. <c>null</c> if it never ends.
     /// </summary>
-    public static Instant? IntervalEnd(this PeriodTimelineSample sample) => sample.End.ToInstant();
+    public static Instant? EndInstant(this PeriodTimelineSample sample) => sample.End.ToInstant();
 }

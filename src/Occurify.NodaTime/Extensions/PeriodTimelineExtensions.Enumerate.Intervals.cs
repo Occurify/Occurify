@@ -69,14 +69,14 @@ public static partial class PeriodTimelineExtensions
     /// Enumerates all intervals on <paramref name="source"/> between <paramref name="start"/> and <paramref name="end"/> from earliest to latest.
     /// <paramref name="periodIncludeOptions"/> defines inclusion of intervals around <paramref name="start"/> or <paramref name="end"/>.
     /// </summary>
-    public static IEnumerable<Interval> EnumerateIntervalRange(this IPeriodTimeline source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+    public static IEnumerable<Interval> EnumerateIntervalsRange(this IPeriodTimeline source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
         source.EnumerateRange(start, end, periodIncludeOptions).Select(p => p.ToInterval());
 
     /// <summary>
     /// Enumerates all intervals on <paramref name="source"/> between <paramref name="start"/> and <paramref name="end"/> from latest to earliest.
     /// <paramref name="periodIncludeOptions"/> defines inclusion of intervals around <paramref name="start"/> or <paramref name="end"/>.
     /// </summary>
-    public static IEnumerable<Interval> EnumerateIntervalRangeBackwards(this IPeriodTimeline source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+    public static IEnumerable<Interval> EnumerateIntervalsRangeBackwards(this IPeriodTimeline source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
         source.EnumerateRangeBackwards(start, end, periodIncludeOptions).Select(p => p.ToInterval());
 
     /// <summary>

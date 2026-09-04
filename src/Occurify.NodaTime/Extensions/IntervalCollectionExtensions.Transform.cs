@@ -46,14 +46,14 @@ public static partial class IntervalCollectionExtensions
     public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source) => Occurify.Extensions.PeriodTimelineCollectionExtensions.IntersectPeriods(source.Select(p => p.AsPeriodTimeline()));
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
+    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, IEnumerable<Interval> periodsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(periodsToIntersect);
+    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, IEnumerable<Interval> intervalsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(intervalsToIntersect);
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
+    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, params Interval[] periodsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(periodsToIntersect);
+    public static IPeriodTimeline IntersectPeriods(this IEnumerable<Interval> source, params Interval[] intervalsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(intervalsToIntersect);
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
@@ -81,19 +81,19 @@ public static partial class IntervalCollectionExtensions
     public static IPeriodTimeline Merge(this IEnumerable<Interval> source) => source.AsPeriodTimeline();
 
     /// <summary>
-    /// Merges all intervals in <paramref name="source"/> with <paramref name="periodToMerge"/>. Overlapping intervals are combined.
+    /// Merges all intervals in <paramref name="source"/> with <paramref name="intervalToMerge"/>. Overlapping intervals are combined.
     /// </summary>
-    public static IPeriodTimeline Merge(this IEnumerable<Interval> source, Interval periodToMerge) => source.AsPeriodTimeline().Merge(periodToMerge);
+    public static IPeriodTimeline Merge(this IEnumerable<Interval> source, Interval intervalToMerge) => source.AsPeriodTimeline().Merge(intervalToMerge);
 
     /// <summary>
-    /// Merges all intervals in <paramref name="source"/> with all intervals in <paramref name="periodsToMerge"/>. Overlapping intervals are combined.
+    /// Merges all intervals in <paramref name="source"/> with all intervals in <paramref name="intervalsToMerge"/>. Overlapping intervals are combined.
     /// </summary>
-    public static IPeriodTimeline Merge(this IEnumerable<Interval> source, IEnumerable<Interval> periodsToMerge) => source.AsPeriodTimeline().Merge(periodsToMerge);
+    public static IPeriodTimeline Merge(this IEnumerable<Interval> source, IEnumerable<Interval> intervalsToMerge) => source.AsPeriodTimeline().Merge(intervalsToMerge);
 
     /// <summary>
-    /// Merges all intervals in <paramref name="source"/> with all intervals in <paramref name="periodsToMerge"/>. Overlapping intervals are combined.
+    /// Merges all intervals in <paramref name="source"/> with all intervals in <paramref name="intervalsToMerge"/>. Overlapping intervals are combined.
     /// </summary>
-    public static IPeriodTimeline Merge(this IEnumerable<Interval> source, params Interval[] periodsToMerge) => source.AsPeriodTimeline().Merge(periodsToMerge);
+    public static IPeriodTimeline Merge(this IEnumerable<Interval> source, params Interval[] intervalsToMerge) => source.AsPeriodTimeline().Merge(intervalsToMerge);
 
     /// <summary>
     /// Merges all intervals in <paramref name="source"/> with <paramref name="periodsToMerge"/>. Overlapping intervals are combined.

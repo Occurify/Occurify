@@ -51,14 +51,14 @@ public static partial class TimelineCollectionExtensions
     /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="start"/> and <paramref name="end"/> from earliest to latest.
     /// Duplicates are removed.
     /// </summary>
-    public static IEnumerable<Instant> EnumerateInstantRange(this IEnumerable<ITimeline> source, Instant start, Instant end) =>
+    public static IEnumerable<Instant> EnumerateInstantsRange(this IEnumerable<ITimeline> source, Instant start, Instant end) =>
         source.EnumerateRange(start.ToDateTimeUtc(), end.ToDateTimeUtc()).Select(i => i.ToInstant());
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="start"/> and <paramref name="end"/> from latest to earliest.
     /// Duplicates are removed.
     /// </summary>
-    public static IEnumerable<Instant> EnumerateInstantRangeBackwards(this IEnumerable<ITimeline> source, Instant start, Instant end) =>
+    public static IEnumerable<Instant> EnumerateInstantsRangeBackwards(this IEnumerable<ITimeline> source, Instant start, Instant end) =>
         source.EnumerateRangeBackwards(start.ToDateTimeUtc(), end.ToDateTimeUtc()).Select(i => i.ToInstant());
 
     /// <summary>

@@ -44,13 +44,13 @@ public static partial class TimelineKeyCollectionExtensions
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="start"/> and <paramref name="end"/> from earliest to latest and returns the instant along with the keys of the timelines that include this instant.
     /// </summary>
-    public static IEnumerable<KeyValuePair<Instant, TKey[]>> EnumerateInstantRange<TKey>(this IEnumerable<KeyValuePair<TKey, ITimeline>> source, Instant start, Instant end) =>
+    public static IEnumerable<KeyValuePair<Instant, TKey[]>> EnumerateInstantsRange<TKey>(this IEnumerable<KeyValuePair<TKey, ITimeline>> source, Instant start, Instant end) =>
         source.EnumerateRange(start.ToDateTimeUtc(), end.ToDateTimeUtc()).Select(kvp => kvp.ToInstantKey());
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="start"/> and <paramref name="end"/> from latest to earliest and returns the instant along with the keys of the timelines that include this instant.
     /// </summary>
-    public static IEnumerable<KeyValuePair<Instant, TKey[]>> EnumerateInstantRangeBackwards<TKey>(this IEnumerable<KeyValuePair<TKey, ITimeline>> source, Instant start, Instant end) =>
+    public static IEnumerable<KeyValuePair<Instant, TKey[]>> EnumerateInstantsRangeBackwards<TKey>(this IEnumerable<KeyValuePair<TKey, ITimeline>> source, Instant start, Instant end) =>
         source.EnumerateRangeBackwards(start.ToDateTimeUtc(), end.ToDateTimeUtc()).Select(kvp => kvp.ToInstantKey());
 
     /// <summary>

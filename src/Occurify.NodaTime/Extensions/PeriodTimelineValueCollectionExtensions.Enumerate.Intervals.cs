@@ -78,7 +78,7 @@ public static partial class PeriodTimelineValueCollectionExtensions
     /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around <paramref name="start"/> or <paramref name="end"/>.
     /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<KeyValuePair<Interval, TValue[]>> EnumerateIntervalRange<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+    public static IEnumerable<KeyValuePair<Interval, TValue[]>> EnumerateIntervalsRange<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
         source.EnumerateRange(start, end, periodIncludeOptions).Select(kvp => new KeyValuePair<Interval, TValue[]>(kvp.Key.ToInterval(), kvp.Value));
 
     /// <summary>
@@ -86,7 +86,7 @@ public static partial class PeriodTimelineValueCollectionExtensions
     /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around <paramref name="start"/> or <paramref name="end"/>.
     /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<KeyValuePair<Interval, TValue[]>> EnumerateIntervalRangeBackwards<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+    public static IEnumerable<KeyValuePair<Interval, TValue[]>> EnumerateIntervalsRangeBackwards<TValue>(this IEnumerable<KeyValuePair<IPeriodTimeline, TValue>> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
         source.EnumerateRangeBackwards(start, end, periodIncludeOptions).Select(kvp => new KeyValuePair<Interval, TValue[]>(kvp.Key.ToInterval(), kvp.Value));
 
     /// <summary>

@@ -47,19 +47,19 @@ public static partial class IntervalExtensions
     public static IPeriodTimeline Cut(this Interval source, params ITimeline[] instants) => source.AsPeriodTimeline().Cut(instants);
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodToIntersect"/>.
+    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="intervalToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriod(this Interval source, Interval periodToIntersect) => source.AsPeriodTimeline().IntersectPeriod(periodToIntersect);
+    public static IPeriodTimeline IntersectPeriod(this Interval source, Interval intervalToIntersect) => source.AsPeriodTimeline().IntersectPeriod(intervalToIntersect);
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
+    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this Interval source, IEnumerable<Interval> periodsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(periodsToIntersect);
+    public static IPeriodTimeline IntersectPeriods(this Interval source, IEnumerable<Interval> intervalsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(intervalsToIntersect);
 
     /// <summary>
-    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
+    /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="intervalsToIntersect"/>.
     /// </summary>
-    public static IPeriodTimeline IntersectPeriods(this Interval source, params Interval[] periodsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(periodsToIntersect);
+    public static IPeriodTimeline IntersectPeriods(this Interval source, params Interval[] intervalsToIntersect) => source.AsPeriodTimeline().IntersectPeriods(intervalsToIntersect);
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with the intersections of <paramref name="source"/> with <paramref name="periodsToIntersect"/>.
@@ -82,19 +82,19 @@ public static partial class IntervalExtensions
     public static IPeriodTimeline Invert(this Interval source) => source.AsPeriodTimeline().Invert();
 
     /// <summary>
-    /// Merges <paramref name="source"/> with <paramref name="periodToMerge"/>. Overlap is combined.
+    /// Merges <paramref name="source"/> with <paramref name="intervalToMerge"/>. Overlap is combined.
     /// </summary>
-    public static IPeriodTimeline Merge(this Interval source, Interval periodToMerge) => source.AsPeriodTimeline().Merge(periodToMerge);
+    public static IPeriodTimeline Merge(this Interval source, Interval intervalToMerge) => source.AsPeriodTimeline().Merge(intervalToMerge);
 
     /// <summary>
-    /// Merges <paramref name="source"/> with all periods in <paramref name="periodsToMerge"/>. Overlapping periods are combined.
+    /// Merges <paramref name="source"/> with all intervals in <paramref name="intervalsToMerge"/>. Overlapping intervals are combined.
     /// </summary>
-    public static IPeriodTimeline Merge(this Interval source, IEnumerable<Interval> periodsToMerge) => source.AsPeriodTimeline().Merge(periodsToMerge);
+    public static IPeriodTimeline Merge(this Interval source, IEnumerable<Interval> intervalsToMerge) => source.AsPeriodTimeline().Merge(intervalsToMerge);
 
     /// <summary>
-    /// Merges <paramref name="source"/> with all periods in <paramref name="periodsToMerge"/>. Overlapping periods are combined.
+    /// Merges <paramref name="source"/> with all intervals in <paramref name="intervalsToMerge"/>. Overlapping intervals are combined.
     /// </summary>
-    public static IPeriodTimeline Merge(this Interval source, params Interval[] periodsToMerge) => source.AsPeriodTimeline().Merge(periodsToMerge);
+    public static IPeriodTimeline Merge(this Interval source, params Interval[] intervalsToMerge) => source.AsPeriodTimeline().Merge(intervalsToMerge);
 
     /// <summary>
     /// Merges <paramref name="source"/> with <paramref name="periodsToMerge"/>. Overlapping periods are combined.

@@ -10,22 +10,22 @@ namespace Occurify.NodaTime.Extensions;
 public static partial class PeriodTimelineExtensions
 {
     /// <summary>
-    /// Determines whether <paramref name="instant"/> is on any of the intervals in <paramref name="intervalTimeline"/>.
+    /// Determines whether <paramref name="instant"/> is on any of the periods on <paramref name="source"/>.
     /// </summary>
-    public static bool ContainsInstant(this IPeriodTimeline intervalTimeline, Instant instant) =>
-        intervalTimeline.ContainsInstant(instant.ToDateTimeUtc());
+    public static bool ContainsInstant(this IPeriodTimeline source, Instant instant) =>
+        source.ContainsInstant(instant.ToDateTimeUtc());
 
     /// <summary>
-    /// Determines whether <paramref name="interval"/> is included in any of the intervals in <paramref name="intervalTimeline"/>.
+    /// Determines whether <paramref name="interval"/> is included in any of the periods on <paramref name="source"/>.
     /// </summary>
-    public static bool ContainsPeriod(this IPeriodTimeline intervalTimeline, Interval interval) =>
-        intervalTimeline.ContainsPeriod(interval.ToPeriod());
+    public static bool ContainsPeriod(this IPeriodTimeline source, Interval interval) =>
+        source.ContainsPeriod(interval.ToPeriod());
 
     /// <summary>
-    /// Determines whether any of the intervals in <paramref name="intervalTimeline"/> is exactly the same as <paramref name="interval"/>.
+    /// Determines whether any of the periods on <paramref name="source"/> is exactly the same as <paramref name="interval"/>.
     /// </summary>
-    public static bool ContainsExactPeriod(this IPeriodTimeline intervalTimeline, Interval interval) =>
-        intervalTimeline.ContainsExactPeriod(interval.ToPeriod());
+    public static bool ContainsExactPeriod(this IPeriodTimeline source, Interval interval) =>
+        source.ContainsExactPeriod(interval.ToPeriod());
 
     /// <summary>
     /// Returns the first complete period on <paramref name="source"/> ending on or earlier than <paramref name="instant"/>.

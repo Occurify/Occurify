@@ -19,7 +19,7 @@ public class TimelineCollectionExtensionsTests
         CollectionAssert.AreEqual(new[] { At(2025, 1, 2), At(2025, 1, 3) }, Timelines.EnumerateInstantsFrom(At(2025, 1, 2)).ToArray());
         CollectionAssert.AreEqual(new[] { At(2025, 1, 3), At(2025, 1, 2), At(2025, 1, 1) }, Timelines.EnumerateInstantsBackwards().ToArray());
         CollectionAssert.AreEqual(new[] { At(2025, 1, 1), At(2025, 1, 2) }, Timelines.EnumerateInstants(Between(At(2025, 1, 1), At(2025, 1, 3))).ToArray());
-        CollectionAssert.AreEqual(new[] { At(2025, 1, 2) }, Timelines.EnumerateInstantRange(At(2025, 1, 2), At(2025, 1, 3)).ToArray());
+        CollectionAssert.AreEqual(new[] { At(2025, 1, 2) }, Timelines.EnumerateInstantsRange(At(2025, 1, 2), At(2025, 1, 3)).ToArray());
     }
 
     [TestMethod]

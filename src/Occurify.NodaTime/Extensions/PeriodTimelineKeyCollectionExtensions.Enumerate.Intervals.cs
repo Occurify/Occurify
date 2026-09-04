@@ -78,7 +78,7 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around <paramref name="start"/> or <paramref name="end"/>.
     /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<KeyValuePair<Interval, TKey[]>> EnumerateIntervalRange<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+    public static IEnumerable<KeyValuePair<Interval, TKey[]>> EnumerateIntervalsRange<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
         source.EnumerateRange(start, end, periodIncludeOptions).Select(kvp => new KeyValuePair<Interval, TKey[]>(kvp.Key.ToInterval(), kvp.Value));
 
     /// <summary>
@@ -86,7 +86,7 @@ public static partial class PeriodTimelineKeyCollectionExtensions
     /// <paramref name="periodIncludeOptions"/> defines inclusion of periods around <paramref name="start"/> or <paramref name="end"/>.
     /// Intervals are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
-    public static IEnumerable<KeyValuePair<Interval, TKey[]>> EnumerateIntervalRangeBackwards<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
+    public static IEnumerable<KeyValuePair<Interval, TKey[]>> EnumerateIntervalsRangeBackwards<TKey>(this IEnumerable<KeyValuePair<TKey, IPeriodTimeline>> source, Instant start, Instant end, PeriodIncludeOptions periodIncludeOptions = PeriodIncludeOptions.CompleteOnly) =>
         source.EnumerateRangeBackwards(start, end, periodIncludeOptions).Select(kvp => new KeyValuePair<Interval, TKey[]>(kvp.Key.ToInterval(), kvp.Value));
 
     /// <summary>

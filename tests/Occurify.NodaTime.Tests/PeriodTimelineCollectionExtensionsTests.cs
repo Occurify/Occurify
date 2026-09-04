@@ -26,7 +26,7 @@ public class PeriodTimelineCollectionExtensionsTests
         CollectionAssert.AreEqual(
             new[] { PeriodOf(Utc(2025, 1, 1), Utc(2025, 1, 2)), PeriodOf(Utc(2025, 1, 3), Utc(2025, 1, 4)) },
             Timelines.EnumeratePeriod(Between(At(2025, 1, 1), At(2025, 1, 4))).ToArray());
-        CollectionAssert.AreEqual(new[] { Day(3) }, Timelines.EnumerateIntervalRange(At(2025, 1, 2), At(2025, 1, 5)).ToArray());
+        CollectionAssert.AreEqual(new[] { Day(3) }, Timelines.EnumerateIntervalsRange(At(2025, 1, 2), At(2025, 1, 5)).ToArray());
     }
 
     [TestMethod]
