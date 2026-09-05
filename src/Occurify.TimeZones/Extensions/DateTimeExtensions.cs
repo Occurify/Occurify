@@ -29,7 +29,7 @@ namespace Occurify.TimeZones.Extensions
         /// Converts <paramref name="utcDateTime"/> from Coordinated Universal Time (UTC) to timezone <paramref name="timeZone"/>.
         /// </summary>
         public static DateTime? ToTimeZone(this DateTime? utcDateTime, TimeZoneInfo timeZone) => 
-            utcDateTime?.ToUniversalTime(timeZone);
+            utcDateTime?.ToTimeZone(timeZone);
 
         /// <summary>
         /// Converts <paramref name="localDateTime"/> from <see cref="TimeZoneInfo.Local"/> to Coordinated Universal Time (UTC).

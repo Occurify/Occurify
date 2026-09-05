@@ -1,6 +1,7 @@
 ﻿using Cronos;
 using Occurify.Extensions;
 using Occurify.TimeZones.Extensions;
+using Occurify.TimeZones.Helpers;
 
 namespace Occurify.TimeZones;
 
@@ -89,7 +90,7 @@ public static class TimeZoneInstants
 #if NET7_0_OR_GREATER
         if (timeOfDay.Millisecond != 0 || timeOfDay.Microsecond != 0 || timeOfDay.Nanosecond != 0)
         {
-            return FromCron(new TimeOnly(timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second).ToCronExpression())
+            return FromCron(new TimeOnly(timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second).ToCronExpression(), timeZone)
                 .Offset(
                     TimeSpan.FromMilliseconds(timeOfDay.Millisecond) +
                     TimeSpan.FromMicroseconds(timeOfDay.Microsecond) +
@@ -99,7 +100,7 @@ public static class TimeZoneInstants
 #else
         if (timeOfDay.Millisecond != 0)
         {
-            return FromCron(new TimeOnly(timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second).ToCronExpression())
+            return FromCron(new TimeOnly(timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second).ToCronExpression(), timeZone)
                 .Offset(
                     TimeSpan.FromMilliseconds(timeOfDay.Millisecond))
                 .Within(TimeZonePeriods.Days(timeZone));
@@ -187,7 +188,7 @@ public static class TimeZoneInstants
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the start of the requested day in provided timezone <paramref name="timeZone"/>.
     /// </summary>
-    public static DateTime StartOfDay(int day, int month, int year, TimeZoneInfo timeZone) => StartOfDay(new DateTime(year, month, day, 12, 0, 0), TimeZoneInfo.Local);
+    public static DateTime StartOfDay(int day, int month, int year, TimeZoneInfo timeZone) => StartOfDay(new DateTime(year, month, day, 12, 0, 0), timeZone);
 
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the start of the day at <paramref name="localDateTime"/> in <see cref="TimeZoneInfo.Local"/>.
@@ -198,7 +199,7 @@ public static class TimeZoneInstants
     /// Returns a <see cref="DateTime"/> representing the start of the day at <paramref name="localDateTime"/> in provided timezone <paramref name="timeZone"/>.
     /// </summary>
     public static DateTime StartOfDay(DateTime localDateTime, TimeZoneInfo timeZone) =>
-        Daily(timeZone).GetPreviousUtcInstant(TimeZoneInfo.ConvertTimeToUtc(localDateTime.Date, timeZone)) ??
+        Daily(timeZone).GetCurrentOrPreviousUtcInstant(TimeZoneHelper.NoonOfDateToUtc(localDateTime, timeZone)) ??
         throw new InvalidOperationException($"No day was found for local date {localDateTime} in timezone {timeZone}");
 
     /// <summary>
@@ -224,7 +225,13 @@ public static class TimeZoneInstants
     /// </summary>
     public static ITimeline StartOfDays(IEnumerable<DayOfWeek> daysOfWeek, TimeZoneInfo timeZone)
     {
-        return FromCron($"0 0 * * {string.Join(',', daysOfWeek.Select(d => (int)d))}", timeZone);
+        var days = daysOfWeek.ToArray();
+        if (days.Length == 0)
+        {
+            throw new ArgumentException("At least one day of week is required.", nameof(daysOfWeek));
+        }
+
+        return FromCron($"0 0 * * {string.Join(',', days.Select(d => (int)d))}", timeZone);
     }
 
     /// <summary>
@@ -241,7 +248,7 @@ public static class TimeZoneInstants
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the end of the requested day in provided timezone <paramref name="timeZone"/>.
     /// </summary>
-    public static DateTime EndOfDay(int day, int month, int year, TimeZoneInfo timeZone) => EndOfDay(new DateTime(year, month, day, 12, 0, 0), TimeZoneInfo.Local);
+    public static DateTime EndOfDay(int day, int month, int year, TimeZoneInfo timeZone) => EndOfDay(new DateTime(year, month, day, 12, 0, 0), timeZone);
 
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the end of the day at <paramref name="localDateTime"/> in <see cref="TimeZoneInfo.Local"/>.
@@ -252,7 +259,7 @@ public static class TimeZoneInstants
     /// Returns a <see cref="DateTime"/> representing the end of the day at <paramref name="localDateTime"/> in provided timezone <paramref name="timeZone"/>.
     /// </summary>
     public static DateTime EndOfDay(DateTime localDateTime, TimeZoneInfo timeZone) =>
-        Daily(timeZone).GetNextUtcInstant(TimeZoneInfo.ConvertTimeToUtc(localDateTime.Date, timeZone)) ??
+        Daily(timeZone).GetNextUtcInstant(TimeZoneHelper.NoonOfDateToUtc(localDateTime, timeZone)) ??
         throw new InvalidOperationException($"No day was found for local date {localDateTime} in timezone {timeZone}");
 
     /// <summary>
@@ -305,7 +312,7 @@ public static class TimeZoneInstants
     /// Returns a <see cref="DateTime"/> representing the start of the week at <paramref name="localDateTime"/> in provided timezone <paramref name="timeZone"/>.
     /// </summary>
     public static DateTime StartOfWeek(DateTime localDateTime, TimeZoneInfo timeZone) =>
-        Weekly(timeZone).GetPreviousUtcInstant(TimeZoneInfo.ConvertTimeToUtc(localDateTime.Date, timeZone)) ??
+        Weekly(timeZone).GetCurrentOrPreviousUtcInstant(TimeZoneHelper.NoonOfDateToUtc(localDateTime, timeZone)) ??
         throw new InvalidOperationException($"No week was found for local date {localDateTime} in timezone {timeZone}");
 
     /// <summary>
@@ -317,7 +324,7 @@ public static class TimeZoneInstants
     /// Returns a <see cref="DateTime"/> representing the end of the week at <paramref name="localDateTime"/> in provided timezone <paramref name="timeZone"/>.
     /// </summary>
     public static DateTime EndOfWeek(DateTime localDateTime, TimeZoneInfo timeZone) =>
-        Weekly(timeZone).GetNextUtcInstant(TimeZoneInfo.ConvertTimeToUtc(localDateTime.Date, timeZone)) ??
+        Weekly(timeZone).GetNextUtcInstant(TimeZoneHelper.NoonOfDateToUtc(localDateTime, timeZone)) ??
         throw new InvalidOperationException($"No week was found for local date {localDateTime} in timezone {timeZone}");
 
     /// <summary>
@@ -341,7 +348,7 @@ public static class TimeZoneInstants
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the start of the requested month in provided timezone <paramref name="timeZone"/>.
     /// </summary>
-    public static DateTime StartOfMonth(int month, int year, TimeZoneInfo timeZone) => StartOfMonth(new DateTime(year, month, 15), TimeZoneInfo.Local);
+    public static DateTime StartOfMonth(int month, int year, TimeZoneInfo timeZone) => StartOfMonth(new DateTime(year, month, 15), timeZone);
 
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the start of the month at <paramref name="localDateTime"/> in <see cref="TimeZoneInfo.Local"/>.
@@ -352,7 +359,7 @@ public static class TimeZoneInstants
     /// Returns a <see cref="DateTime"/> representing the start of the month at <paramref name="localDateTime"/> in provided timezone <paramref name="timeZone"/>.
     /// </summary>
     public static DateTime StartOfMonth(DateTime localDateTime, TimeZoneInfo timeZone) =>
-        Monthly(timeZone).GetPreviousUtcInstant(TimeZoneInfo.ConvertTimeToUtc(localDateTime.Date, timeZone)) ??
+        Monthly(timeZone).GetCurrentOrPreviousUtcInstant(TimeZoneHelper.NoonOfDateToUtc(localDateTime, timeZone)) ??
         throw new InvalidOperationException($"No month was found for local date {localDateTime} in timezone {timeZone}");
 
     /// <summary>
@@ -378,7 +385,13 @@ public static class TimeZoneInstants
     /// </summary>
     public static ITimeline StartOfMonths(IEnumerable<int> months, TimeZoneInfo timeZone)
     {
-        return FromCron($"0 0 1 {string.Join(',', months)} *", timeZone);
+        var monthArray = months.ToArray();
+        if (monthArray.Length == 0)
+        {
+            throw new ArgumentException("At least one month is required.", nameof(months));
+        }
+
+        return FromCron($"0 0 1 {string.Join(',', monthArray)} *", timeZone);
     }
 
     /// <summary>
@@ -395,7 +408,7 @@ public static class TimeZoneInstants
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the end of the requested month in provided timezone <paramref name="timeZone"/>.
     /// </summary>
-    public static DateTime EndOfMonth(int month, int year, TimeZoneInfo timeZone) => EndOfMonth(new DateTime(year, month, 15), TimeZoneInfo.Local);
+    public static DateTime EndOfMonth(int month, int year, TimeZoneInfo timeZone) => EndOfMonth(new DateTime(year, month, 15), timeZone);
 
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the end of the month at <paramref name="localDateTime"/> in <see cref="TimeZoneInfo.Local"/>.
@@ -406,7 +419,7 @@ public static class TimeZoneInstants
     /// Returns a <see cref="DateTime"/> representing the end of the month at <paramref name="localDateTime"/> in provided timezone <paramref name="timeZone"/>.
     /// </summary>
     public static DateTime EndOfMonth(DateTime localDateTime, TimeZoneInfo timeZone) =>
-        Monthly(timeZone).GetNextUtcInstant(TimeZoneInfo.ConvertTimeToUtc(localDateTime.Date, timeZone)) ??
+        Monthly(timeZone).GetNextUtcInstant(TimeZoneHelper.NoonOfDateToUtc(localDateTime, timeZone)) ??
         throw new InvalidOperationException($"No month was found for local date {localDateTime} in timezone {timeZone}");
 
     /// <summary>
@@ -431,7 +444,7 @@ public static class TimeZoneInstants
     /// Returns a <see cref="ITimeline"/> with an instant at the end of every month specified in <paramref name="months"/> in provided timezone <paramref name="timeZone"/>.
     /// </summary>
     public static ITimeline EndOfMonths(IEnumerable<int> months, TimeZoneInfo timeZone) =>
-        StartOfMonths(months.Select(d => (d + 1) % 12), timeZone);
+        StartOfMonths(months.Select(d => d % 12 + 1), timeZone);
 
     /// <summary>
     /// Returns a <see cref="ITimeline"/> with an instant at the end of every month specified in <paramref name="months"/> in <see cref="TimeZoneInfo.Local"/>.
@@ -460,7 +473,7 @@ public static class TimeZoneInstants
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the start of the requested year in provided timezone <paramref name="timeZone"/>.
     /// </summary>
-    public static DateTime StartOfYear(int year, TimeZoneInfo timeZone) => StartOfYear(new DateTime(year, 6, 1), TimeZoneInfo.Local);
+    public static DateTime StartOfYear(int year, TimeZoneInfo timeZone) => StartOfYear(new DateTime(year, 6, 1), timeZone);
 
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the start of the year at <paramref name="localDateTime"/> in <see cref="TimeZoneInfo.Local"/>.
@@ -471,7 +484,7 @@ public static class TimeZoneInstants
     /// Returns a <see cref="DateTime"/> representing the start of the year at <paramref name="localDateTime"/> in provided timezone <paramref name="timeZone"/>.
     /// </summary>
     public static DateTime StartOfYear(DateTime localDateTime, TimeZoneInfo timeZone) =>
-        Annually(timeZone).GetPreviousUtcInstant(TimeZoneInfo.ConvertTimeToUtc(localDateTime.Date, timeZone)) ??
+        Annually(timeZone).GetCurrentOrPreviousUtcInstant(TimeZoneHelper.NoonOfDateToUtc(localDateTime, timeZone)) ??
         throw new InvalidOperationException($"No year was found for local date {localDateTime} in timezone {timeZone}");
 
     /// <summary>
@@ -482,7 +495,7 @@ public static class TimeZoneInstants
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the end of the requested year in provided timezone <paramref name="timeZone"/>.
     /// </summary>
-    public static DateTime EndOfYear(int year, TimeZoneInfo timeZone) => EndOfYear(new DateTime(year, 6, 1), TimeZoneInfo.Local);
+    public static DateTime EndOfYear(int year, TimeZoneInfo timeZone) => EndOfYear(new DateTime(year, 6, 1), timeZone);
 
     /// <summary>
     /// Returns a <see cref="DateTime"/> representing the end of the year at <paramref name="localDateTime"/> in <see cref="TimeZoneInfo.Local"/>.
@@ -493,6 +506,6 @@ public static class TimeZoneInstants
     /// Returns a <see cref="DateTime"/> representing the end of the year at <paramref name="localDateTime"/> in provided timezone <paramref name="timeZone"/>.
     /// </summary>
     public static DateTime EndOfYear(DateTime localDateTime, TimeZoneInfo timeZone) =>
-        Annually(timeZone).GetNextUtcInstant(TimeZoneInfo.ConvertTimeToUtc(localDateTime.Date, timeZone)) ??
+        Annually(timeZone).GetNextUtcInstant(TimeZoneHelper.NoonOfDateToUtc(localDateTime, timeZone)) ??
         throw new InvalidOperationException($"No year was found for local date {localDateTime} in timezone {timeZone}");
 }

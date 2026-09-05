@@ -1,6 +1,7 @@
 ﻿using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using Occurify.Extensions;
+using Occurify.Reactive.Helpers;
 
 namespace Occurify.Reactive.Extensions;
 
@@ -31,7 +32,8 @@ public static partial class PeriodTimelineExtensions
     /// </summary>
     public static IObservable<PeriodTimelineSample> ToSampleObservable(this IPeriodTimeline periodTimeline,
         IScheduler scheduler, bool emitSampleUponSubscribe = true) =>
-        periodTimeline.ToSampleObservable(DateTime.UtcNow, scheduler, emitSampleUponSubscribe);
+        // The clock is read per subscription (and from the scheduler) so late or repeated subscribers don't replay samples that already passed.
+        Observable.Defer(() => periodTimeline.ToSampleObservable(scheduler.Now.UtcDateTime, scheduler, emitSampleUponSubscribe));
 
     /// <summary>
     /// Returns a <c>IObservable</c> that emits a <see cref="PeriodTimelineSample"/> every time a period starts or ends using <paramref name="relativeTo"/> as a starting time.
@@ -40,6 +42,8 @@ public static partial class PeriodTimelineExtensions
     public static IObservable<PeriodTimelineSample> ToSampleObservable(this IPeriodTimeline periodTimeline,
         DateTime relativeTo, IScheduler scheduler, bool emitSampleUponSubscribe = true)
     {
+        DateTimeGuard.EnsureUtc(relativeTo, nameof(relativeTo));
+
         if (emitSampleUponSubscribe)
         {
             return Observable.Defer(() =>
@@ -47,7 +51,7 @@ public static partial class PeriodTimelineExtensions
                     .Prepend(periodTimeline.SampleAt(relativeTo)));
         }
 
-        return periodTimeline.ToSampleObservableInternal(relativeTo, scheduler);
+        return Observable.Defer(() => periodTimeline.ToSampleObservableInternal(relativeTo, scheduler));
     }
 
     private static IObservable<PeriodTimelineSample> ToSampleObservableInternal(this IPeriodTimeline periodTimeline,

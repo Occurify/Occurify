@@ -2,6 +2,7 @@
 using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using Occurify.Reactive.Helpers;
 
 namespace Occurify.Reactive.Extensions;
 
@@ -33,15 +34,9 @@ public static partial class TimelineCollectionExtensions
     public static IObservable<DateTime> ToInstantObservable(this IEnumerable<ITimeline> source, IScheduler scheduler,
         bool emitInstantUponSubscribe = true)
     {
-        if (emitInstantUponSubscribe)
-        {
-            var utcNow = DateTime.UtcNow;
-            source = source.ToArray();
-            return Observable.Defer(() =>
-                source.ToInstantObservableInternal(utcNow, scheduler).Prepend(utcNow));
-        }
-
-        return source.ToInstantObservableInternal(DateTime.UtcNow, scheduler);
+        var timelines = source.ToArray();
+        // The clock is read per subscription (and from the scheduler) so late or repeated subscribers don't replay instants that already passed.
+        return Observable.Defer(() => timelines.ToInstantObservable(scheduler.Now.UtcDateTime, scheduler, emitInstantUponSubscribe));
     }
 
     /// <summary>
@@ -51,14 +46,16 @@ public static partial class TimelineCollectionExtensions
     public static IObservable<DateTime> ToInstantObservable(this IEnumerable<ITimeline> source, DateTime relativeTo,
         IScheduler scheduler, bool emitInstantUponSubscribe = true)
     {
+        DateTimeGuard.EnsureUtc(relativeTo, nameof(relativeTo));
+
+        var timelines = source.ToArray();
         if (emitInstantUponSubscribe)
         {
-            source = source.ToArray();
             return Observable.Defer(() =>
-                source.ToInstantObservableInternal(relativeTo, scheduler).Prepend(relativeTo));
+                timelines.ToInstantObservableInternal(relativeTo, scheduler).Prepend(relativeTo));
         }
 
-        return source.ToInstantObservableInternal(relativeTo, scheduler);
+        return Observable.Defer(() => timelines.ToInstantObservableInternal(relativeTo, scheduler));
     }
 
     private static IObservable<DateTime> ToInstantObservableInternal(this IEnumerable<ITimeline> source,

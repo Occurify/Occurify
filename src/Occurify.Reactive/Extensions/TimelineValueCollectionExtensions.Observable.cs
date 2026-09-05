@@ -2,6 +2,7 @@
 using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using Occurify.Reactive.Helpers;
 
 namespace Occurify.Reactive.Extensions;
 
@@ -52,16 +53,9 @@ public static partial class TimelineValueCollectionExtensions
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, IScheduler scheduler,
         bool emitSampleUponSubscribe = true)
     {
-        if (emitSampleUponSubscribe)
-        {
-            var utcNow = DateTime.UtcNow;
-            source = source.ToArray();
-            return Observable.Defer(() =>
-                source.ToSampleObservableInternal(utcNow, scheduler)
-                    .Prepend(new KeyValuePair<DateTime, TValue[]>(utcNow, source.GetValuesAtUtcInstant(utcNow))));
-        }
-
-        return source.ToSampleObservableInternal(DateTime.UtcNow, scheduler);
+        var timelines = source.ToArray();
+        // The clock is read per subscription (and from the scheduler) so late or repeated subscribers don't replay samples that already passed.
+        return Observable.Defer(() => timelines.ToSampleObservable(scheduler.Now.UtcDateTime, scheduler, emitSampleUponSubscribe));
     }
 
     /// <summary>
@@ -72,15 +66,17 @@ public static partial class TimelineValueCollectionExtensions
         this IEnumerable<KeyValuePair<ITimeline, TValue>> source, DateTime relativeTo, IScheduler scheduler,
         bool emitSampleUponSubscribe = true)
     {
+        DateTimeGuard.EnsureUtc(relativeTo, nameof(relativeTo));
+
+        var timelines = source.ToArray();
         if (emitSampleUponSubscribe)
         {
-            source = source.ToArray();
             return Observable.Defer(() =>
-                source.ToSampleObservableInternal(relativeTo, scheduler)
-                    .Prepend(new KeyValuePair<DateTime, TValue[]>(relativeTo, source.GetValuesAtUtcInstant(relativeTo))));
+                timelines.ToSampleObservableInternal(relativeTo, scheduler)
+                    .Prepend(new KeyValuePair<DateTime, TValue[]>(relativeTo, timelines.GetValuesAtUtcInstant(relativeTo))));
         }
 
-        return source.ToSampleObservableInternal(relativeTo, scheduler);
+        return Observable.Defer(() => timelines.ToSampleObservableInternal(relativeTo, scheduler));
     }
 
     private static IObservable<KeyValuePair<DateTime, TValue[]>> ToSampleObservableInternal<TValue>(

@@ -161,6 +161,11 @@ internal class SunPhaseTimeline : Timeline
 
     public override bool IsInstant(DateTime utcDateTime)
     {
+        if (utcDateTime.Kind != DateTimeKind.Utc)
+        {
+            throw new ArgumentException($"{nameof(utcDateTime)} should be UTC time.");
+        }
+
         if (!_phases.Any())
         {
             return false;
