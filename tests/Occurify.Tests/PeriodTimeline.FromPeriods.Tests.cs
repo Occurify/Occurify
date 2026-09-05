@@ -50,6 +50,32 @@ public class PeriodTimelineFromPeriodsTests
         Execute_MergingGivesSameResult(TimelineMethods.IsInstant, periods, expected);
     }
 
+    [TestMethod]
+    public void FromPeriod_ZeroDuration_IsEmpty()
+    {
+        var instant = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        var periodTimeline = Period.Create(instant, instant).AsPeriodTimeline();
+
+        Assert.IsTrue(periodTimeline.IsEmpty());
+        Assert.IsFalse(periodTimeline.ContainsInstant(instant));
+        Assert.AreEqual(0, periodTimeline.Count());
+        Assert.IsTrue(Period.Create(instant, TimeSpan.Zero).AsPeriodTimeline().IsEmpty());
+    }
+
+    [TestMethod]
+    public void FromPeriods_ZeroDurationPeriods_AreIgnored()
+    {
+        var a = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        var b = a.AddDays(1);
+
+        var adjacent = PeriodTimeline.FromPeriods(Period.Create(a, b), Period.Create(b, b)).ToArray();
+        var alone = PeriodTimeline.FromPeriods(Period.Create(a, a));
+
+        CollectionAssert.AreEqual(new[] { Period.Create(a, b) }, adjacent);
+        Assert.IsTrue(alone.IsEmpty());
+    }
+
     private void ExecuteTest(TimelineMethods method, string[] periods, string expected)
     {
         Console.WriteLine($"Periods:  \"{periods.FirstOrDefault() ?? ""}\"");

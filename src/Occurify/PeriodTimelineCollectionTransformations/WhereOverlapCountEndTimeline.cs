@@ -93,6 +93,11 @@ namespace Occurify.PeriodTimelineCollectionTransformations
 
         public override bool IsInstant(DateTime utcDateTime)
         {
+            if (utcDateTime.Kind != DateTimeKind.Utc)
+            {
+                throw new ArgumentException($"{nameof(utcDateTime)} should be UTC time.");
+            }
+
             var hasStart = _sourceStartTimelines.IsInstant(utcDateTime);
             var hasEnd = _sourceEndTimelines.IsInstant(utcDateTime);
             if (!hasStart && !hasEnd)

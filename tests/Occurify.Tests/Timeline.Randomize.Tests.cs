@@ -30,6 +30,28 @@ public class TimelineRandomizeTests
         ExecuteTest(TimelineMethods.IsInstant, source, expected, maxDeviationBefore, maxDeviationAfter, randomResults);
     }
         
+    [TestMethod]
+    public void Randomize_InstantCloserToMinValueThanDeviation_YieldsUtcInstants()
+    {
+        var instant = new DateTime(1, 1, 10, 0, 0, 0, DateTimeKind.Utc);
+        var deviation = TimeSpan.FromDays(30);
+
+        var randomized = instant.AsTimeline().Randomize(1337, deviation).ToArray();
+
+        Assert.HasCount(1, randomized);
+        Assert.AreEqual(DateTimeKind.Utc, randomized[0].Kind);
+        Assert.IsTrue(randomized[0] <= instant + deviation);
+    }
+
+    [TestMethod]
+    public void Randomize_NegativeDeviation_Throws()
+    {
+        var timeline = DateTime.UtcNow.AsTimeline();
+
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => timeline.Randomize(1, TimeSpan.FromHours(-1), TimeSpan.Zero));
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => timeline.Randomize(1, TimeSpan.Zero, TimeSpan.FromHours(-1)));
+    }
+
     private void ExecuteTest(TimelineMethods method, string source, string expected, int maxDeviationBefore, int maxDeviationAfter, TimelineRandomResult[] randomResults)
     {
         Console.WriteLine($"Source:               \"{source}\"");

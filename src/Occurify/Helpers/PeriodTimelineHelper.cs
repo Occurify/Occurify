@@ -10,7 +10,11 @@ namespace Occurify.Helpers
             // While we could use Merge to combine period timelines per provided period but this approach scales poorly as data grows. 
             // Further optimization is possible (e.g., merging here or limiting timelines by adding periods to ones that fit), 
             // but this implementation handles many common cases well.
-            var orderedPeriods = periods.OrderBy(p => p).ToArray();
+            // Zero-duration periods contain no instants; a start and end on the same instant would read as a period that never ends.
+            var orderedPeriods = periods
+                .Where(p => p.Start == null || p.End == null || p.Start != p.End)
+                .OrderBy(p => p)
+                .ToArray();
 
             if (!orderedPeriods.Any())
             {

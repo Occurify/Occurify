@@ -379,6 +379,11 @@
   // Multiple masks
   [
     {
+      "source  ": "<>   <>",
+      "periods ": "    <  >",
+      "expected": "     <> "
+    },
+    {
       "source  ": "<X>",
       "periods ": "<X>",
       "expected": "<X>"

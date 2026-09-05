@@ -1,4 +1,5 @@
 ﻿using Occurify.Extensions;
+using Occurify.Helpers;
 
 namespace Occurify.PeriodTimelineFilters;
 
@@ -84,13 +85,14 @@ internal class WithinEndTimeline : Timeline
 
             if (!_mask.TryGetPeriod(next.Value.AddTicks(-1), out maskPeriod))
             {
-                // If the next instant is not in any mask period, we can optimize by starting to look from just before the start of the next mask period. This way we can skip any instants we know for sure are outside the mask.
-                var nextMaskPeriodStart = _mask.EndTimeline.GetCurrentOrNextUtcInstant(next.Value);
+                // If the next instant is not in any mask period, we can optimize by starting to look from the start of the next mask period. This way we can skip any instants we know for sure are outside the mask.
+                // An end within a mask period is always later than that mask period's start, so searching strictly after the mask start is safe. This also guarantees progress when the mask starts exactly at next.
+                var nextMaskPeriodStart = _mask.StartTimeline.GetCurrentOrNextUtcInstant(next.Value);
                 if (nextMaskPeriodStart == null)
                 {
                     return null;
                 }
-                utcRelativeTo = nextMaskPeriodStart.Value.AddTicks(-1); // note: this could be equal to next.Value, which is also fine.
+                utcRelativeTo = DateTimeHelper.GetLatest(next.Value, nextMaskPeriodStart.Value);
             }
             else
             {

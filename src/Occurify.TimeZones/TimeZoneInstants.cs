@@ -74,7 +74,7 @@ public static class TimeZoneInstants
     /// </summary>
     public static ITimeline DailyAt(int hour, int minute, int second, int millisecond) => DailyAt(new TimeOnly(hour, minute, second, millisecond));
 
-#if NET7_0 || NET8_0 || NET9_0
+#if NET7_0_OR_GREATER
     /// <summary>
     /// Returns a <see cref="ITimeline"/> with one instant every day at the provided time in <see cref="TimeZoneInfo.Local"/>.
     /// </summary>
@@ -86,7 +86,7 @@ public static class TimeZoneInstants
     /// </summary>
     public static ITimeline DailyAt(TimeOnly timeOfDay, TimeZoneInfo timeZone)
     {
-#if NET7_0 || NET8_0 || NET9_0
+#if NET7_0_OR_GREATER
         if (timeOfDay.Millisecond != 0 || timeOfDay.Microsecond != 0 || timeOfDay.Nanosecond != 0)
         {
             return FromCron(new TimeOnly(timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second).ToCronExpression())
@@ -130,7 +130,7 @@ public static class TimeZoneInstants
     /// </summary>
     public static ITimeline DailyAt(int hour, int minute, int second, int millisecond, TimeZoneInfo timeZone) => DailyAt(new TimeOnly(hour, minute, second, millisecond), timeZone);
 
-#if NET7_0 || NET8_0 || NET9_0
+#if NET7_0_OR_GREATER
     /// <summary>
     /// Returns a <see cref="ITimeline"/> with one instant every day at the provided time in provided timezone <paramref name="timeZone"/>.
     /// </summary>

@@ -71,6 +71,8 @@ public static partial class PeriodTimelineExtensions
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> in which all periods in <paramref name="source"/> with equal end and start instants are combined into a single period.
+    /// Note: if every period in <paramref name="source"/> is consecutive with the next (for example <see cref="PeriodTimeline.Periodic(TimeSpan)"/>), the result is a single period covering all of time,
+    /// which can only be determined by visiting every period. On an infinite <paramref name="source"/> that does not terminate.
     /// </summary>
     public static IPeriodTimeline Stitch(this IPeriodTimeline source)
     {
@@ -236,7 +238,7 @@ public static partial class PeriodTimelineExtensions
     /// Offsets <paramref name="source"/> with <paramref name="microseconds"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
     public static IPeriodTimeline OffsetMicroseconds(this IPeriodTimeline source, double microseconds) =>
-#if NET7_0 || NET8_0 || NET9_0
+#if NET7_0_OR_GREATER
         source.Offset(TimeSpan.FromMicroseconds(microseconds));
 #else
         source.Offset(TimeSpan.FromTicks((long)(microseconds * 10)));

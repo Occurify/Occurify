@@ -43,7 +43,7 @@ public static partial class TimelineCollectionExtensions
     /// Duplicates are removed.
     /// </summary>
     public static IEnumerable<DateTime> EnumerateBackwardsFrom(this IEnumerable<ITimeline> source, DateTime utcStart) =>
-        source.Combine().EnumerateTo(utcStart);
+        source.Combine().EnumerateBackwardsFrom(utcStart);
 
     /// <summary>
     /// Enumerates all instants on <paramref name="source"/> that occur between <paramref name="utcStart"/> and <paramref name="utcEnd"/> from earliest to latest.

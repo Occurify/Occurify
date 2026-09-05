@@ -143,12 +143,14 @@ public static partial class PeriodTimelineExtensions
         {
             if (source.TryGetPeriod(utcStart, out var period) &&
                 (period.Start == null ||
-                 period.Start < utcStart))
+                 period.Start < utcStart) &&
+                (periodIncludeOptions.AllowsEndPartial() ||
+                 period.End <= utcEnd))
             {
                 yield return period;
             }
         }
-            
+
         var current = source.GetNextCompletePeriod(utcStart);
         while (current != null &&
                ((periodIncludeOptions.AllowsEndPartial() && current.Start < utcEnd) ||
@@ -182,10 +184,12 @@ public static partial class PeriodTimelineExtensions
         if (periodIncludeOptions.AllowsEndPartial())
         {
             if (source.TryGetPeriod(utcEnd, out var period) &&
-                (period.Start == null || 
+                (period.Start == null ||
                  period.Start < utcEnd) &&
                 (period.End == null ||
-                 period.End > utcEnd))
+                 period.End > utcEnd) &&
+                (periodIncludeOptions.AllowsStartPartial() ||
+                 period.Start >= utcStart))
             {
                 yield return period;
             }

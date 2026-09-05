@@ -1,4 +1,4 @@
-﻿
+
 namespace Occurify.PeriodTimelineTransformations;
 
 internal class InvertedEndTimeline : Timeline
@@ -21,7 +21,7 @@ internal class InvertedEndTimeline : Timeline
         do
         {
             previousStart = _source.StartTimeline.GetPreviousUtcInstant(utcRelativeTo);
-            if (previousStart == null)
+            if (previousStart == null || previousStart == DateTime.MinValue)
             {
                 return null;
             }
@@ -61,6 +61,12 @@ internal class InvertedEndTimeline : Timeline
         if (utcDateTime.Kind != DateTimeKind.Utc)
         {
             throw new ArgumentException($"{nameof(utcDateTime)} should be UTC time.");
+        }
+
+        // A period starting at DateTime.MinValue has no gap before it, so there is nothing to end here.
+        if (utcDateTime == DateTime.MinValue)
+        {
+            return false;
         }
 
         return _source.StartTimeline.IsInstant(utcDateTime) && !_source.EndTimeline.IsInstant(utcDateTime);

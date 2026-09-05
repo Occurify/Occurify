@@ -55,7 +55,8 @@ public static partial class PeriodTimelineExtensions
         var periodMask = mask.AsPeriodTimeline();
         if (periodMask.IsEmpty())
         {
-            return source;
+            // A fresh wrapper keeps the result distinct from the source, so callers that key dictionaries on the result never collide.
+            return new PeriodTimeline(source.StartTimeline, source.EndTimeline);
         }
 
         return source.Within(periodMask.Invert());
@@ -69,7 +70,8 @@ public static partial class PeriodTimelineExtensions
         var periodMask = mask.AsPeriodTimeline();
         if (periodMask.IsEmpty())
         {
-            return source;
+            // A fresh wrapper keeps the result distinct from the source, so callers that key dictionaries on the result never collide.
+            return new PeriodTimeline(source.StartTimeline, source.EndTimeline);
         }
 
         return source.Within(periodMask.Invert());
@@ -83,7 +85,8 @@ public static partial class PeriodTimelineExtensions
         var periodMask = mask.AsPeriodTimeline();
         if (periodMask.IsEmpty())
         {
-            return source;
+            // A fresh wrapper keeps the result distinct from the source, so callers that key dictionaries on the result never collide.
+            return new PeriodTimeline(source.StartTimeline, source.EndTimeline);
         }
 
         return source.Within(periodMask.Invert());
@@ -96,7 +99,7 @@ public static partial class PeriodTimelineExtensions
     {
         if (mask.IsEmpty())
         {
-            return source;
+            return new PeriodTimeline(source.StartTimeline, source.EndTimeline);
         }
 
         return source.Within(mask.Invert());
