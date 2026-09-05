@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Occurify.Extensions;
+using Occurify.Tests.Helpers;
 using Occurify.Tests.StringHelper;
 using Occurify.Tests.TestCases.Poco;
 
@@ -30,26 +31,44 @@ public class PeriodTimelineNormalizeTests
     }
 
     [TestMethod]
-    [Timeout(10000, CooperativeCancellation = true)]
     public void Normalize_PreviousInstant_DoesNotWalkEveryStart()
     {
         // Hourly starts since the beginning of time and a single end: only the very first start is a valid period start.
-        // Finding it backwards must not visit every hourly start in between.
+        // Finding it backwards must not visit every hourly start in between, so the number of calls on the source is
+        // asserted rather than the elapsed time (walking the 175k starts in this setup takes seconds, not forever).
+        const int maxSourceCalls = 100;
         var origin = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         var end = new DateTime(2020, 1, 1, 0, 30, 0, DateTimeKind.Utc);
-        var starts = Timeline.Periodic(origin, TimeSpan.FromHours(1));
+        var starts = new CountingTimeline(Timeline.Periodic(origin, TimeSpan.FromHours(1)));
         var firstStart = starts.GetCurrentOrNextUtcInstant(new DateTime(0, DateTimeKind.Utc))!.Value;
         var startAfterEnd = starts.GetNextUtcInstant(end)!.Value;
 
         var periodTimeline = starts.To(end.AsTimeline());
         var ends = end.AsTimeline().To(starts);
 
+        starts.Reset();
         CollectionAssert.AreEqual(
             new[] { Period.Create(startAfterEnd, null), Period.Create(firstStart, end) },
             periodTimeline.EnumerateBackwards().Take(2).ToArray());
+        AssertSourceCalls(starts, maxSourceCalls, nameof(PeriodTimelineExtensions.EnumerateBackwards));
+
+        starts.Reset();
         Assert.AreEqual(Period.Create(firstStart, end), periodTimeline.Enumerate().First());
+        AssertSourceCalls(starts, maxSourceCalls, nameof(PeriodTimelineExtensions.Enumerate));
+
+        starts.Reset();
         Assert.AreEqual(Period.Create(firstStart, end), periodTimeline.GetPreviousCompletePeriod(end.AddYears(1)));
+        AssertSourceCalls(starts, maxSourceCalls, nameof(PeriodTimelineExtensions.GetPreviousCompletePeriod));
+
+        starts.Reset();
         Assert.AreEqual(Period.Create(end, startAfterEnd), ends.GetPreviousCompletePeriod(end.AddYears(1)));
+        AssertSourceCalls(starts, maxSourceCalls, nameof(PeriodTimelineExtensions.GetPreviousCompletePeriod) + " on inverted timeline");
+    }
+
+    private static void AssertSourceCalls(CountingTimeline source, int max, string operation)
+    {
+        Console.WriteLine($"{operation}: {source.GetPreviousUtcInstantCalls} previous, {source.GetNextUtcInstantCalls} next, {source.IsInstantCalls} isInstant");
+        Assert.IsLessThanOrEqualTo(max, source.TotalCalls, $"{operation} made {source.TotalCalls} calls on the source timeline, expected at most {max}.");
     }
 
     private void ExecuteTest(TimelineMethods method, string source, string expected)

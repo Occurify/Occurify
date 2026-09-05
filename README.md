@@ -967,6 +967,10 @@ Returns a `IPeriodTimeline` with periods that start and end as the amount of ove
 "result   ": " <> <>   < "
 ```
 
+> The predicate is also evaluated for an overlap count of 0. A predicate that is true for 0 turns the gaps between periods into periods. For example, `n => n < 2` results in periods wherever fewer than two source periods overlap, including where none do.
+
+> A predicate that is true for every count that occurs (for instance `n => n >= 0`) results in a single period without an end. Finding that end requires visiting every period boundary of the source timelines, which does not perform on long or unbounded timelines. See [Important Considerations](#important-considerations).
+
 #### ToOverlapTimelines
 
 Returns a Dictionary with the amount of overlapping periods in the provided periods.
@@ -984,18 +988,25 @@ Returns a Dictionary with the amount of overlapping periods in the provided peri
 
 ## Important Considerations
 
-When applying filters to a timeline, the source timeline still needs to be evaluated upon enumeration. This is an important factor to consider when using a filter.
+Timelines are lazy: nothing is precomputed, and every filter or transformation answers a request by asking its source timelines. A request that has no answer nearby is therefore only resolved once the source runs out of instants, which for periodic and cron based timelines is at the edge of the `DateTime` range. Such a call always returns (`null`, or the boundary it eventually found), but the time it takes grows with the number of source instants it has to visit. Two situations cause this:
 
-For example: If you apply a `Within` filter to a period timeline containing Mondays and use Fridays as a mask, every call to the filtered timeline will loop through both timelines when requesting an instant.
+- A filter whose mask and source rarely or never coincide. `Within` on Mondays with Fridays as a mask has to walk every Monday and every Friday until the end of the `DateTime` range before it can return `null`.
+- An operation whose result can only be known after visiting every period boundary. `Stitch` on a timeline in which every period is consecutive with the next, `Merge` on timelines that together cover all of time, and `WhereOverlapCount` with a predicate that is true for every overlap count that occurs (including 0) all produce a single period without an end. Finding that end means visiting every boundary until the source is exhausted.
 
 ```cs
 IPeriodTimeline mondays = TimeZonePeriods.Days(DayOfWeek.Monday);
 IPeriodTimeline fridays = TimeZonePeriods.Days(DayOfWeek.Friday);
-
 IPeriodTimeline mondaysWithinFridays = mondays.Within(fridays);
 
-DateTime? firstInstant = mondays.StartInstantProvider.GetNextUtcInstant(DateTime.UtcNow); // This method will eventually return null, but won't perform.
+DateTime? firstStart = mondaysWithinFridays.StartTimeline.GetNextUtcInstant(DateTime.UtcNow); // Returns null, but only after walking every Monday and Friday until DateTime.MaxValue.
+
+IPeriodTimeline hours = PeriodTimeline.Periodic(TimeSpan.FromHours(1));
+IPeriodTimeline stitched = hours.Stitch();
+
+DateTime? nextEnd = stitched.EndTimeline.GetNextUtcInstant(DateTime.UtcNow); // Returns null, but only after visiting every hourly boundary until DateTime.MaxValue.
 ```
+
+How long this takes depends on the number of instants and on how expensive each source lookup is. Hourly periods produced by `PeriodTimeline.Periodic` take well under a second to walk to `DateTime.MaxValue`; periods of one second would take the better part of an hour, and cron or solar timelines pay far more per step. Bounding the input with `Within` and a `Period` mask before applying such an operation avoids the walk.
 
 ## Unit Tests
 

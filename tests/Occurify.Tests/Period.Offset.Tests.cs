@@ -1,4 +1,5 @@
 ﻿using Occurify.Extensions;
+using Occurify.Helpers;
 
 namespace Occurify.Tests
 {
@@ -25,8 +26,8 @@ namespace Occurify.Tests
         public void Offset_AddPositive_OverflowsEnd()
         {
             // Arrange
-            var start = DateTime.MaxValue - TimeSpan.FromHours(1);
-            var period = Period.Create(start, DateTime.MaxValue);
+            var start = DateTimeHelper.MaxValueUtc - TimeSpan.FromHours(1);
+            var period = Period.Create(start, DateTimeHelper.MaxValueUtc);
             var amountToAdd = TimeSpan.FromTicks(1);
 
             // Act
@@ -41,8 +42,8 @@ namespace Occurify.Tests
         public void Offset_AddPositive_OverflowsStartAndEnd_ThrowsOverflowException()
         {
             // Arrange
-            var start = DateTime.MaxValue - TimeSpan.FromTicks(1);
-            var period = Period.Create(start, DateTime.MaxValue);
+            var start = DateTimeHelper.MaxValueUtc - TimeSpan.FromTicks(1);
+            var period = Period.Create(start, DateTimeHelper.MaxValueUtc);
             var amountToAdd = TimeSpan.FromTicks(2);
 
             // Act & Assert
@@ -70,8 +71,8 @@ namespace Occurify.Tests
         public void Offset_AddNegative_OverflowsStart()
         {
             // Arrange
-            var end = DateTime.MinValue + TimeSpan.FromHours(1);
-            var period = Period.Create(DateTime.MinValue, end);
+            var end = DateTimeHelper.MinValueUtc + TimeSpan.FromHours(1);
+            var period = Period.Create(DateTimeHelper.MinValueUtc, end);
             var amountToAdd = TimeSpan.FromTicks(1);
 
             // Act
@@ -86,8 +87,8 @@ namespace Occurify.Tests
         public void Offset_AddNegative_OverflowsStartAndEnd_ThrowsOverflowException()
         {
             // Arrange
-            var end = DateTime.MinValue + TimeSpan.FromTicks(1);
-            var period = Period.Create(DateTime.MinValue, end);
+            var end = DateTimeHelper.MinValueUtc + TimeSpan.FromTicks(1);
+            var period = Period.Create(DateTimeHelper.MinValueUtc, end);
             var amountToAdd = TimeSpan.FromTicks(2);
 
             // Act & Assert
