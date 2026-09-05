@@ -29,6 +29,33 @@ public class PeriodTimelineWithinTests
         ExecuteTest(TimelineMethods.IsInstant, source, periods, expected);
     }
         
+    [TestMethod]
+    public void EndTimeline_GetNextUtcInstant_SourceEndBeforeMaskStart_FindsEndInsideLaterMaskPeriod()
+    {
+        // Regression: the end timeline skipped ahead using the mask's end timeline instead of its start timeline, so a
+        // direct GetNextUtcInstant call on the end timeline returned null even though a later period was within the mask.
+        var helper = new StringTimelineHelper();
+        var source = helper.CreatePeriodTimeline("<><> <>");
+        var neverEndingMask = helper.CreatePeriodTimeline("    <  ");
+        var boundedMask = helper.CreatePeriodTimeline("    <  >");
+
+        Assert.AreEqual(helper.Origin.AddTicks(6), source.Within(neverEndingMask).EndTimeline.GetNextUtcInstant(helper.Origin.AddTicks(-1)));
+        Assert.AreEqual(helper.Origin.AddTicks(6), source.Within(boundedMask).EndTimeline.GetNextUtcInstant(helper.Origin.AddTicks(-1)));
+    }
+
+    [TestMethod]
+    public void Within_Invert_Twice_IsSameAsWithin()
+    {
+        var helper = new StringTimelineHelper();
+        var source = helper.CreatePeriodTimeline("<><> <>");
+        var mask = helper.CreatePeriodTimeline("    <  >");
+
+        var within = source.Within(mask);
+
+        CollectionAssert.AreEqual(within.ToArray(), within.Invert().Invert().ToArray());
+        CollectionAssert.AreEqual(new[] { Period.Create(helper.Origin.AddTicks(5), helper.Origin.AddTicks(6)) }, within.ToArray());
+    }
+
     private void ExecuteTest(TimelineMethods method, string source, string periods, string expected)
     {
         Console.WriteLine($"Source:   \"{source}\"");

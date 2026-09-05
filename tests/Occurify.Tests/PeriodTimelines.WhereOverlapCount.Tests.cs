@@ -51,6 +51,30 @@ public class PeriodTimelinesWhereOverlapCountTests
         Execute_InvertedIsTheSameAsUneven(TimelineMethods.IsInstant, periods);
     }
 
+    [TestMethod]
+    public void WhereOverlapCountAtMost_ExcludesInstantsWithMoreOverlap()
+    {
+        var helper = new StringTimelineHelper();
+        var periodTimelines = new[]
+        {
+            helper.CreatePeriodTimeline("<   >  "),
+            helper.CreatePeriodTimeline("  <   >")
+        };
+
+        var atMostOne = periodTimelines.WhereOverlapCountAtMost(1);
+        var atLeastOne = periodTimelines.WhereOverlapCountAtLeast(1);
+
+        Assert.IsTrue(atMostOne.ContainsInstant(helper.Origin.AddTicks(1)));
+        Assert.IsFalse(atMostOne.ContainsInstant(helper.Origin.AddTicks(3)));
+        Assert.IsTrue(atMostOne.ContainsInstant(helper.Origin.AddTicks(5)));
+        Assert.IsTrue(atMostOne.ContainsInstant(helper.Origin.AddTicks(7)));
+
+        Assert.IsTrue(atLeastOne.ContainsInstant(helper.Origin.AddTicks(1)));
+        Assert.IsTrue(atLeastOne.ContainsInstant(helper.Origin.AddTicks(3)));
+        Assert.IsTrue(atLeastOne.ContainsInstant(helper.Origin.AddTicks(5)));
+        Assert.IsFalse(atLeastOne.ContainsInstant(helper.Origin.AddTicks(7)));
+    }
+
     private void ExecuteTest(TimelineMethods method, string[] source, string expected)
     {
         Console.WriteLine($"Source:   \"{source.FirstOrDefault() ?? ""}\"");

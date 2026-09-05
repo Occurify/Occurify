@@ -60,5 +60,23 @@ namespace Occurify.Tests
             // Assert
             Assert.IsNull(result);
         }
+
+        [TestMethod]
+        public void AddOrNullOnOverflow_NegativeResult_IsNotOverflow()
+        {
+            Assert.AreEqual(TimeSpan.FromSeconds(-5), TimeSpan.FromSeconds(5).AddOrNullOnOverflow(TimeSpan.FromSeconds(-10)));
+            Assert.AreEqual(TimeSpan.FromSeconds(-8), TimeSpan.FromSeconds(-5).AddOrNullOnOverflow(TimeSpan.FromSeconds(-3)));
+            Assert.AreEqual(TimeSpan.FromSeconds(-2), TimeSpan.FromSeconds(-5).AddOrNullOnOverflow(TimeSpan.FromSeconds(3)));
+        }
+
+        [TestMethod]
+        public void AddOrNullOnOverflow_Extremes()
+        {
+            Assert.AreEqual(TimeSpan.MinValue, TimeSpan.Zero.AddOrNullOnOverflow(TimeSpan.MinValue));
+            Assert.AreEqual(TimeSpan.MaxValue, TimeSpan.Zero.AddOrNullOnOverflow(TimeSpan.MaxValue));
+            Assert.IsNull(TimeSpan.MinValue.AddOrNullOnOverflow(TimeSpan.MinValue));
+            Assert.IsNull(TimeSpan.MaxValue.AddOrNullOnOverflow(TimeSpan.MaxValue));
+            Assert.AreEqual(TimeSpan.FromTicks(-1), TimeSpan.MinValue.AddOrNullOnOverflow(TimeSpan.MaxValue));
+        }
     }
 }

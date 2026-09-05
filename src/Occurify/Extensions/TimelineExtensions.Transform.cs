@@ -53,7 +53,7 @@ public static partial class TimelineExtensions
     /// Offsets <paramref name="source"/> with <paramref name="microseconds"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
     public static ITimeline OffsetMicroseconds(this ITimeline source, double microseconds) =>
-#if NET7_0 || NET8_0 || NET9_0
+#if NET7_0_OR_GREATER
         source.Offset(TimeSpan.FromMicroseconds(microseconds));
 #else
         source.Offset(TimeSpan.FromTicks((long)(microseconds * 10)));

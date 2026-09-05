@@ -97,18 +97,21 @@ internal static class DateTimeHelper
         // Note: Currently this method does not support a random that "disappears" before DateTime.MinValue or past DateTime.MaxValue. This could be a possible improvement.
         // If doing that, it causes edge cases for period timelines with only a single start or a single end.
 
+        // The gap between two neighbouring instants is split between them using the same fraction. The two fractions
+        // are derived from a single double so that both sides round the same way; computing them independently can
+        // differ by one tick and make neighbouring randomized instants collide.
+        var afterFraction = maxDeviationAfter.Ticks / (maxDeviationBefore.Ticks + (double)maxDeviationAfter.Ticks);
+
         var lowerBoundary = origin.AddOrNullOnOverflow(-maxDeviationBefore);
         if (beforeBoundary != null && maxDeviationBefore.Ticks != 0)
         {
-            var beforeFraction = maxDeviationBefore.Ticks / (maxDeviationBefore.Ticks + (double)maxDeviationAfter.Ticks);
-            var bound = GetDateInBetween(beforeBoundary.Value, origin, 1 - beforeFraction);
+            var bound = GetDateInBetween(beforeBoundary.Value, origin, afterFraction);
             lowerBoundary = lowerBoundary == null ? bound : GetLatest(bound, lowerBoundary.Value);
         }
 
         var upperBoundary = origin.AddOrNullOnOverflow(maxDeviationAfter);
         if (afterBoundary != null && maxDeviationAfter.Ticks != 0)
         {
-            var afterFraction = maxDeviationAfter.Ticks / (maxDeviationBefore.Ticks + (double)maxDeviationAfter.Ticks);
             var bound = GetDateInBetween(origin, afterBoundary.Value, afterFraction);
             upperBoundary = upperBoundary == null ? bound : GetEarliest(bound, upperBoundary.Value);
         }

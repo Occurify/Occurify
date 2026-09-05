@@ -1,4 +1,6 @@
-﻿
+﻿using Occurify.Extensions;
+using Occurify.Helpers;
+
 namespace Occurify.PeriodTimelineTransformations;
 
 internal class NormalizedEndTimeline : Timeline
@@ -18,11 +20,24 @@ internal class NormalizedEndTimeline : Timeline
         }
 
         var previousEnd = _source.EndTimeline.GetPreviousUtcInstant(utcRelativeTo);
-        while (previousEnd != null && !IsValidEndOfPeriod(previousEnd.Value))
+        if (previousEnd == null)
         {
-            previousEnd = _source.EndTimeline.GetPreviousUtcInstant(previousEnd.Value);
+            return null;
         }
-        return previousEnd;
+        if (IsValidEndOfPeriod(previousEnd.Value))
+        {
+            return previousEnd;
+        }
+
+        // previousEnd is part of a run of ends without a start in between. The valid end of that run is the first
+        // end after the last start before it (or the very first end if there is no such start).
+        // Mirrors GetNextUtcInstant, which jumps to the next start instead of visiting every end in the run.
+        var previousStart = _source.StartTimeline.GetPreviousUtcInstant(previousEnd.Value);
+        if (previousStart == null)
+        {
+            return _source.EndTimeline.GetCurrentOrNextUtcInstant(DateTimeHelper.MinValueUtc);
+        }
+        return _source.EndTimeline.GetNextUtcInstant(previousStart.Value);
     }
 
     public override DateTime? GetNextUtcInstant(DateTime utcRelativeTo)

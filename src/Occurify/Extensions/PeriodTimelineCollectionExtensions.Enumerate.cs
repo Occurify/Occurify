@@ -48,14 +48,14 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Periods are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
     public static IEnumerable<Period> EnumerateBackwardsToIncludingPartial(this IEnumerable<IPeriodTimeline> source, DateTime utcEnd) =>
-        source.EnumerateBackwards().TakeWhile(p => p.End == null || p.End > utcEnd);
+        source.Select(t => t.EnumerateBackwardsToIncludingPartial(utcEnd)).CombineOrderedEnumerables(descending: true);
 
     /// <summary>
     /// Enumerates all periods on <paramref name="source"/> that end before <paramref name="utcEnd"/> from earliest to latest.
     /// Periods are ordered using <see cref="Period.CompareTo"/>. Duplicates are removed.
     /// </summary>
     public static IEnumerable<Period> EnumerateTo(this IEnumerable<IPeriodTimeline> source, DateTime utcEnd) =>
-        source.Enumerate().TakeWhile(p => p.End <= utcEnd);
+        source.Select(t => t.EnumerateTo(utcEnd)).CombineOrderedEnumerables();
 
     /// <summary>
     /// Enumerates all periods on <paramref name="source"/> that end before <paramref name="utcStart"/> from latest to earliest.

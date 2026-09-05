@@ -30,6 +30,30 @@ public class TimelineOffsetTests
         ExecuteTest(TimelineMethods.IsInstant, source, offset, expected);
     }
 
+    [TestMethod]
+    public void ShiftOperators_OffsetTimeline()
+    {
+        var instant = new DateTime(2025, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+        var timeline = instant.AsTimeline();
+        var offset = TimeSpan.FromHours(1);
+
+        var later = timeline >> offset;
+        var earlier = timeline << offset;
+        var laterPeriods = timeline.AsConsecutivePeriodTimeline() >> offset;
+        var earlierPeriods = timeline.AsConsecutivePeriodTimeline() << offset;
+
+        Assert.IsTrue(later.IsInstant(instant + offset));
+        Assert.IsTrue(earlier.IsInstant(instant - offset));
+        Assert.IsTrue(laterPeriods.StartTimeline.IsInstant(instant + offset));
+        Assert.IsTrue(earlierPeriods.StartTimeline.IsInstant(instant - offset));
+    }
+
+    [TestMethod]
+    public void Offset_TimeSpanMinValue_Throws()
+    {
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => DateTime.UtcNow.AsTimeline().Offset(TimeSpan.MinValue));
+    }
+
     private void ExecuteTest(TimelineMethods method, string source, int offset, string expected)
     {
         Console.WriteLine($"Source:   \"{source}\"");

@@ -20,6 +20,14 @@ internal class RandomizedTimeline : Timeline
     {
         _source = source ?? throw new ArgumentNullException(nameof(source));
         _randomFunc = randomFunc ?? throw new ArgumentNullException(nameof(randomFunc));
+        if (maxDeviationBefore < TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxDeviationBefore), $"{nameof(maxDeviationBefore)} cannot be negative.");
+        }
+        if (maxDeviationAfter < TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxDeviationAfter), $"{nameof(maxDeviationAfter)} cannot be negative.");
+        }
 
         _seed = seed;
         _maxDeviationBefore = maxDeviationBefore;
@@ -134,9 +142,9 @@ internal class RandomizedTimeline : Timeline
     {
         // We make the boundaries one tick smaller in both directions to prevent overlap.
         var previous = _source.GetPreviousUtcInstant(instant);
-        var boundaryBefore = previous == null ? DateTime.MinValue : previous + TimeSpan.FromTicks(1);
+        var boundaryBefore = previous == null ? DateTimeHelper.MinValueUtc : previous + TimeSpan.FromTicks(1);
         var next = _source.GetNextUtcInstant(instant);
-        var boundaryAfter = next == null ? DateTime.MaxValue : next - TimeSpan.FromTicks(1);
+        var boundaryAfter = next == null ? DateTimeHelper.MaxValueUtc : next - TimeSpan.FromTicks(1);
         return DateTimeHelper.GetRandomDateTimeBetweenBoundaries(
             instant,
             _maxDeviationBefore,

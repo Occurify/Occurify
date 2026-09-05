@@ -11,6 +11,11 @@ internal class OffsetTimeline : Timeline
     public OffsetTimeline(ITimeline source, TimeSpan offset)
     {
         _source = source ?? throw new ArgumentNullException(nameof(source));
+        if (offset == TimeSpan.MinValue)
+        {
+            // TimeSpan.MinValue cannot be negated, which the boundary checks below rely on.
+            throw new ArgumentOutOfRangeException(nameof(offset), $"{nameof(offset)} cannot be TimeSpan.MinValue.");
+        }
 
         _offset = offset;
     }

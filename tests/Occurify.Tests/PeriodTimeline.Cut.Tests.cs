@@ -29,6 +29,20 @@ public class PeriodTimelineCutTests
         ExecuteTest(TimelineMethods.IsInstant, source, periods, expected);
     }
         
+    [TestMethod]
+    public void Cut_AtMinValue_DoesNotThrow()
+    {
+        var minValueUtc = new DateTime(0, DateTimeKind.Utc);
+        var end = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        var source = Period.Create(null, end).AsPeriodTimeline();
+
+        var cut = source.Cut(minValueUtc).ToArray();
+
+        Assert.HasCount(1, cut);
+        Assert.AreEqual(end, cut[0].End);
+        Assert.IsTrue(source.Cut(minValueUtc).ContainsInstant(minValueUtc));
+    }
+
     private void ExecuteTest(TimelineMethods method, string source, string instants, string expected)
     {
         Console.WriteLine($"Source:   \"{source}\"");

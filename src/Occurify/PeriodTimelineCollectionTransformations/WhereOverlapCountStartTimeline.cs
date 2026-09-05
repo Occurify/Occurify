@@ -106,6 +106,11 @@ namespace Occurify.PeriodTimelineCollectionTransformations
 
         public override bool IsInstant(DateTime utcDateTime)
         {
+            if (utcDateTime.Kind != DateTimeKind.Utc)
+            {
+                throw new ArgumentException($"{nameof(utcDateTime)} should be UTC time.");
+            }
+
             if (IsOverlapOnly())
             {
                 return utcDateTime == DateTime.MinValue;

@@ -94,7 +94,7 @@ public partial interface ITimeline
     /// </summary>
     public static ITimeline operator -(ITimeline source, TimeSpan offset) => source.Offset(-offset);
 
-#if NET7_0 || NET8_0 || NET9_0
+#if NET7_0_OR_GREATER
     /// <summary>
     /// Offsets <paramref name="source"/> with -<paramref name="offset"/>. Overflow on <c>DateTime.MinValue</c> or <c>DateTime.MaxValue</c> results in <c>null</c>.
     /// </summary>
