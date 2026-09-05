@@ -21,8 +21,16 @@ internal class RandomizedStartTimeline : Timeline
         _seed = seed;
         _maxDeviationBefore = maxDeviationBefore;
         _maxDeviationAfter = maxDeviationAfter;
-        _randomFunc = randomFunc;
+        _randomFunc = randomFunc ?? throw new ArgumentNullException(nameof(randomFunc));
         _source = source ?? throw new ArgumentNullException(nameof(source));
+        if (maxDeviationBefore < TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxDeviationBefore), $"{nameof(maxDeviationBefore)} cannot be negative.");
+        }
+        if (maxDeviationAfter < TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxDeviationAfter), $"{nameof(maxDeviationAfter)} cannot be negative.");
+        }
     }
 
     public override DateTime? GetPreviousUtcInstant(DateTime utcRelativeTo)

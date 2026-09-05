@@ -638,6 +638,11 @@
   ],
   "enumerateRangeStartPartialAllowed": [
     {
+      "source  ": "<  >",
+      "range   ": " || ",
+      "expected": "    "
+    },
+    {
       "source  ": "  ",
       "range   ": "||",
       "expected": "  "
@@ -740,6 +745,11 @@
   ],
   "enumerateRangeEndPartialAllowed": [
     {
+      "source  ": "<  >",
+      "range   ": " || ",
+      "expected": "    "
+    },
+    {
       "source  ": "  ",
       "range   ": "||",
       "expected": "  "
@@ -841,6 +851,11 @@
     }
   ],
   "enumerateRangePartialAllowed": [
+    {
+      "source  ": "<  >",
+      "range   ": " || ",
+      "expected": "<  >"
+    },
     {
       "source  ": "  ",
       "range   ": "||",

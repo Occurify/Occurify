@@ -14,7 +14,7 @@
             {
                 throw new ArgumentException("Milliseconds are not supported in cron expressions.");
             }
-#if NET7_0 || NET8_0 || NET9_0
+#if NET7_0_OR_GREATER
             if (timeOnly.Microsecond != 0)
             {
                 throw new ArgumentException("Microseconds are not supported in cron expressions.");

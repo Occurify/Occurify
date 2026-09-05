@@ -23,6 +23,14 @@ internal class RandomizedEndTimeline : Timeline
         _maxDeviationAfter = maxDeviationAfter;
         _randomFunc = randomFunc ?? throw new ArgumentNullException(nameof(randomFunc));
         _source = source ?? throw new ArgumentNullException(nameof(source));
+        if (maxDeviationBefore < TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxDeviationBefore), $"{nameof(maxDeviationBefore)} cannot be negative.");
+        }
+        if (maxDeviationAfter < TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxDeviationAfter), $"{nameof(maxDeviationAfter)} cannot be negative.");
+        }
     }
 
     public override DateTime? GetPreviousUtcInstant(DateTime utcRelativeTo)
@@ -150,7 +158,7 @@ internal class RandomizedEndTimeline : Timeline
     private DateTime? GetRandomizedInstant(DateTime instant)
     {
         var previous = _source.StartTimeline.GetPreviousUtcInstant(instant);
-        var boundaryBefore = previous == null ? DateTime.MinValue : previous + TimeSpan.FromTicks(1);
+        var boundaryBefore = previous == null ? DateTimeHelper.MinValueUtc : previous + TimeSpan.FromTicks(1);
         var boundaryAfter = _source.StartTimeline.GetCurrentOrNextUtcInstant(instant);
         return DateTimeHelper.GetRandomDateTimeBetweenBoundaries(
             instant, 

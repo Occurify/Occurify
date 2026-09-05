@@ -68,8 +68,9 @@ public static partial class DateTimeExtensions
     /// </summary>
     public static DateTime? AddOrNullOnOverflow(this DateTime dateTime, TimeSpan timeSpanToAdd)
     {
-        if (DateTime.MaxValue.Ticks - dateTime.Ticks < timeSpanToAdd.Ticks ||
-            dateTime.Ticks < -timeSpanToAdd.Ticks)
+        // Written without negating timeSpanToAdd so that TimeSpan.MinValue (whose negation overflows) is handled.
+        if ((timeSpanToAdd.Ticks > 0 && DateTime.MaxValue.Ticks - dateTime.Ticks < timeSpanToAdd.Ticks) ||
+            (timeSpanToAdd.Ticks < 0 && dateTime.Ticks + timeSpanToAdd.Ticks < 0))
         {
             return null;
         }

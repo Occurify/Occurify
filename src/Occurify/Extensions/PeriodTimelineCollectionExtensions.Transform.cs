@@ -87,7 +87,19 @@ public static partial class PeriodTimelineCollectionExtensions
     /// </summary>
     public static IPeriodTimeline IntersectPeriods(this IEnumerable<IPeriodTimeline> source)
     {
-        return source.Aggregate((current, pp) => current.IntersectPeriods(pp));
+        // Aggregate without a seed throws on an empty sequence; an empty collection has no periods to intersect.
+        using var enumerator = source.GetEnumerator();
+        if (!enumerator.MoveNext())
+        {
+            return PeriodTimeline.Empty();
+        }
+
+        var result = enumerator.Current;
+        while (enumerator.MoveNext())
+        {
+            result = result.IntersectPeriods(enumerator.Current);
+        }
+        return result;
     }
 
     /// <summary>
@@ -137,7 +149,7 @@ public static partial class PeriodTimelineCollectionExtensions
     /// </summary>
     public static IPeriodTimeline Merge(this IEnumerable<IPeriodTimeline> source)
     {
-        return source.Aggregate((current, pp) => current.Merge(pp));
+        return source.Aggregate(PeriodTimeline.Empty(), (current, pp) => current.Merge(pp));
     }
 
     /// <summary>
@@ -281,10 +293,12 @@ public static partial class PeriodTimelineCollectionExtensions
     /// Returns a <see cref="IPeriodTimeline"/> with periods that start and end as the amount of overlapping periods in <paramref name="source"/> is at most <paramref name="maxOverlapping"/> .
     /// </summary>
     public static IPeriodTimeline WhereOverlapCountAtMost(this IEnumerable<IPeriodTimeline> source, int maxOverlapping) =>
-        source.WhereOverlapCount(c => c >= maxOverlapping);
+        source.WhereOverlapCount(c => c <= maxOverlapping);
 
     /// <summary>
     /// Returns a <see cref="IPeriodTimeline"/> with periods that start and end as the amount of overlapping periods in <paramref name="source"/> trigger <paramref name="predicate"/> to become true or false.
+    /// Note: if <paramref name="predicate"/> is true for every overlap count that occurs (including 0 before the first period), the result is a single period covering all of time,
+    /// which can only be determined by visiting every period boundary. On infinite timelines in <paramref name="source"/> that does not terminate.
     /// </summary>
     public static IPeriodTimeline WhereOverlapCount(this IEnumerable<IPeriodTimeline> source, Func<int, bool> predicate)
     {

@@ -15,6 +15,13 @@ public partial class PeriodTimeline
             throw new ArgumentException("Infinite period cannot be represented as a period timeline", nameof(period));
         }
 
+        // A zero-duration period contains no instants. Representing it as a start and end on the same instant would
+        // instead read as a period that starts there and never ends.
+        if (period.Start == period.End)
+        {
+            return Empty();
+        }
+
         return new PeriodTimeline(
             period.Start.AsTimeline(),
             period.End.AsTimeline());

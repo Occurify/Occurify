@@ -37,6 +37,32 @@ namespace Occurify.Tests
         }
 
         [TestMethod]
+        public void EnumerateTo_OverlappingTimelines_DoesNotStopAtLongerPeriod()
+        {
+            var utcNow = DateTime.UtcNow;
+            var longPeriod = Period.Create(utcNow.AddDays(1), utcNow.AddDays(10));
+            var shortPeriod = Period.Create(utcNow.AddDays(2), utcNow.AddDays(3));
+            var periodTimelines = new[] { longPeriod.AsPeriodTimeline(), shortPeriod.AsPeriodTimeline() };
+
+            var result = periodTimelines.EnumerateTo(utcNow.AddDays(5)).ToList();
+
+            CollectionAssert.AreEqual(new List<Period> { shortPeriod }, result);
+        }
+
+        [TestMethod]
+        public void EnumerateBackwardsToIncludingPartial_OverlappingTimelines_IncludesPeriodContainingInstant()
+        {
+            var utcNow = DateTime.UtcNow;
+            var longPeriod = Period.Create(utcNow.AddDays(1), utcNow.AddDays(10));
+            var shortPeriod = Period.Create(utcNow.AddDays(2), utcNow.AddDays(3));
+            var periodTimelines = new[] { longPeriod.AsPeriodTimeline(), shortPeriod.AsPeriodTimeline() };
+
+            var result = periodTimelines.EnumerateBackwardsToIncludingPartial(utcNow.AddDays(5)).ToList();
+
+            CollectionAssert.AreEqual(new List<Period> { longPeriod }, result);
+        }
+
+        [TestMethod]
         public void EnumerateBackwards()
         {
             // Arrange

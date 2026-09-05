@@ -211,7 +211,7 @@ public static partial class PeriodTimelineExtensions
         Period? period;
         if (endOfPeriod == DateTime.MinValue)
         {
-            return periodTimeline.EndTimeline.IsInstant(DateTime.MinValue) ||
+            return periodTimeline.EndTimeline.IsInstant(DateTimeHelper.MinValueUtc) ||
                    (periodTimeline.TryGetPeriod(endOfPeriod, out period) && period.ContainsEnd(endOfPeriod));
         }
         return periodTimeline.TryGetPeriod(endOfPeriod.AddTicks(-1), out period) && period.ContainsEnd(endOfPeriod);

@@ -1,4 +1,4 @@
-﻿
+
 namespace Occurify.Extensions;
 
 /// <summary>
@@ -11,8 +11,8 @@ public static class TimeSpanExtensions
     /// </summary>
     public static TimeSpan? AddOrNullOnOverflow(this TimeSpan timeSpan, TimeSpan timeSpanToAdd)
     {
-        if (TimeSpan.MaxValue.Ticks - timeSpan.Ticks < timeSpanToAdd.Ticks ||
-            timeSpan.Ticks < -timeSpanToAdd.Ticks)
+        if ((timeSpanToAdd.Ticks > 0 && timeSpan.Ticks > TimeSpan.MaxValue.Ticks - timeSpanToAdd.Ticks) ||
+            (timeSpanToAdd.Ticks < 0 && timeSpan.Ticks < TimeSpan.MinValue.Ticks - timeSpanToAdd.Ticks))
         {
             return null;
         }

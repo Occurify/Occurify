@@ -188,6 +188,35 @@ public class PeriodTimelineInvertTests
         Assert.IsFalse(firstInstantIsEnd);
     }
 
+    [TestMethod]
+    public void Invert_Twice_Empty_IsEmpty()
+    {
+        var inverted = PeriodTimeline.Empty().Invert().Invert();
+
+        Assert.IsTrue(inverted.IsEmpty());
+        Assert.AreEqual(0, inverted.Enumerate().Count());
+        Assert.AreEqual(0, inverted.EnumerateBackwards().Count());
+    }
+
+    [TestMethod]
+    public void Invert_PeriodStartingAtMinValue_HasNoEndAtMinValue()
+    {
+        var minValueUtc = new DateTime(0, DateTimeKind.Utc);
+        var end = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        var source = Period.Create(minValueUtc, end).AsPeriodTimeline();
+
+        var inverted = source.Invert();
+
+        Assert.IsFalse(inverted.EndTimeline.IsInstant(minValueUtc));
+        CollectionAssert.AreEqual(new[] { Period.Create(end, null) }, inverted.ToArray());
+
+        // Inverting twice yields the same instants; the period is reported as always-started rather than starting at MinValue.
+        var invertedTwice = inverted.Invert();
+        Assert.IsTrue(invertedTwice.ContainsInstant(minValueUtc));
+        Assert.IsFalse(invertedTwice.ContainsInstant(end));
+        CollectionAssert.AreEqual(new[] { Period.Create(null, end) }, invertedTwice.ToArray());
+    }
+
     private static IEnumerable<object[]> TestCaseSource()
     {
         using var r = new StreamReader("TestCases/PeriodTimeline.Invert.json");
