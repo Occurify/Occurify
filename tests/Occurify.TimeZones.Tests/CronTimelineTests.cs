@@ -248,5 +248,28 @@ namespace Occurify.TimeZones.Tests
                 date -= TimeSpan.FromTicks(1);
             }
         }
+
+        [TestMethod]
+        public void FromCron_NegativeUtcOffsetTimeZone()
+        {
+            var eastern = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+            var timeline = TimeZoneInstants.FromCron("0 0 * * *", eastern);
+
+            var next = timeline.GetNextUtcInstant(new DateTime(2024, 6, 1, 12, 0, 0, DateTimeKind.Utc));
+            var previous = timeline.GetPreviousUtcInstant(new DateTime(2024, 6, 1, 12, 0, 0, DateTimeKind.Utc));
+
+            Assert.AreEqual(TimeZoneInfo.ConvertTimeToUtc(new DateTime(2024, 6, 2), eastern), next);
+            Assert.AreEqual(TimeZoneInfo.ConvertTimeToUtc(new DateTime(2024, 6, 1), eastern), previous);
+        }
+
+        [TestMethod]
+        public void FromCron_ExtraWhitespace_ResolvesStandardFormat()
+        {
+            var timeline = TimeZoneInstants.FromCron("0  12 * * *", TimeZoneInfo.Utc);
+
+            var next = timeline.GetNextUtcInstant(new DateTime(2024, 6, 1, 0, 0, 0, DateTimeKind.Utc));
+
+            Assert.AreEqual(new DateTime(2024, 6, 1, 12, 0, 0, DateTimeKind.Utc), next);
+        }
     }
 }

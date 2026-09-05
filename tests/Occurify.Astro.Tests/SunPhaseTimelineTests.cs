@@ -227,5 +227,13 @@ namespace Occurify.Astro.Tests
                 date -= TimeSpan.FromTicks(1);
             }
         }
+
+        [TestMethod]
+        public void IsInstant_NonUtc_Throws()
+        {
+            var sunrises = AstroInstants.SunPhases(new Coordinates(82.5, 62.3), SunPhases.Sunrise);
+
+            Assert.ThrowsExactly<ArgumentException>(() => sunrises.IsInstant(new DateTime(2025, 3, 10, 16, 21, 0, DateTimeKind.Local)));
+        }
     }
 }

@@ -9,8 +9,7 @@ namespace Occurify.Examples.Extensions
             ArgumentNullException.ThrowIfNull(rootCommand);
 
             var exampleType = typeof(IExample);
-            var exampleTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
+            var exampleTypes = exampleType.Assembly.GetTypes()
                 .Where(type => exampleType.IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract);
 
             foreach (var type in exampleTypes)

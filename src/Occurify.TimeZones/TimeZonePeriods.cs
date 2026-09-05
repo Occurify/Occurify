@@ -1,5 +1,6 @@
 ﻿using Cronos;
 using Occurify.Extensions;
+using Occurify.TimeZones.Helpers;
 
 namespace Occurify.TimeZones
 {
@@ -264,7 +265,7 @@ namespace Occurify.TimeZones
         /// <summary>
         /// Returns a <see cref="IPeriodTimeline"/> with months <paramref name="month"/> in provided timezone <paramref name="timeZone"/>.
         /// </summary>
-        public static IPeriodTimeline Months(int month, TimeZoneInfo timeZone) => Months(new[] { month }, TimeZoneInfo.Local);
+        public static IPeriodTimeline Months(int month, TimeZoneInfo timeZone) => Months(new[] { month }, timeZone);
 
         /// <summary>
         /// Returns a <see cref="IPeriodTimeline"/> with months <paramref name="months"/> in <see cref="TimeZoneInfo.Local"/>.
@@ -455,7 +456,7 @@ namespace Occurify.TimeZones
         /// </summary>
         public static IPeriodTimeline Workdays(ITimeline instantsToContain)
         {
-            return Weekends().Containing(instantsToContain);
+            return Workdays().Containing(instantsToContain);
         }
 
         /// <summary>
@@ -463,7 +464,7 @@ namespace Occurify.TimeZones
         /// </summary>
         public static IPeriodTimeline Workdays(ITimeline instantsToContain, TimeZoneInfo timeZone)
         {
-            return Weekends(timeZone).Containing(instantsToContain);
+            return Workdays(timeZone).Containing(instantsToContain);
         }
 
         /// <summary>
@@ -484,7 +485,7 @@ namespace Occurify.TimeZones
         /// <summary>
         /// Returns the requested day as a <see cref="Period"/> in provided timezone <paramref name="timeZone"/>.
         /// </summary>
-        public static Period Day(int day, int month, int year, TimeZoneInfo timeZone) => Day(new DateTime(year, month, day, 12, 0, 0), TimeZoneInfo.Local);
+        public static Period Day(int day, int month, int year, TimeZoneInfo timeZone) => Day(new DateTime(year, month, day, 12, 0, 0), timeZone);
 
         /// <summary>
         /// Samples the day in <see cref="TimeZoneInfo.Local"/> on <paramref name="localDateTime"/> and returns as a <see cref="Period"/> .
@@ -496,7 +497,7 @@ namespace Occurify.TimeZones
         /// </summary>
         public static Period Day(DateTime timeZoneDateTime, TimeZoneInfo timeZone)
         {
-            return Days(timeZone).SampleAt(TimeZoneInfo.ConvertTimeToUtc(timeZoneDateTime.Date, timeZone)).Period ??
+            return Days(timeZone).SampleAt(TimeZoneHelper.NoonOfDateToUtc(timeZoneDateTime, timeZone)).Period ??
                 throw new InvalidOperationException($"No day was found for local date {timeZoneDateTime} in timezone {timeZone}");
         }
 
@@ -534,7 +535,7 @@ namespace Occurify.TimeZones
         /// </summary>
         public static Period Week(DateTime timeZoneDateTime, TimeZoneInfo timeZone)
         {
-            return Weeks(timeZone).SampleAt(TimeZoneInfo.ConvertTimeToUtc(timeZoneDateTime.Date, timeZone)).Period ??
+            return Weeks(timeZone).SampleAt(TimeZoneHelper.NoonOfDateToUtc(timeZoneDateTime, timeZone)).Period ??
                    throw new InvalidOperationException(
                        $"No week was found for local date {timeZoneDateTime} in timezone {timeZone}");
         }
@@ -549,7 +550,7 @@ namespace Occurify.TimeZones
         /// </summary>
         public static Period WeekByUtc(DateTime utcDateTime, TimeZoneInfo timeZone)
         {
-            return Weeks(timeZone).SampleAt(utcDateTime.Date).Period ??
+            return Weeks(timeZone).SampleAt(utcDateTime).Period ??
                    throw new InvalidOperationException(
                        $"No week was found for UTC date {utcDateTime} in timezone {timeZone}");
         }
@@ -572,7 +573,7 @@ namespace Occurify.TimeZones
         /// <summary>
         /// Returns the requested month as a <see cref="Period"/> in provided timezone <paramref name="timeZone"/>.
         /// </summary>
-        public static Period Month(int month, int year, TimeZoneInfo timeZone) => Month(new DateTime(year, month, 15), TimeZoneInfo.Local);
+        public static Period Month(int month, int year, TimeZoneInfo timeZone) => Month(new DateTime(year, month, 15), timeZone);
 
         /// <summary>
         /// Samples the month in <see cref="TimeZoneInfo.Local"/> on <paramref name="localDateTime"/> and returns as a <see cref="Period"/> .
@@ -584,7 +585,7 @@ namespace Occurify.TimeZones
         /// </summary>
         public static Period Month(DateTime timeZoneDateTime, TimeZoneInfo timeZone)
         {
-            return Months(timeZone).SampleAt(TimeZoneInfo.ConvertTimeToUtc(timeZoneDateTime.Date, timeZone)).Period ??
+            return Months(timeZone).SampleAt(TimeZoneHelper.NoonOfDateToUtc(timeZoneDateTime, timeZone)).Period ??
                    throw new InvalidOperationException(
                        $"No month was found for local date {timeZoneDateTime} in timezone {timeZone}");
         }
@@ -592,14 +593,14 @@ namespace Occurify.TimeZones
         /// <summary>
         /// Samples the month in <see cref="TimeZoneInfo.Local"/> on <paramref name="utcDateTime"/> and returns as a <see cref="Period"/> .
         /// </summary>
-        public static Period MonthByUtc(DateTime utcDateTime) => Month(utcDateTime, TimeZoneInfo.Local);
+        public static Period MonthByUtc(DateTime utcDateTime) => MonthByUtc(utcDateTime, TimeZoneInfo.Local);
 
         /// <summary>
         /// Samples the month in provided timezone <paramref name="timeZone"/> on <paramref name="utcDateTime"/> and returns as a <see cref="Period"/> .
         /// </summary>
         public static Period MonthByUtc(DateTime utcDateTime, TimeZoneInfo timeZone)
         {
-            return Months(timeZone).SampleAt(utcDateTime.Date).Period ??
+            return Months(timeZone).SampleAt(utcDateTime).Period ??
                    throw new InvalidOperationException(
                        $"No month was found for UTC date {utcDateTime} in timezone {timeZone}");
         }
@@ -622,7 +623,7 @@ namespace Occurify.TimeZones
         /// <summary>
         /// Returns the requested year as a <see cref="Period"/> in provided timezone <paramref name="timeZone"/>.
         /// </summary>
-        public static Period Year(int year, TimeZoneInfo timeZone) => Year(new DateTime(year, 6, 1), TimeZoneInfo.Local);
+        public static Period Year(int year, TimeZoneInfo timeZone) => Year(new DateTime(year, 6, 1), timeZone);
 
         /// <summary>
         /// Samples the year in <see cref="TimeZoneInfo.Local"/> on <paramref name="localDateTime"/> and returns as a <see cref="Period"/> .
@@ -634,7 +635,7 @@ namespace Occurify.TimeZones
         /// </summary>
         public static Period Year(DateTime timeZoneDateTime, TimeZoneInfo timeZone)
         {
-            return Years(timeZone).SampleAt(TimeZoneInfo.ConvertTimeToUtc(timeZoneDateTime.Date, timeZone)).Period ??
+            return Years(timeZone).SampleAt(TimeZoneHelper.NoonOfDateToUtc(timeZoneDateTime, timeZone)).Period ??
                    throw new InvalidOperationException(
                        $"No year was found for local date {timeZoneDateTime} in timezone {timeZone}");
         }
@@ -642,14 +643,14 @@ namespace Occurify.TimeZones
         /// <summary>
         /// Samples the year in <see cref="TimeZoneInfo.Local"/> on <paramref name="utcDateTime"/> and returns as a <see cref="Period"/> .
         /// </summary>
-        public static Period YearByUtc(DateTime utcDateTime) => Year(utcDateTime, TimeZoneInfo.Local);
+        public static Period YearByUtc(DateTime utcDateTime) => YearByUtc(utcDateTime, TimeZoneInfo.Local);
 
         /// <summary>
         /// Samples the year in provided timezone <paramref name="timeZone"/> on <paramref name="utcDateTime"/> and returns as a <see cref="Period"/> .
         /// </summary>
         public static Period YearByUtc(DateTime utcDateTime, TimeZoneInfo timeZone)
         {
-            return Years(timeZone).SampleAt(utcDateTime.Date).Period ??
+            return Years(timeZone).SampleAt(utcDateTime).Period ??
                    throw new InvalidOperationException(
                        $"No year was found for local date {utcDateTime} in timezone {timeZone}");
         }

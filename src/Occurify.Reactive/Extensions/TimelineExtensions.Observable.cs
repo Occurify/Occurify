@@ -1,6 +1,7 @@
 ﻿using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using Occurify.Reactive.Helpers;
 
 namespace Occurify.Reactive.Extensions;
 
@@ -30,18 +31,9 @@ public static partial class TimelineExtensions
     /// If <paramref name="emitInstantUponSubscribe"/> is true, the current time will be emitted immediately upon subscribing.
     /// </summary>
     public static IObservable<DateTime> ToInstantObservable(this ITimeline timeline, IScheduler scheduler,
-        bool emitInstantUponSubscribe = true)
-    {
-        if (emitInstantUponSubscribe)
-        {
-            var utcNow = DateTime.UtcNow;
-            return Observable.Defer(() =>
-                timeline.ToInstantObservableInternal(utcNow, scheduler)
-                    .Prepend(utcNow));
-        }
-
-        return timeline.ToInstantObservableInternal(DateTime.UtcNow, scheduler);
-    }
+        bool emitInstantUponSubscribe = true) =>
+        // The clock is read per subscription (and from the scheduler) so late or repeated subscribers don't replay instants that already passed.
+        Observable.Defer(() => timeline.ToInstantObservable(scheduler.Now.UtcDateTime, scheduler, emitInstantUponSubscribe));
 
     /// <summary>
     /// Returns a <see cref="IObservable{DateTime}"/> that emits an instant as <see cref="DateTime"/> when it occurs using <paramref name="relativeTo"/> as a starting time.
@@ -50,6 +42,8 @@ public static partial class TimelineExtensions
     public static IObservable<DateTime> ToInstantObservable(this ITimeline timeline, DateTime relativeTo,
         IScheduler scheduler, bool emitInstantUponSubscribe = true)
     {
+        DateTimeGuard.EnsureUtc(relativeTo, nameof(relativeTo));
+
         if (emitInstantUponSubscribe)
         {
             return Observable.Defer(() =>
@@ -57,7 +51,7 @@ public static partial class TimelineExtensions
                     .Prepend(relativeTo));
         }
 
-        return timeline.ToInstantObservableInternal(relativeTo, scheduler);
+        return Observable.Defer(() => timeline.ToInstantObservableInternal(relativeTo, scheduler));
     }
 
     private static IObservable<DateTime> ToInstantObservableInternal(this ITimeline timeline, DateTime relativeTo,
